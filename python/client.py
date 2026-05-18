@@ -3,11 +3,11 @@ import time
 import requests
 from config import URL_BACKEND
 
-# Respeita variável de ambiente BACKEND_URL (Docker) ou usa default do config
+# Respeta variable de entorno BACKEND_URL (Docker) o usa el default de config
 _BACKEND_URL = os.getenv("BACKEND_URL", URL_BACKEND)
 
 _MAX_RETRIES = 3
-_RETRY_DELAYS = [1, 2, 4]  # exponential backoff seconds
+_RETRY_DELAYS = [1, 2, 4]  # segundos de espera con backoff exponencial
 
 # Mapeo de claves Python -> IDs de componente del backend
 _COMPONENTE_MAP = {
@@ -25,8 +25,8 @@ _cached_token = None
 
 
 def get_internal_token():
-    """Lê X_INTERNAL_TOKEN lazily e faz cache após a primeira leitura válida.
-    Lança RuntimeError apenas quando chamada, nunca no import."""
+    """Lee X_INTERNAL_TOKEN de forma lazy y hace caché tras la primera lectura válida.
+    Lanza RuntimeError solo cuando se llama, nunca en el import."""
     global _cached_token
     if _cached_token:
         return _cached_token
@@ -42,12 +42,12 @@ def get_internal_token():
 
 def enviar_para_projeto(estado_validado, project_id, modos_manual=None):
     """
-    Envia uma leitura por componente ao backend para o projeto indicado.
-    A chave 'flags' é ignorada — o backend tem o seu próprio motor de alertas.
+    Envía una lectura por componente al backend para el proyecto indicado.
+    La clave 'flags' es ignorada — el backend tiene su propio motor de alertas.
 
-    modos_manual: conjunto (set) de componenteId que estão em modo MANUAL.
-    Os componentes presentes neste conjunto são saltados — o operador enviou
-    a leitura manualmente via UI e o simulador não deve sobrescrever.
+    modos_manual: conjunto (set) de componenteId que están en modo MANUAL.
+    Los componentes presentes en este conjunto se omiten — el operador envió
+    la lectura manualmente vía UI y el simulador no debe sobreescribir.
     """
     if modos_manual is None:
         modos_manual = set()
@@ -69,7 +69,7 @@ def enviar_para_projeto(estado_validado, project_id, modos_manual=None):
             print(f"[client] componente desconocido ignorado: {key_python}")
             continue
 
-        # Componente em modo MANUAL: o simulador não envia leituras automáticas
+        # Componente en modo MANUAL: el simulador no envía lecturas automáticas
         if componente_id in modos_manual:
             continue
 
@@ -97,7 +97,7 @@ def enviar_para_projeto(estado_validado, project_id, modos_manual=None):
                 break
 
 
-# Legacy alias for backwards compatibility if called from old code
+# Alias heredado para compatibilidad con código anterior
 def enviar(estado_validado):
     from config import PROYECTO_ID
     enviar_para_projeto(estado_validado, PROYECTO_ID)
