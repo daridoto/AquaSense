@@ -84,10 +84,10 @@ export default function ModoPanel({
         componenteId,
         modo: novoModo,
       });
-      setFeedback({ type: 'ok', msg: `Modo alterado para ${novoModo}` });
+      setFeedback({ type: 'ok', msg: `Modo cambiado a ${novoModo}` });
       if (onModoChanged) onModoChanged(componenteId, novoModo);
     } catch {
-      setFeedback({ type: 'err', msg: 'Erro ao mudar modo. Tenta novamente.' });
+      setFeedback({ type: 'err', msg: 'Error al cambiar modo. Inténtalo de nuevo.' });
     } finally {
       setToggling(false);
     }
@@ -107,7 +107,7 @@ export default function ModoPanel({
     }
 
     if (Object.keys(valores).length === 0) {
-      setFeedback({ type: 'err', msg: 'Preenche pelo menos um campo antes de guardar.' });
+      setFeedback({ type: 'err', msg: 'Rellena al menos un campo antes de guardar.' });
       setSaving(false);
       return;
     }
@@ -120,9 +120,9 @@ export default function ModoPanel({
         valores,
         origen: 'MANUAL',
       });
-      setFeedback({ type: 'ok', msg: 'Leitura manual guardada com sucesso.' });
+      setFeedback({ type: 'ok', msg: 'Lectura manual guardada con éxito.' });
     } catch {
-      setFeedback({ type: 'err', msg: 'Erro ao guardar leitura. Verifica a ligação.' });
+      setFeedback({ type: 'err', msg: 'Error al guardar lectura. Verifica la conexión.' });
     } finally {
       setSaving(false);
     }
@@ -172,8 +172,8 @@ export default function ModoPanel({
         {isManual && (
           <form className={s.form} onSubmit={handleGuardar}>
             <p className={s.formHint}>
-              Introduz os valores medidos manualmente. O simulador não enviará leituras
-              automáticas para este componente enquanto estiver em modo MANUAL.
+              Introduce los valores medidos manualmente. El simulador no enviará lecturas
+              automáticas a este componente mientras esté en modo MANUAL.
             </p>
             <div className={s.fields}>
               {params.map(p => (
@@ -194,7 +194,7 @@ export default function ModoPanel({
               ))}
             </div>
             <button className={s.saveBtn} type="submit" disabled={saving}>
-              {saving ? 'A GUARDAR...' : 'GUARDAR LEITURA MANUAL'}
+              {saving ? 'GUARDANDO...' : 'GUARDAR LECTURA MANUAL'}
             </button>
           </form>
         )}
@@ -203,7 +203,7 @@ export default function ModoPanel({
         {!isManual && (
           <div className={s.readOnly}>
             <p className={s.readOnlyHint}>
-              Componente em modo AUTO. O simulador gere as leituras automaticamente.
+              Componente en modo AUTO. El simulador gestiona las lecturas automáticamente.
             </p>
             <div className={s.fields}>
               {params.map(p => {
