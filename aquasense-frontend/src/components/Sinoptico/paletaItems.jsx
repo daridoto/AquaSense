@@ -1,12 +1,12 @@
 /**
  * paletaItems.js
- * Defines the 40 palette components with SVG icon render functions.
- * Icons are pure SVG geometry — no PNGs, no external libs.
+ * Define los 40 componentes de la paleta con funciones de renderizado de iconos SVG.
+ * Los iconos son geometría SVG pura — sin PNGs, sin librerías externas.
  *
  * renderIcon(color, strokeW) → JSX SVG children (rendered inside <svg viewBox="0 0 48 48">)
  */
 
-// ── Bombagem (6) ─────────────────────────────────────────────────────────────
+// ── Bombeo (6) ───────────────────────────────────────────────────────────────
 function iconBombaCentrifuga(c, sw) {
   return (
     <>
@@ -77,7 +77,7 @@ function iconBombaTornillo(c, sw) {
   );
 }
 
-// ── Filtragem (6) ─────────────────────────────────────────────────────────────
+// ── Filtrado (6) ──────────────────────────────────────────────────────────────
 function iconFiltroArena(c, sw) {
   return (
     <>
@@ -219,7 +219,7 @@ function iconCisterna(c, sw) {
   );
 }
 
-// ── Tratamento (6) ────────────────────────────────────────────────────────────
+// ── Tratamiento (6) ───────────────────────────────────────────────────────────
 function iconCoagulador(c, sw) {
   return (
     <>
@@ -292,7 +292,7 @@ function iconTorreAireacion(c, sw) {
   );
 }
 
-// ── Medição (6) ───────────────────────────────────────────────────────────────
+// ── Medición (6) ──────────────────────────────────────────────────────────────
 function iconCaudalimetro(c, sw) {
   return (
     <>
@@ -362,7 +362,7 @@ function iconNivelSensor(c, sw) {
   );
 }
 
-// ── Controlo (5) ─────────────────────────────────────────────────────────────
+// ── Control (5) ──────────────────────────────────────────────────────────────
 function iconValvulaManual(c, sw) {
   return (
     <>
@@ -422,7 +422,7 @@ function iconPLC(c, sw) {
   );
 }
 
-// ── Estrutura (5) ─────────────────────────────────────────────────────────────
+// ── Estructura (5) ────────────────────────────────────────────────────────────
 function iconRejaGruesa(c, sw) {
   return (
     <>
@@ -575,7 +575,7 @@ export const PALETA_GRUPOS = [
   },
 ];
 
-// Flat map for quick lookup by componenteId
+// Mapa plano para búsqueda rápida por componenteId
 export const PALETA_MAP = Object.fromEntries(
   PALETA_GRUPOS.flatMap(g => g.items).map(item => [item.id, item])
 );
