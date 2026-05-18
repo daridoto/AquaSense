@@ -57,12 +57,12 @@ export default function Auditoria() {
 
       <div className={s.filters}>
         <div className={s.field}>
-          <span className={s.label}>Acção</span>
+          <span className={s.label}>Acción</span>
           <input className={s.input} placeholder="CONTROL_MANUAL..." value={filters.accion}
             onChange={e => setFilters(f => ({ ...f, accion: e.target.value }))} />
         </div>
         <div className={s.field}>
-          <span className={s.label}>Utilizador</span>
+          <span className={s.label}>Usuario</span>
           <input className={s.input} placeholder="email@..." value={filters.usuario}
             onChange={e => setFilters(f => ({ ...f, usuario: e.target.value }))} />
         </div>
@@ -72,27 +72,27 @@ export default function Auditoria() {
             onChange={e => setFilters(f => ({ ...f, desde: e.target.value }))} />
         </div>
         <div className={s.field}>
-          <span className={s.label}>Até</span>
+          <span className={s.label}>Hasta</span>
           <input className={s.input} type="date" value={filters.hasta}
             onChange={e => setFilters(f => ({ ...f, hasta: e.target.value }))} />
         </div>
-        <button className={s.searchBtn} onClick={handleSearch}>Pesquisar</button>
+        <button className={s.searchBtn} onClick={handleSearch}>Buscar</button>
       </div>
 
       <div className={s.tableWrap}>
         {loading ? (
-          <p className={s.loading}>A carregar...</p>
+          <p className={s.loading}>Cargando...</p>
         ) : rows.length === 0 ? (
-          <p className={s.empty}>Clique em Pesquisar para carregar eventos de auditoria.</p>
+          <p className={s.empty}>Haz clic en Buscar para cargar eventos de auditoría.</p>
         ) : (
           <table className={s.table}>
             <thead>
               <tr>
                 <th>Timestamp</th>
-                <th>Utilizador</th>
-                <th>Acção</th>
-                <th>Entidade</th>
-                <th>Valor depois</th>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Entidad</th>
+                <th>Valor después</th>
                 <th>IP</th>
               </tr>
             </thead>
@@ -116,7 +116,7 @@ export default function Auditoria() {
         <div className={s.pagination}>
           <span className={s.pageInfo}>{total} eventos · Pág. {page + 1} / {totalPages}</span>
           <button className={s.pageBtn} onClick={() => goPage(page - 1)} disabled={page === 0}>← Anterior</button>
-          <button className={s.pageBtn} onClick={() => goPage(page + 1)} disabled={page >= totalPages - 1}>Próxima →</button>
+          <button className={s.pageBtn} onClick={() => goPage(page + 1)} disabled={page >= totalPages - 1}>Siguiente →</button>
         </div>
       )}
     </div>
