@@ -38,7 +38,7 @@ export default function Equipa() {
       setAddEmail('');
       load();
     } catch (e) {
-      setError(e?.response?.data?.message ?? 'Erro ao adicionar membro');
+      setError(e?.response?.data?.message ?? 'Error al añadir miembro');
     } finally {
       setAdding(false);
     }
@@ -66,11 +66,11 @@ export default function Equipa() {
         <div className={s.headerLeft}>
           <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>← Dashboard</button>
           <div className={s.sep} />
-          <span className={s.title}>EQUIPA</span>
+          <span className={s.title}>EQUIPO</span>
         </div>
       </header>
       <div className={s.body}>
-        <span className={s.sectionTitle}>MEMBROS COM ACESSO</span>
+        <span className={s.sectionTitle}>MIEMBROS CON ACCESO</span>
         <table className={s.table}>
           <thead>
             <tr>
@@ -83,7 +83,7 @@ export default function Equipa() {
           <tbody>
             {members.length === 0 ? (
               <tr><td colSpan={4} style={{ padding: '20px', textAlign: 'center', color: 'var(--text3)', fontFamily: 'var(--mono)', fontSize: '11px' }}>
-                Só o proprietário tem acesso.
+                Solo el propietario tiene acceso.
               </td></tr>
             ) : members.map(m => (
               <tr key={m.usuarioId}>
@@ -96,14 +96,14 @@ export default function Equipa() {
                   </select>
                 </td>
                 <td>
-                  <button className={s.removeBtn} onClick={() => handleRemove(m.usuarioId)}>Remover</button>
+                  <button className={s.removeBtn} onClick={() => handleRemove(m.usuarioId)}>Eliminar</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <span className={s.sectionTitle}>ADICIONAR MEMBRO</span>
+        <span className={s.sectionTitle}>AÑADIR MIEMBRO</span>
         <div className={s.addForm}>
           <input className={s.addInput} type="email" placeholder="email@empresa.com"
             value={addEmail} onChange={e => setAddEmail(e.target.value)}
