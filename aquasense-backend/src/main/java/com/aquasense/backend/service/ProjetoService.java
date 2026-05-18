@@ -233,13 +233,13 @@ public class ProjetoService {
                         printer.printRecord(ts, lectura.getComponente(), entry.getKey(), entry.getValue());
                     }
                 } catch (Exception e) {
-                    log.warn("Erro ao parsear valores para lectura {}", lectura.getId(), e);
+                    log.warn("Error al parsear valores para lectura {}", lectura.getId(), e);
                 }
             }
             printer.flush();
             return out.toByteArray();
         } catch (Exception e) {
-            throw new IllegalStateException("Erro ao gerar CSV: " + e.getMessage(), e);
+            throw new IllegalStateException("Error al generar CSV: " + e.getMessage(), e);
         }
     }
 
@@ -258,12 +258,12 @@ public class ProjetoService {
 
         if (componenteId == null || modo == null) {
             throw new IllegalArgumentException(
-                    "Campos 'componenteId'+'modo' (ou legado 'componente'+'comando') são obrigatórios");
+                    "Campos 'componenteId'+'modo' (o legado 'componente'+'comando') son obligatorios");
         }
 
         // Valida el valor del modo
         if (!modo.equals("AUTO") && !modo.equals("MANUAL")) {
-            throw new IllegalArgumentException("Valor de 'modo' inválido: apenas 'AUTO' ou 'MANUAL' são aceites");
+            throw new IllegalArgumentException("Valor de 'modo' inválido: solo se aceptan 'AUTO' o 'MANUAL'");
         }
 
         Equipamento equip = equipamentoRepository
@@ -280,7 +280,7 @@ public class ProjetoService {
         auditoriaService.registrar(id, email, "CONTROL_MANUAL",
                 "Equipamento:" + componenteId, estadoAnterior, modo, null);
 
-        log.info("[modo] Componente {} do projeto {} alterado para {}", componenteId, id, modo);
+        log.info("[modo] Componente {} del proyecto {} cambiado a {}", componenteId, id, modo);
         return Map.of("status", "ok", "componenteId", componenteId, "modo", modo);
     }
 
