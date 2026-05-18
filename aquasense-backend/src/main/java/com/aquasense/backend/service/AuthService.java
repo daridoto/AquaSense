@@ -50,7 +50,7 @@ public class AuthService {
 
     public LoginResponse register(RegisterRequest request) {
         if (usuarioRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalStateException("Email já registado");
+            throw new IllegalStateException("Email ya registrado");
         }
         String lang = request.getLanguage() != null ? request.getLanguage() : "en";
         Usuario usuario = usuarioRepository.save(Usuario.builder()
