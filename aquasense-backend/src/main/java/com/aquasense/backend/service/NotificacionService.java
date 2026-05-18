@@ -32,8 +32,8 @@ public class NotificacionService {
     private final EmailService emailService;
 
     /**
-     * Envia notificaciones por email para todos os utilizadores com acesso ao projeto
-     * que têm notificarCritica=true. Chamado assincronamente de AlertaService.
+     * Envía notificaciones por email a todos los usuarios con acceso al proyecto
+     * que tienen notificarCritica=true. Llamado de forma asíncrona desde AlertaService.
      */
     @Async
     public void notificarAlertaCritica(Projeto projeto, String componente, String mensagem) {
@@ -41,7 +41,7 @@ public class NotificacionService {
             return;
         }
 
-        // Recolher todos os utilizadores com acesso: owner + utilizadores com rol
+        // Recopilar todos los usuarios con acceso: propietario + usuarios con rol
         List<Usuario> destinatarios = new ArrayList<>();
         destinatarios.add(projeto.getUsuario());
         usuarioProyectoRolRepository.findByProjetoId(projeto.getId())
