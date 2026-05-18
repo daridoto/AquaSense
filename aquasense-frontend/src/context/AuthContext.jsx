@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
     try {
       await api.post('/auth/logout');
     } catch (_) {
-      // falha silenciosa — logout local continua
+      // fallo silencioso — logout local continúa
     } finally {
       localStorage.removeItem('aquasense_token');
       localStorage.removeItem('aquasense_user');
