@@ -483,7 +483,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
         {Object.entries(modosLocais)
           .filter(([, modo]) => modo === 'MANUAL')
           .map(([comp]) => (
-            <span key={comp} className={s.badgeManual} title={`${comp} em modo MANUAL`}>
+            <span key={comp} className={s.badgeManual} title={`${comp} en modo MANUAL`}>
               {comp.replace(/_/g, ' ').toUpperCase()} — MANUAL
             </span>
           ))}
