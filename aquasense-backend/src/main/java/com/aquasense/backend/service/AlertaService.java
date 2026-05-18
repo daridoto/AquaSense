@@ -49,7 +49,7 @@ public class AlertaService {
     }
 
     // -------------------------------------------------------------------------
-    // Per-component threshold logic
+    // Lógica de umbrales por componente
     // -------------------------------------------------------------------------
 
     private void evaluarDesinfeccion(Projeto projeto, Map<String, Double> v) {
@@ -215,12 +215,12 @@ public class AlertaService {
     }
 
     // -------------------------------------------------------------------------
-    // Alert CRUD helpers
+    // Métodos auxiliares de gestión de alertas
     // -------------------------------------------------------------------------
 
     protected void crearAlerta(Projeto projeto, String componente, String tipo,
                                NivelAlerta nivel, String mensagem, String accion) {
-        // Deduplicate on (projetoId, componente, tipo) — not on mensagem.
+        // Deduplicar por (projetoId, componente, tipo) — no por mensagem.
         boolean yaExiste = alertaRepository
                 .findByProjetoIdAndComponenteAndTipoAndAtivaTrue(
                         projeto.getId(), componente, tipo)
@@ -243,7 +243,7 @@ public class AlertaService {
                 ejecutarAccionAutomatica(projeto, componente, accion);
             }
 
-            // Notificação por email para alertas CRITICAS
+            // Notificación por email para alertas CRÍTICAS
             if (nivel == NivelAlerta.CRITICA) {
                 notificacionService.notificarAlertaCritica(projeto, componente, mensagem);
             }
@@ -271,7 +271,7 @@ public class AlertaService {
     }
 
     // -------------------------------------------------------------------------
-    // Alarm lifecycle methods
+    // Métodos del ciclo de vida de las alertas
     // -------------------------------------------------------------------------
 
     @Transactional
@@ -332,7 +332,7 @@ public class AlertaService {
     }
 
     // -------------------------------------------------------------------------
-    // Query
+    // Consultas
     // -------------------------------------------------------------------------
 
     public List<AlertaDTO> getAlertas(Long projetoId, Boolean activas) {
@@ -344,7 +344,7 @@ public class AlertaService {
     }
 
     // -------------------------------------------------------------------------
-    // Private helpers
+    // Métodos auxiliares privados
     // -------------------------------------------------------------------------
 
     private Alerta findAlertaByProjetoAndId(Long projetoId, Long alertaId) {
