@@ -1,39 +1,39 @@
 # aquasense-frontend
 
-React frontend for **AquaSense**, a water treatment plant monitoring SaaS platform. Part of a three-module final course project.
+*Frontend* React para **AquaSense**, una plataforma SaaS de monitorización de plantas de tratamiento de agua. Parte de un proyecto final de tres módulos.
 
-> **Modules:** **aquasense-frontend** (this) · [aquasense-backend](../aquasense-backend) (REST API) · [aquasense-python](../python) (simulation engine)
-
----
-
-## What this module does
-
-- JWT-based login / logout with token stored in `localStorage`
-- Project list and creation
-- Real-time synoptic view — SVG canvas with ISA 5.1 symbols, polled every 5 seconds
-- Drag-and-drop layout editor with a 40+ component palette
-- Sensor history with Chart.js charts and CSV export
-- Alert management — acknowledge, silence, assign, and resolve alerts
-- Team management with per-project roles (ADMIN / OPERADOR / MANTENIMIENTO / VISUALIZADOR)
-- Audit log with filters
-- Email notification preferences per project
+> **Módulos:** **aquasense-frontend** (este) · [aquasense-backend](../aquasense-backend) (API REST) · [aquasense-python](../python) (motor de simulación)
 
 ---
 
-## Tech stack
+## Qué hace este módulo
 
-| Layer | Technology |
+- Inicio y cierre de sesión basados en JWT con token almacenado en `localStorage`
+- Lista y creación de proyectos
+- Vista sinóptica en tiempo real — canvas SVG con símbolos ISA 5.1, con *polling* cada 5 segundos
+- Editor de layout *drag-and-drop* con una paleta de más de 40 componentes
+- Historial de sensores con gráficas Chart.js y exportación CSV
+- Gestión de alertas — confirmar, silenciar, asignar y resolver alertas
+- Gestión de equipo con roles por proyecto (ADMIN / OPERADOR / MANTENIMIENTO / VISUALIZADOR)
+- Registro de auditoría con filtros
+- Preferencias de notificaciones por correo electrónico por proyecto
+
+---
+
+## *Stack* tecnológico
+
+| Capa | Tecnología |
 |---|---|
-| Framework | React 18 |
-| Build tool | Vite |
-| Routing | React Router v6 |
-| HTTP client | Axios (with JWT interceptor) |
-| Charts | Chart.js + react-chartjs-2 |
-| Synoptic | Native SVG — no diagram library |
+| Marco de trabajo | React 18 |
+| Herramienta de compilación | Vite |
+| Enrutamiento | React Router v6 |
+| Cliente HTTP | Axios (con interceptor JWT) |
+| Gráficas | Chart.js + react-chartjs-2 |
+| Sinóptico | SVG nativo — sin librería de diagramas |
 
 ---
 
-## Project structure
+## Estructura del proyecto
 
 ```
 src/
@@ -59,55 +59,55 @@ src/
 
 ---
 
-## Running locally
+## Ejecución local
 
-### Prerequisites
+### Requisitos previos
 
 - Node.js 18+ (`node -v`)
 
-### Start the dev server
+### Iniciar el servidor de desarrollo
 
 ```bash
 npm install
 npm run dev
 ```
 
-The app starts on **http://localhost:5173**.
+La aplicación arranca en **http://localhost:5173**.
 
-> The backend must be running on `http://localhost:8080` for API calls to work.
+> El *backend* debe estar ejecutándose en `http://localhost:8080` para que las llamadas a la API funcionen.
 
-### Build for production
+### Compilar para producción
 
 ```bash
 npm run build
 ```
 
-Output goes to `dist/`. Deploy the `dist/` folder to any static host (Vercel, Netlify, etc.).
+El resultado se genera en `dist/`. Despliega la carpeta `dist/` en cualquier servidor estático (Vercel, Netlify, etc.).
 
 ---
 
-## Environment variables
+## Variables de entorno
 
-Copy `.env.example` to `.env`:
+Copia `.env.example` a `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-| Variable | Description | Default (dev) |
+| Variable | Descripción | Valor por defecto (dev) |
 |---|---|---|
-| `VITE_API_URL` | Base URL of the backend | `http://localhost:8080` |
+| `VITE_API_URL` | URL base del *backend* | `http://localhost:8080` |
 
 ---
 
-## Authentication
+## Autenticación
 
-- Token is stored in `localStorage["aquasense_token"]`
-- An Axios interceptor automatically attaches `Authorization: Bearer <token>` to every request
-- On 401, the user is redirected to `/login`
+- El token se almacena en `localStorage["aquasense_token"]`
+- Un interceptor de Axios añade automáticamente `Authorization: Bearer <token>` a cada petición
+- Con un 401, el usuario es redirigido a `/login`
 
 ---
 
-## Synoptic editor
+## Editor de sinópticos
 
-The layout editor renders an SVG canvas where plant engineers can place and connect components. Symbols follow the ISA 5.1-2009 standard. Layout is persisted via `POST /api/proyectos/:id/layout`.
+El editor de layout renderiza un canvas SVG en el que los ingenieros de planta pueden colocar y conectar componentes. Los símbolos siguen la norma ISA 5.1-2009. El layout se persiste mediante `POST /api/proyectos/:id/layout`.
