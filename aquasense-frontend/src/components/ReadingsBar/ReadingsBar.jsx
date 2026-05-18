@@ -11,7 +11,7 @@ const COMP_LABELS = {
   bomba_distribucion: 'B.DIST.',
 };
 
-// Campos a mostrar por componente, na ordem definida
+// Campos a mostrar por componente, en el orden definido
 const FIELDS = {
   bomba_captacao:     ['caudal', 'presionSuccion', 'temperaturaMotor'],
   reja_tamiz:         ['diferencialPresion', 'turbidezEntrada'],
@@ -88,7 +88,7 @@ export default function ReadingsBar({ estado, alertas = [] }) {
   return (
     <div className={s.bar}>
       {COMP_ORDER.map(id => {
-        // CORRIGIDO: dados estão em estado.componentes[id].valores
+        // CORREGIDO: datos están en estado.componentes[id].valores
         const comp = estado?.componentes?.[id];
         const state = getState(id, alertas);
         const valores = comp?.valores ?? {};
