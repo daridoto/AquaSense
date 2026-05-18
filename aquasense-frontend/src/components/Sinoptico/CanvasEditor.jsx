@@ -119,7 +119,7 @@ function PropsPanel({ inst, onLabelChange, onDelete, onClose }) {
   return (
     <div className={s.propsPanel}>
       <div className={s.propsPanelHeader}>
-        <span className={s.propsPanelTitle}>PROPRIEDADES</span>
+        <span className={s.propsPanelTitle}>PROPIEDADES</span>
         <button className={s.propsPanelClose} onClick={onClose}>×</button>
       </div>
       <div className={s.propsRow}>
@@ -758,7 +758,7 @@ export default function CanvasEditor({
         <span className={s.toolbarTitle}>EDITOR DE LAYOUT</span>
 
         <div className={s.pipeControls}>
-          <span className={s.toolbarLabel}>TUBAGEM:</span>
+          <span className={s.toolbarLabel}>TUBERÍA:</span>
           <select
             className={s.pipeTypeSelect}
             value={pipeType}
@@ -803,7 +803,7 @@ export default function CanvasEditor({
           </button>
           <button className={s.btnCancel} onClick={onCancel}>CANCELAR</button>
           <button className={s.btnSave} onClick={handleSave} disabled={saving}>
-            {saving ? 'A GUARDAR...' : 'GUARDAR LAYOUT'}
+            {saving ? 'GUARDANDO...' : 'GUARDAR LAYOUT'}
           </button>
         </div>
       </div>
@@ -904,7 +904,7 @@ export default function CanvasEditor({
 
           {instances.length === 0 && (
             <div className={s.emptyHint}>
-              Arrasta componentes da paleta para o canvas
+              Arrastra componentes de la paleta al canvas
             </div>
           )}
 
@@ -920,12 +920,12 @@ export default function CanvasEditor({
           {/* Hints — conexión y print */}
           {pendingFrom && (
             <div className={s.connectHint}>
-              Clica num porto de destino para ligar · ESC para cancelar
+              Haz clic en un puerto de destino para conectar · ESC para cancelar
             </div>
           )}
           {printMode && !printRectDraw && (
             <div className={s.connectHint}>
-              Clica e arrasta para seleccionar área de impressão · ESC para cancelar
+              Haz clic y arrastra para seleccionar el área de impresión · ESC para cancelar
             </div>
           )}
         </div>
