@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
- * Internal endpoint — called exclusively by the Python simulation engine.
- * No CORS required (Python does not send Origin headers).
- * No JWT required (route is permitted in SecurityConfig).
+ * Endpoint interno — llamado exclusivamente por el motor de simulación Python.
+ * No se requiere CORS (Python no envía cabeceras Origin).
+ * No se requiere JWT (la ruta está permitida en SecurityConfig).
  */
 @RestController
 @RequestMapping("/interno/proyectos")
@@ -38,7 +38,7 @@ public class LeituraController {
             @PathVariable Long id,
             @Valid @RequestBody LeituraDTO dto) {
 
-        // We use findById here — ownership check is not required for internal calls
+        // Usamos findById — la comprobación de ownership no es necesaria para llamadas internas
         Projeto projeto = projetoService.findOwnedProjectById(id);
 
         String valoresJson;
@@ -63,7 +63,7 @@ public class LeituraController {
 
         leituraRepository.save(lectura);
 
-        // Evaluate thresholds and generate alerts
+        // Evaluar umbrales y generar alertas
         alertaService.evaluarUmbral(projeto, dto.getComponente(), dto.getValores());
 
         log.debug("Lectura guardada: proyecto={}, componente={}, ts={}",
