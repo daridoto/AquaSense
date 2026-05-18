@@ -29,7 +29,7 @@ export default function App() {
             <Route path="/proyectos/:id/alertas" element={<ProtectedRoute><Alertas /></ProtectedRoute>} />
             <Route path="/proyectos/:id/historico" element={
               <ProtectedRoute>
-                <Suspense fallback={<p style={{ padding: '2rem', textAlign: 'center' }}>A carregar...</p>}>
+                <Suspense fallback={<p style={{ padding: '2rem', textAlign: 'center' }}>Cargando...</p>}>
                   <Historico />
                 </Suspense>
               </ProtectedRoute>
