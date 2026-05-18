@@ -1,7 +1,7 @@
 /**
  * CanvasEditor.jsx
- * SVG canvas com pan + zoom, paleta lateral de 40+ componentes,
- * conexões como linhas SVG com seta, integração com API de tuberias.
+ * Canvas SVG con pan + zoom, paleta lateral de 40+ componentes,
+ * conexiones como líneas SVG con flecha, integración con API de tuberías.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import api from '../../services/api';
@@ -156,7 +156,7 @@ export default function CanvasEditor({
   onSave,
   onCancel,
 }) {
-  // ── Estado do canvas ────────────────────────────────────────────────────────
+  // ── Estado del canvas ────────────────────────────────────────────────────────
   const [instances, setInstances] = useState(() => {
     if (initialLayout?.componentes) return initialLayout.componentes;
     if (initialLayout?.cards) {
@@ -194,7 +194,7 @@ export default function CanvasEditor({
   const [zoom, setZoom] = useState(initialLayout?.zoom ?? 1);
   const [pan, setPan] = useState({ x: initialLayout?.panX ?? 0, y: initialLayout?.panY ?? 0 });
 
-  // ── Interacção ──────────────────────────────────────────────────────────────
+  // ── Interacción ──────────────────────────────────────────────────────────────
   const [selectedId, setSelectedId] = useState(null);
   const [pendingFrom, setPendingFrom] = useState(null);
   const [mouseCanvas, setMouseCanvas] = useState({ x: 0, y: 0 });
@@ -206,7 +206,7 @@ export default function CanvasEditor({
   });
   const [saving, setSaving] = useState(false);
 
-  // ── Sidebar colapsável ──────────────────────────────────────────────────────
+  // ── Sidebar colapsable ──────────────────────────────────────────────────────
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     () => localStorage.getItem('ce_sb_collapsed') === '1'
   );
@@ -352,16 +352,16 @@ export default function CanvasEditor({
     };
   }, []);
 
-  // ── Pan (arrastar fundo) ────────────────────────────────────────────────────
+  // ── Pan (arrastrar fondo) ────────────────────────────────────────────────────
   function handleSvgMouseDown(e) {
-    // Print mode: iniciar rectângulo de selecção
+    // Print mode: iniciar rectángulo de selección
     if (printMode) {
       const cc = clientToCanvas(e.clientX, e.clientY);
       printRectRef.current = { x1: cc.x, y1: cc.y, x2: cc.x, y2: cc.y };
       setPrintRectDraw({ x1: cc.x, y1: cc.y, x2: cc.x, y2: cc.y });
       return;
     }
-    // Space held: pan a partir de qualquer ponto
+    // Space held: pan desde cualquier punto
     if (spaceRef.current) {
       setSelectedId(null);
       panningRef.current = { startX: e.clientX, startY: e.clientY, panX: pan.x, panY: pan.y };
@@ -378,7 +378,7 @@ export default function CanvasEditor({
       setMouseCanvas(clientToCanvas(e.clientX, e.clientY));
     }
 
-    // Print mode: actualizar rectângulo
+    // Print mode: actualizar rectángulo
     if (printMode && printRectRef.current) {
       const cc = clientToCanvas(e.clientX, e.clientY);
       const updated = { ...printRectRef.current, x2: cc.x, y2: cc.y };
@@ -406,7 +406,7 @@ export default function CanvasEditor({
   }
 
   function handleSvgMouseUp() {
-    // Print mode: terminar e imprimir
+    // Print mode: terminar y imprimir
     if (printMode && printRectRef.current) {
       const r = printRectRef.current;
       const w = Math.abs(r.x2 - r.x1);
@@ -424,11 +424,11 @@ export default function CanvasEditor({
     draggingRef.current = null;
   }
 
-  // ── Drag de instâncias já no canvas ────────────────────────────────────────
+  // ── Drag de instancias ya en el canvas ────────────────────────────────────────
   function handleInstMouseDown(e, inst) {
     e.stopPropagation();
     if (printMode) return;
-    if (spaceRef.current) return; // space overrides — let SVG handle pan
+    if (spaceRef.current) return; // space overrides — el SVG gestiona el pan
     if (pendingFrom) return;
     const canvas = clientToCanvas(e.clientX, e.clientY);
     draggingRef.current = {
@@ -439,7 +439,7 @@ export default function CanvasEditor({
     setSelectedId(inst.id);
   }
 
-  // ── Drop da paleta ──────────────────────────────────────────────────────────
+  // ── Drop de la paleta ──────────────────────────────────────────────────────
   function handleSvgDragOver(e) { e.preventDefault(); }
 
   function handleSvgDrop(e) {
@@ -461,7 +461,7 @@ export default function CanvasEditor({
     setSelectedId(newInst.id);
   }
 
-  // ── Portos e ligações ───────────────────────────────────────────────────────
+  // ── Puertos y conexiones ───────────────────────────────────────────────────
   function handlePortClick(e, inst, port) {
     e.stopPropagation();
     if (!pendingFrom) {
@@ -541,7 +541,7 @@ export default function CanvasEditor({
     document.body.style.userSelect = 'none';
   }
 
-  // ── Renderização ─────────────────────────────────────────────────────────────
+  // ── Renderización ─────────────────────────────────────────────────────────────
   const GENERIC_PORTS = ['left', 'right', 'top', 'bottom'];
 
   function renderInstances() {
@@ -585,7 +585,7 @@ export default function CanvasEditor({
               <g opacity="1">
                 {renderShape(inst.componenteId, color, 2)}
               </g>
-              {/* Ponto 4: label ≥ 13px em SVG user-space */}
+              {/* Punto 4: label ≥ 13px en SVG user-space */}
               <text
                 x={shW / 2} y={shH + 16}
                 textAnchor="middle"
@@ -600,7 +600,7 @@ export default function CanvasEditor({
             </>
           ) : (
             <>
-              {/* Selection / pending outline — invisible by default, same pattern as canonical */}
+              {/* Contorno de selección/pendiente — invisible por defecto, mismo patrón que el canónico */}
               <rect
                 x={-6} y={-6}
                 width={shW + 12} height={shH + 12}
@@ -611,7 +611,7 @@ export default function CanvasEditor({
                 strokeDasharray={isSelected ? '5 3' : 'none'}
                 pointerEvents="none"
               />
-              {/* Render icon inline — scaled from 48×48 palette viewbox to shW×shH */}
+              {/* Icono inline — escalado desde viewbox 48×48 de la paleta a shW×shH */}
               {(() => {
                 const sx = shW / 48;
                 const sy = shH / 48;
@@ -744,7 +744,7 @@ export default function CanvasEditor({
 
   const selectedInst = instances.find(i => i.id === selectedId);
 
-  // Cursor do SVG: crosshair em printMode, grab/grabbing com space, default normal
+  // Cursor del SVG: crosshair en printMode, grab/grabbing con space, default normal
   const svgCursor = printMode
     ? 'crosshair'
     : spaceDown
@@ -790,7 +790,7 @@ export default function CanvasEditor({
         </div>
 
         <div className={s.toolbarActions}>
-          {/* Ponto 6: print com área delimitada */}
+          {/* Punto 6: print con área delimitada */}
           <button
             className={printMode ? s.btnPrintActive : s.btnPrint}
             onClick={() => {
@@ -809,7 +809,7 @@ export default function CanvasEditor({
       </div>
 
       <div className={s.body}>
-        {/* ── Paleta lateral: colapsável + redimensionável (Ponto 3) ── */}
+        {/* ── Paleta lateral: colapsable + redimensionable (Punto 3) ── */}
         <div
           className={s.palette}
           style={{ width: sidebarCollapsed ? 48 : sidebarWidth }}
@@ -851,7 +851,7 @@ export default function CanvasEditor({
             </>
           )}
 
-          {/* Resize handle — só quando expandida */}
+          {/* Resize handle — solo cuando está expandida */}
           {!sidebarCollapsed && (
             <div className={s.resizeHandle} onMouseDown={handleResizerMouseDown} />
           )}
@@ -897,7 +897,7 @@ export default function CanvasEditor({
               {renderConnections()}
               {renderGhostLine()}
               {renderInstances()}
-              {/* Ponto 6: rectângulo de impressão */}
+              {/* Punto 6: rectángulo de impresión */}
               {renderPrintRect()}
             </g>
           </svg>
@@ -917,7 +917,7 @@ export default function CanvasEditor({
             />
           )}
 
-          {/* Hints — ligação e print */}
+          {/* Hints — conexión y print */}
           {pendingFrom && (
             <div className={s.connectHint}>
               Clica num porto de destino para ligar · ESC para cancelar
