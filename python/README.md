@@ -1,37 +1,37 @@
 # aquasense-python
 
-Hydraulic simulation engine for **AquaSense**. Generates realistic sensor data for a water treatment cycle and pushes it to the backend every 5 seconds.
+Motor de simulación hidráulica para **AquaSense**. Genera datos de sensores realistas para un ciclo de tratamiento de agua y los envía al *backend* cada 5 segundos.
 
-> **Modules:** [aquasense-frontend](../aquasense-frontend) (React) · [aquasense-backend](../aquasense-backend) (REST API) · **aquasense-python** (this)
-
----
-
-## What this module does
-
-- Simulates sensor readings for 8 plant components with physically plausible values
-- Detects out-of-range values and sets automation flags
-- Pushes readings to the backend via `POST /interno/proyectos/:id/lecturas` (no JWT required)
-- Pushes hydraulic data per pipe via `POST /interno/proyectos/:id/tuberias/:tid/lecturas`
-- Caches pipe data for 60 seconds to avoid redundant recalculation
+> **Módulos:** [aquasense-frontend](../aquasense-frontend) (React) · [aquasense-backend](../aquasense-backend) (API REST) · **aquasense-python** (este)
 
 ---
 
-## File overview
+## Qué hace este módulo
 
-| File | Role |
+- Simula lecturas de sensores para 8 componentes de la planta con valores físicamente plausibles
+- Detecta valores fuera de rango y establece indicadores de automatización
+- Envía las lecturas al *backend* mediante `POST /interno/proyectos/:id/lecturas` (sin JWT)
+- Envía datos hidráulicos por tubería mediante `POST /interno/proyectos/:id/tuberias/:tid/lecturas`
+- Almacena en caché los datos de tuberías durante 60 segundos para evitar recálculos redundantes
+
+---
+
+## Descripción de archivos
+
+| Archivo | Función |
 |---|---|
-| `config.py` | Initial value ranges, alert thresholds, and general settings |
-| `simulator.py` | Generates and updates state for all 8 components |
-| `automation.py` | Detects out-of-range values and adds automation flags |
-| `tuberias.py` | Computes hydraulic data per pipe (flow, pressure drop) |
-| `client.py` | Sends payloads to the backend via POST |
-| `main.py` | Main loop — orchestrates the full cycle every 5 seconds |
+| `config.py` | Rangos de valores iniciales, umbrales de alerta y configuración general |
+| `simulator.py` | Genera y actualiza el estado de los 8 componentes |
+| `automation.py` | Detecta valores fuera de rango y añade indicadores de automatización |
+| `tuberias.py` | Calcula los datos hidráulicos por tubería (caudal, pérdida de presión) |
+| `client.py` | Envía las cargas útiles al *backend* mediante POST |
+| `main.py` | Bucle principal — orquesta el ciclo completo cada 5 segundos |
 
 ---
 
-## Simulated components
+## Componentes simulados
 
-| Component ID | Key parameters |
+| ID de componente | Parámetros principales |
 |---|---|
 | `bomba_captacao` | `caudal`, `presionSuccion`, `temperaturaMotor` |
 | `reja_tamiz` | `diferencialPresion`, `turbidezEntrada` |
@@ -44,14 +44,14 @@ Hydraulic simulation engine for **AquaSense**. Generates realistic sensor data f
 
 ---
 
-## Running locally
+## Ejecución local
 
-### Prerequisites
+### Requisitos previos
 
 - Python 3.11+
-- Backend running on `http://localhost:8080`
+- *Backend* ejecutándose en `http://localhost:8080`
 
-### Setup and run
+### Configuración y ejecución
 
 ```bash
 python -m venv .venv
@@ -66,22 +66,22 @@ pip install -r requirements.txt
 python main.py
 ```
 
-If the backend is not reachable, readings are printed to stdout instead of being sent.
+Si el *backend* no es accesible, las lecturas se imprimen en stdout en lugar de enviarse.
 
 ---
 
-## Environment variables
+## Variables de entorno
 
-Copy `.env.example` to `.env`:
+Copia `.env.example` a `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-| Variable | Description | Default |
+| Variable | Descripción | Valor por defecto |
 |---|---|---|
-| `BACKEND_URL` | Backend base URL | `http://localhost:8080` |
-| `X_INTERNAL_TOKEN` | Internal auth token (must match backend) | — |
-| `PROJECT_ID` | Project ID to simulate (legacy single-project mode) | `1` |
+| `BACKEND_URL` | URL base del *backend* | `http://localhost:8080` |
+| `X_INTERNAL_TOKEN` | Token de autenticación interno (debe coincidir con el *backend*) | — |
+| `PROJECT_ID` | ID del proyecto a simular (modo heredado de proyecto único) | `1` |
 
-The `X_INTERNAL_TOKEN` must match the value set in the backend `.env`. The backend validates it on every `/interno/**` request.
+El valor de `X_INTERNAL_TOKEN` debe coincidir con el establecido en el `.env` del *backend*. El *backend* lo valida en cada petición a `/interno/**`.
