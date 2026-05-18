@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/health").permitAll()
                         .anyRequest().authenticated()
                 )
-                // Allow H2 console iframes
+                // Permitir iframes de la consola H2
                 .headers(headers ->
                         headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authenticationProvider(authenticationProvider())
