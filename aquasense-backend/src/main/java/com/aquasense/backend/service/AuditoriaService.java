@@ -25,8 +25,8 @@ public class AuditoriaService {
     private final ProjetoRepository projetoRepository;
 
     /**
-     * Regista um evento de auditoria de forma assíncrona para não bloquear o fluxo principal.
-     * Usa REQUIRES_NEW para garantir que persiste mesmo que a transação chamadora falhe.
+     * Registra un evento de auditoría de forma asíncrona para no bloquear el flujo principal.
+     * Usa REQUIRES_NEW para garantizar que persiste aunque falle la transacción llamadora.
      */
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
