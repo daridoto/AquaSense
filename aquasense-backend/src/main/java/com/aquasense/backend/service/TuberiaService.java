@@ -63,13 +63,13 @@ public class TuberiaService {
         Tuberia tuberia = tuberiaRepository.findByIdAndProjetoId(tuberiaId, projetoId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Tuberia no encontrada: " + tuberiaId));
-        // Remove leituras antes de remover a tuberia
+        // Eliminar lecturas antes de eliminar la tubería
         lecturaTuberiaRepository.deleteByTuberiaId(tuberiaId);
         tuberiaRepository.delete(tuberia);
     }
 
     // -------------------------------------------------------------------------
-    // Usado pelo endpoint interno — sem verificação de ownership
+    // Usado por el endpoint interno — sin verificación de ownership
     // -------------------------------------------------------------------------
 
     @Transactional
@@ -97,7 +97,7 @@ public class TuberiaService {
     }
 
     // -------------------------------------------------------------------------
-    // Helpers de mapeamento
+    // Métodos auxiliares de mapeo
     // -------------------------------------------------------------------------
 
     private TuberiaDTO toDTO(Tuberia t) {
