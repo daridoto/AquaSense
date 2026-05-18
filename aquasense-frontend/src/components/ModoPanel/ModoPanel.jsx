@@ -2,7 +2,7 @@ import { useState } from 'react';
 import api from '../../services/api';
 import s from './ModoPanel.module.css';
 
-// Parâmetros editáveis por componente (camelCase exacto do contrato)
+// Parámetros editables por componente (camelCase exacto del contrato)
 const PARAMS = {
   bomba_captacao:     ['caudal', 'presionSuccion', 'temperaturaMotor'],
   reja_tamiz:         ['diferencialPresion', 'turbidezEntrada'],
@@ -40,15 +40,15 @@ const UNITS = {
 };
 
 /**
- * Painel de detalhe de um componente com toggle AUTO/MANUAL.
+ * Panel de detalle de un componente con toggle AUTO/MANUAL.
  *
  * Props:
- *   projectId   — ID do projeto
- *   componenteId — ID do componente (ex: "bomba_captacao")
+ *   projectId   — ID del proyecto
+ *   componenteId — ID del componente (ej: "bomba_captacao")
  *   modoAtual   — "AUTO" | "MANUAL"
- *   valoresAtuais — Map<string, number> com os valores actuais do estado
- *   onClose     — callback para fechar o painel
- *   onModoChanged — callback chamado após mudar modo (para forçar re-render)
+ *   valoresAtuais — Map<string, number> con los valores actuales del estado
+ *   onClose     — callback para cerrar el panel
+ *   onModoChanged — callback llamado tras cambiar modo (para forzar re-render)
  */
 export default function ModoPanel({
   projectId,
@@ -60,7 +60,7 @@ export default function ModoPanel({
 }) {
   const params = PARAMS[componenteId] ?? Object.keys(valoresAtuais);
 
-  // Inicializa formulário com valores actuais (arredondados para 2 casas)
+  // Inicializa el formulario con valores actuales (redondeados a 2 decimales)
   const [form, setForm] = useState(() => {
     const init = {};
     params.forEach(p => {
@@ -74,7 +74,7 @@ export default function ModoPanel({
   const [toggling, setToggling] = useState(false);
   const [feedback, setFeedback] = useState(null); // { type: 'ok'|'err', msg: string }
 
-  // ── Muda modo AUTO ↔ MANUAL ───────────────────────────────────────────────
+  // ── Cambia modo AUTO ↔ MANUAL ───────────────────────────────────────────────
   async function handleToggleModo() {
     const novoModo = modoAtual === 'AUTO' ? 'MANUAL' : 'AUTO';
     setToggling(true);
@@ -93,13 +93,13 @@ export default function ModoPanel({
     }
   }
 
-  // ── Envia leitura manual ──────────────────────────────────────────────────
+  // ── Envía lectura manual ──────────────────────────────────────────────────
   async function handleGuardar(e) {
     e.preventDefault();
     setSaving(true);
     setFeedback(null);
 
-    // Converte form (strings) para Map<string, number>
+    // Convierte form (strings) a Map<string, number>
     const valores = {};
     for (const [k, v] of Object.entries(form)) {
       const num = parseFloat(v);
@@ -113,8 +113,8 @@ export default function ModoPanel({
     }
 
     try {
-      // O frontend envia para o endpoint público autenticado (com JWT)
-      // O backend persiste com origen:"MANUAL"
+      // El frontend envía al endpoint público autenticado (con JWT)
+      // El backend persiste con origen:"MANUAL"
       await api.post(`/api/proyectos/${projectId}/lecturas`, {
         componente: componenteId,
         valores,
@@ -133,7 +133,7 @@ export default function ModoPanel({
   return (
     <div className={s.overlay} onClick={e => { if (e.target === e.currentTarget) onClose?.(); }}>
       <div className={s.panel}>
-        {/* Cabeçalho */}
+        {/* Cabecera */}
         <div className={s.header}>
           <span className={s.title}>{componenteId.replace(/_/g, ' ').toUpperCase()}</span>
           <button className={s.closeBtn} onClick={onClose}>✕</button>
@@ -168,7 +168,7 @@ export default function ModoPanel({
           </div>
         )}
 
-        {/* Formulário de leitura manual — só visível em modo MANUAL */}
+        {/* Formulario de lectura manual — solo visible en modo MANUAL */}
         {isManual && (
           <form className={s.form} onSubmit={handleGuardar}>
             <p className={s.formHint}>
@@ -199,7 +199,7 @@ export default function ModoPanel({
           </form>
         )}
 
-        {/* Em modo AUTO: mostra valores actuais em leitura */}
+        {/* En modo AUTO: muestra valores actuales en lectura */}
         {!isManual && (
           <div className={s.readOnly}>
             <p className={s.readOnlyHint}>
