@@ -21,7 +21,7 @@ public class JwtService {
 
     private final JwtConfig jwtConfig;
 
-    // In-memory blacklist for invalidated tokens (logout)
+    // Lista negra en memoria para tokens invalidados (logout)
     private final Set<String> tokenBlacklist = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     private SecretKey getSigningKey() {
