@@ -1,0 +1,36 @@
+# Java / Maven
+target/
+*.jar
+*.class
+*.iml
+.idea/
+.vscode/
+.settings/
+.classpath
+.project
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Credenciais
+.env
+*.env
+secrets.*
+*.pem
+*.key
+
+# Logs / outputs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ferramentas locais
+.claude/
+.github/

@@ -1,0 +1,223 @@
+.root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  flex-shrink: 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 5px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.back:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.sep { width: 1px; height: 16px; background: var(--border2); }
+
+.title {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--text);
+}
+
+.countBadge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255,61,90,0.12);
+  border: 1px solid rgba(255,61,90,0.4);
+  color: var(--red);
+  border-radius: 2px;
+  padding: 2px 8px;
+}
+
+.refreshBtn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.refreshBtn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  flex-shrink: 0;
+}
+
+.filterGroup { display: flex; align-items: center; gap: 6px; }
+
+.filterLabel {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text3);
+}
+
+.filterBtn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.filterBtn.active, .filterBtn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0,200,232,0.06);
+}
+
+.select {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 2px;
+  outline: none;
+}
+
+.tableWrap { flex: 1; overflow: auto; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.table th {
+  background: var(--bg2);
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.row { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+.row:hover { background: rgba(255,255,255,0.02); }
+.row.resolved { opacity: 0.55; }
+.row td { padding: 8px 10px; vertical-align: middle; }
+
+.comp { color: var(--text2); white-space: nowrap; }
+.msg  { color: var(--text); max-width: 280px; word-break: break-word; }
+.ts   { color: var(--text3); white-space: nowrap; font-size: 10px; }
+.meta { color: var(--text3); font-size: 10px; white-space: nowrap; max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
+
+.badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+.critica     { background: rgba(255,61,90,0.12);  border: 1px solid rgba(255,61,90,0.4);   color: var(--red); }
+.advertencia { background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.4);  color: #f5a623; }
+.info        { background: rgba(0,200,232,0.08);  border: 1px solid rgba(0,200,232,0.3);   color: var(--cyan); }
+.resolved    { background: rgba(106,138,170,0.1); border: 1px solid rgba(106,138,170,0.3); color: var(--text3); }
+.active      { background: rgba(255,61,90,0.08);  border: 1px solid rgba(255,61,90,0.3);   color: var(--red); }
+.acked       { background: rgba(0,200,232,0.06);  border: 1px solid rgba(0,200,232,0.25);  color: var(--cyan); }
+.silenced    { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.3);  color: #f5a623; }
+
+.actions { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s;
+}
+.actionBtn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,200,232,0.05); }
+.actionBtn.resolve:hover { border-color: #00e87a; color: #00e87a; background: rgba(0,232,122,0.05); }
+
+.expandedRow td { background: rgba(0,0,0,0.18); padding: 0; border-bottom: 1px solid var(--border); }
+
+.expandedInner { padding: 12px 20px; display: flex; flex-direction: column; gap: 6px; }
+
+.expandLabel {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text3);
+}
+
+.noComments { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+
+.comments { display: flex; flex-direction: column; gap: 4px; }
+
+.comment {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--bg3);
+  border-radius: 3px;
+  padding: 5px 10px;
+}
+.commentAuthor { color: var(--cyan); font-weight: 700; white-space: nowrap; }
+.commentTs     { color: var(--text3); font-size: 10px; white-space: nowrap; }
+.commentText   { color: var(--text2); flex: 1; }
+
+.resolvedBy { font-family: var(--mono); font-size: 10px; color: var(--text3); padding-top: 4px; }
+.resolvedBy strong { color: #00e87a; }
+
+.empty, .loading { padding: 40px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--text3); }

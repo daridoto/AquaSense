@@ -1,0 +1,72 @@
+.root { height: 100vh; display: flex; flex-direction: column; background: var(--bg); overflow: hidden; }
+
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 20px; border-bottom: 1px solid var(--border); background: var(--bg2); flex-shrink: 0;
+}
+.headerLeft { display: flex; align-items: center; gap: 12px; }
+.back {
+  background: transparent; border: 1px solid var(--border2); color: var(--text2);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 1px; padding: 5px 10px; border-radius: 2px; cursor: pointer;
+}
+.back:hover { border-color: var(--cyan); color: var(--cyan); }
+.sep { width: 1px; height: 16px; background: var(--border2); }
+.title { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 3px; color: var(--text); }
+
+.body { flex: 1; overflow: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; max-width: 800px; }
+
+.table {
+  width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px;
+  border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+}
+.table th {
+  background: var(--bg2); color: var(--text3); font-size: 9px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 14px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: middle; }
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: rgba(255,255,255,0.015); }
+
+.rolSelect {
+  background: var(--bg); border: 1px solid var(--border2); color: var(--text);
+  font-family: var(--mono); font-size: 11px; padding: 4px 8px; border-radius: 2px; outline: none;
+}
+.rolSelect:focus { border-color: var(--cyan); }
+
+.removeBtn {
+  background: transparent; border: 1px solid var(--border2); color: var(--text3);
+  font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 2px; cursor: pointer;
+}
+.removeBtn:hover { border-color: var(--red); color: var(--red); }
+
+.addForm {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  padding: 14px 16px; background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px;
+}
+.addInput {
+  background: var(--bg); border: 1px solid var(--border2); color: var(--text);
+  font-family: var(--mono); font-size: 12px; padding: 6px 10px; border-radius: 2px; outline: none; flex: 1; min-width: 180px;
+}
+.addInput:focus { border-color: var(--cyan); }
+.addSelect {
+  background: var(--bg); border: 1px solid var(--border2); color: var(--text);
+  font-family: var(--mono); font-size: 12px; padding: 6px 8px; border-radius: 2px; outline: none;
+}
+.addBtn {
+  background: var(--cyan); color: var(--bg); border: none; border-radius: 2px;
+  font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  padding: 7px 14px; cursor: pointer; transition: background 0.15s; white-space: nowrap;
+}
+.addBtn:hover:not(:disabled) { background: var(--cyan2); }
+.addBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.error { font-family: var(--mono); font-size: 11px; color: var(--red); }
+.sectionTitle { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--text3); }
+
+.rolBadge {
+  font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  border-radius: 2px; padding: 2px 7px; white-space: nowrap;
+  background: rgba(0,200,232,0.08); border: 1px solid rgba(0,200,232,0.3); color: var(--cyan);
+}
+.rolBadge.ADMIN { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.4); color: #f5a623; }

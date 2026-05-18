@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "fonte": "Ten States Standards + Recommended Standards for Water Works",
+  "nota": "Cor visível do fluido. O traço da tubulação usa esta cor; bandas auxiliares são renderizadas como dash-array com cor secundária.",
+  "cores": [
+    { "tipo": "AGUA_BRUTA",      "nome": "Água bruta",       "hex": "#6B8E23", "bandaHex": null,       "dashArray": null },
+    { "tipo": "AGUA_DECANTADA",  "nome": "Água decantada",   "hex": "#00CED1", "bandaHex": null,       "dashArray": null },
+    { "tipo": "AGUA_FILTRADA",   "nome": "Água filtrada",    "hex": "#4A90E2", "bandaHex": null,       "dashArray": null },
+    { "tipo": "AGUA_POTABLE",    "nome": "Água potável",     "hex": "#1E40AF", "bandaHex": null,       "dashArray": null },
+    { "tipo": "CLORO",           "nome": "Cloro",            "hex": "#FFD700", "bandaHex": null,       "dashArray": null },
+    { "tipo": "COAGULANTE",      "nome": "Coagulante",       "hex": "#FFA500", "bandaHex": null,       "dashArray": null },
+    { "tipo": "CAUSTICO",        "nome": "Soda cáustica",    "hex": "#FFD700", "bandaHex": "#2E8B57",  "dashArray": "16 4" },
+    { "tipo": "ACIDO",           "nome": "Ácido sulfúrico",  "hex": "#FFD700", "bandaHex": "#DC143C",  "dashArray": "16 4" },
+    { "tipo": "CAL",             "nome": "Cal",              "hex": "#90EE90", "bandaHex": null,       "dashArray": null },
+    { "tipo": "POLIMERO",        "nome": "Polímero",         "hex": "#FFA500", "bandaHex": "#2E8B57",  "dashArray": "16 4" },
+    { "tipo": "PERMANGANATO",    "nome": "Permanganato",     "hex": "#8B00FF", "bandaHex": null,       "dashArray": null },
+    { "tipo": "LODO",            "nome": "Lodo",             "hex": "#654321", "bandaHex": null,       "dashArray": null },
+    { "tipo": "BACKWASH",        "nome": "Água de lavagem",  "hex": "#D2691E", "bandaHex": null,       "dashArray": null },
+    { "tipo": "AIRE_COMPRIMIDO", "nome": "Ar comprimido",    "hex": "#006400", "bandaHex": null,       "dashArray": null }
+  ]
+}

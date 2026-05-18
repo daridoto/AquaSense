@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AquaSense — Mockup Visual</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#060b12;--bg2:#0b1220;--bg3:#101828;--bg4:#141e2e;
+  --border:#1a2840;--border2:#223354;
+  --cyan:#00c8e8;--cyan2:#0090b0;--cyan3:#004866;
+  --green:#00e87a;--amber:#f5a623;--red:#ff3d5a;
+  --text:#d0e8f8;--text2:#607890;--text3:#304060;
+  --font:'Syne',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
+
+.nav-tabs{display:flex;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;}
+.nav-tab{flex:1;padding:12px 4px 10px;text-align:center;cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);border-top:2px solid transparent;transition:all .2s;}
+.nav-tab.active{color:var(--cyan);border-top-color:var(--cyan);}
+.nav-tab:hover:not(.active){color:var(--text2);}
+
+.screen{flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0;}
+.screen.active{display:flex;}
+
+/* LOGIN */
+#s-login{align-items:center;justify-content:center;background:var(--bg);position:relative;}
+.grid-lines{position:absolute;inset:0;opacity:.12;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;}
+#s-login::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 400px at 20% 60%,#003a5518,transparent 70%),radial-gradient(ellipse 400px 300px at 80% 30%,#00c8e808,transparent 60%);}
+.login-card{position:relative;width:420px;border:1px solid var(--border2);background:var(--bg2);}
+.login-top{padding:40px 40px 28px;border-bottom:1px solid var(--border);}
+.login-badge{display:inline-flex;align-items:center;gap:6px;background:var(--cyan3);border:1px solid var(--cyan2);padding:4px 10px;margin-bottom:18px;}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.login-badge span{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--cyan);}
+.login-title{font-size:34px;font-weight:800;letter-spacing:-1px;color:#fff;}
+.login-title em{color:var(--cyan);font-style:normal;}
+.login-sub{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:6px;}
+.login-form{padding:28px 40px 36px;}
+.lf{margin-bottom:18px;}
+.lf label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
+.lf input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:13px 16px;font-family:var(--mono);font-size:13px;outline:none;}
+.btn-primary{width:100%;padding:15px;background:var(--cyan);color:#000;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;margin-top:4px;transition:background .15s;}
+.btn-primary:hover{background:var(--cyan2);color:#fff;}
+.login-footer{background:var(--bg3);padding:12px 40px;border-top:1px solid var(--border);}
+.login-footer p{font-family:var(--mono);font-size:10px;color:var(--text3);}
+
+/* TOPBAR */
+.topbar{height:50px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;}
+.tb-logo{font-size:16px;font-weight:800;letter-spacing:1px;color:#fff;}
+.tb-logo em{color:var(--cyan);font-style:normal;}
+.tb-div{width:1px;height:22px;background:var(--border2);}
+.tb-proj{font-family:var(--mono);font-size:11px;color:var(--text2);}
+.tb-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blink 2s infinite;}
+.tb-online{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:1px;}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+.tb-time{font-family:var(--mono);font-size:11px;color:var(--text2);}
+.tb-badge{background:var(--amber);color:#000;font-family:var(--mono);font-size:9px;font-weight:600;padding:3px 8px;}
+.tb-btn{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text3);background:none;border:1px solid var(--border2);padding:6px 14px;cursor:pointer;transition:all .15s;}
+.tb-btn:hover{color:var(--text);border-color:var(--text2);}
+
+/* PROJECTS */
+.proj-header{padding:24px 28px 18px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.proj-header h1{font-size:22px;font-weight:700;color:#fff;}
+.proj-header p{font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:4px;}
+.proj-grid{padding:20px 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;overflow-y:auto;flex:1;}
+.proj-card{background:var(--bg2);border:1px solid var(--border);padding:22px;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden;}
+.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.proj-card.online::before{background:var(--green);}
+.proj-card.offline::before{background:var(--text3);}
+.proj-card.manut::before{background:var(--amber);}
+.proj-card:hover{border-color:var(--border2);}
+.pc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.pc-name{font-size:14px;font-weight:600;color:#fff;line-height:1.3;}
+.pc-loc{font-family:var(--mono);font-size:9px;color:var(--text2);margin-top:3px;}
+.pc-badge{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1px;padding:3px 8px;}
+.pc-badge.online{background:#00e87a18;color:var(--green);border:1px solid #00e87a30;}
+.pc-badge.offline{background:#30406018;color:var(--text3);border:1px solid var(--border);}
+.pc-badge.manut{background:#f5a62318;color:var(--amber);border:1px solid #f5a62330;}
+.pc-sensors{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.pc-sensor{background:var(--bg3);padding:8px 10px;}
+.pc-sk{font-family:var(--mono);font-size:9px;color:var(--text3);}
+.pc-sv{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text);margin-top:2px;}
+.pc-footer{display:flex;justify-content:space-between;align-items:center;}
+.pc-alerts{font-family:var(--mono);font-size:10px;color:var(--amber);}
+.pc-alerts.none{color:var(--text3);}
+.btn-enter{font-family:var(--mono);font-size:9px;letter-spacing:1px;background:var(--cyan);color:#000;border:none;padding:7px 16px;cursor:pointer;font-weight:600;}
+
+/* DASHBOARD */
+.dash-body{flex:1;display:grid;grid-template-columns:1fr 260px;grid-template-rows:1fr 160px;gap:1px;background:var(--border);min-height:0;}
+.dpanel{background:var(--bg);overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+.dpanel-hdr{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.dpanel-title{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);}
+.dpanel-tag{font-family:var(--mono);font-size:9px;padding:1px 7px;}
+.dpanel-tag.warn{background:#f5a62320;color:var(--amber);border:1px solid #f5a62340;}
+.dpanel-tag.ok{background:#00e87a15;color:var(--green);border:1px solid #00e87a30;}
+
+.syno-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:10px 14px;overflow:hidden;min-height:0;}
+svg.syno{width:100%;height:100%;}
+.s-pipe{stroke:#1a2840;stroke-width:3;fill:none;}
+.s-flow{stroke:var(--cyan);stroke-width:2;fill:none;stroke-dasharray:8 6;opacity:.35;animation:flowA 1.8s linear infinite;}
+@keyframes flowA{to{stroke-dashoffset:-28}}
+.s-ok rect,.s-ok circle{fill:#00e87a10;stroke:var(--green);stroke-width:1.2;}
+.s-warn rect,.s-warn circle{fill:#f5a62310;stroke:var(--amber);stroke-width:1.5;}
+.s-err rect,.s-err circle{fill:#ff3d5a10;stroke:var(--red);stroke-width:1.2;}
+.s-lbl{fill:var(--text);font-family:'JetBrains Mono',monospace;font-size:8px;}
+.s-val{fill:var(--text2);font-family:'JetBrains Mono',monospace;font-size:7.5px;}
+.s-val-warn{fill:var(--amber);font-family:'JetBrains Mono',monospace;font-size:7.5px;}
+.alert-ring{fill:none;stroke:var(--amber);stroke-width:1.5;stroke-dasharray:5 4;opacity:.6;animation:spin 8s linear infinite;}
+@keyframes spin{to{stroke-dashoffset:-40}}
+
+.alerts-scroll{flex:1;overflow-y:auto;padding:8px;}
+.alert-card{margin-bottom:6px;padding:10px 12px;background:var(--bg2);border-left:2px solid var(--amber);position:relative;}
+.alert-card.crit{border-color:var(--red);}
+.ac-comp{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--amber);margin-bottom:3px;}
+.alert-card.crit .ac-comp{color:var(--red);}
+.ac-msg{font-size:11px;color:var(--text);line-height:1.4;}
+.ac-action{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px;}
+.ac-time{font-family:var(--mono);font-size:9px;color:var(--text3);position:absolute;top:10px;right:12px;}
+
+.readings-bar{flex:1;display:grid;grid-template-columns:repeat(8,1fr);gap:1px;background:var(--border);}
+.rb-cell{background:var(--bg);padding:10px 10px 8px;display:flex;flex-direction:column;gap:5px;overflow:hidden;}
+.rb-name{font-family:var(--mono);font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;line-height:1.3;flex-shrink:0;}
+.rb-vals{display:flex;flex-direction:column;gap:2px;flex:1;}
+.rb-row{display:flex;justify-content:space-between;align-items:center;}
+.rb-key{font-family:var(--mono);font-size:8px;color:var(--text3);}
+.rb-num{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text);}
+.rb-num.warn{color:var(--amber);}
+.rb-bar{height:2px;background:var(--border2);margin-top:1px;}
+.rb-fill{height:100%;background:var(--green);}
+.rb-fill.warn{background:var(--amber);}
+.rb-status{width:5px;height:5px;border-radius:50%;align-self:flex-end;background:var(--green);box-shadow:0 0 6px var(--green);}
+.rb-status.warn{background:var(--amber);box-shadow:0 0 6px var(--amber);}
+
+/* ALERTS PAGE */
+.al-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.al-header h2{font-size:20px;font-weight:700;color:#fff;}
+.al-count{font-family:var(--mono);font-size:10px;background:var(--amber);color:#000;padding:2px 10px;font-weight:600;}
+.al-filters{display:flex;gap:8px;margin-left:auto;}
+.al-filter{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:5px 12px;border:1px solid var(--border2);cursor:pointer;background:none;color:var(--text2);}
+.al-filter.active{background:var(--border2);color:var(--text);}
+.al-table{flex:1;overflow-y:auto;padding:12px 24px;}
+.al-thead{display:grid;grid-template-columns:110px 1fr 90px 130px;gap:16px;padding:4px 16px 10px;font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;}
+.al-row{display:grid;grid-template-columns:110px 1fr 90px 130px;gap:16px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);margin-bottom:5px;align-items:center;border-left:3px solid transparent;}
+.al-row.advert{border-left-color:var(--amber);}
+.al-row.crit{border-left-color:var(--red);}
+.al-nivel{font-family:var(--mono);font-size:9px;letter-spacing:.5px;font-weight:600;}
+.al-nivel.advert{color:var(--amber);}
+.al-nivel.crit{color:var(--red);}
+.al-msg-text{font-size:12px;color:var(--text);}
+.al-sub{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:3px;}
+.al-val{font-family:var(--mono);font-size:12px;font-weight:500;}
+.al-ts{font-family:var(--mono);font-size:9px;color:var(--text3);}
+
+/* HISTORICO */
+.hist-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.hist-header h2{font-size:20px;font-weight:700;color:#fff;}
+.hist-sels{display:flex;gap:8px;margin-left:auto;}
+.hist-sel{font-family:var(--mono);font-size:9px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:6px 12px;outline:none;}
+.hist-body{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;background:var(--border);min-height:0;}
+.chart-panel{background:var(--bg);padding:14px;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden;}
+.chart-title{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text2);display:flex;justify-content:space-between;flex-shrink:0;}
+.chart-title span{color:var(--cyan);}
+.chart-area{flex:1;position:relative;min-height:0;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="s-login" class="screen active">
+  <div class="grid-lines"></div>
+  <div class="login-card">
+    <div class="login-top">
+      <div class="login-badge"><span class="badge-dot"></span><span>SISTEMA ONLINE</span></div>
+      <div class="login-title">AQUA<em>SENSE</em></div>
+      <div class="login-sub">Water Treatment Monitoring & Automation Platform v2.1</div>
+    </div>
+    <div class="login-form">
+      <div class="lf"><label>Endereço de email</label><input type="email" value="admin@aquasense.com"></div>
+      <div class="lf"><label>Password</label><input type="password" value="password"></div>
+      <button class="btn-primary" onclick="goTo('s-projects')">ENTRAR NO SISTEMA →</button>
+    </div>
+    <div class="login-footer"><p>© 2025 AquaSense TFG · admin@aquasense.com / password</p></div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div id="s-projects" class="screen">
+  <div class="topbar">
+    <span class="tb-logo">AQUA<em>SENSE</em></span>
+    <div class="tb-div"></div>
+    <span class="tb-proj">Selecção de Estação</span>
+    <div class="tb-right">
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text2);">admin@aquasense.com</span>
+      <button class="tb-btn" onclick="goTo('s-login')">SAIR</button>
+    </div>
+  </div>
+  <div class="proj-header">
+    <h1>As Minhas Estações</h1>
+    <p>3 estações registadas · 1 online · 1 em manutenção · 1 offline</p>
+  </div>
+  <div class="proj-grid">
+    <div class="proj-card online">
+      <div class="pc-head">
+        <div><div class="pc-name">Planta Norte — Sector A</div><div class="pc-loc">Zona Industrial Norte</div></div>
+        <div class="pc-badge online">ONLINE</div>
+      </div>
+      <div class="pc-sensors">
+        <div class="pc-sensor"><div class="pc-sk">pH</div><div class="pc-sv">7.1</div></div>
+        <div class="pc-sensor"><div class="pc-sk">Cloro</div><div class="pc-sv">0.47</div></div>
+        <div class="pc-sensor"><div class="pc-sk">Nível</div><div class="pc-sv">33%</div></div>
+      </div>
+      <div class="pc-footer">
+        <div class="pc-alerts">⚠ 2 alertas activas</div>
+        <button class="btn-enter" onclick="goTo('s-dashboard')">ENTRAR →</button>
+      </div>
+    </div>
+    <div class="proj-card manut">
+      <div class="pc-head">
+        <div><div class="pc-name">Planta Sul — Sector B</div><div class="pc-loc">Zona Industrial Sul</div></div>
+        <div class="pc-badge manut">MANUTENÇÃO</div>
+      </div>
+      <div class="pc-sensors">
+        <div class="pc-sensor"><div class="pc-sk">pH</div><div class="pc-sv">6.8</div></div>
+        <div class="pc-sensor"><div class="pc-sk">Cloro</div><div class="pc-sv">0.72</div></div>
+        <div class="pc-sensor"><div class="pc-sk">Nível</div><div class="pc-sv">58%</div></div>
+      </div>
+      <div class="pc-footer">
+        <div class="pc-alerts none">Sem alertas</div>
+        <button class="btn-enter">ENTRAR →</button>
+      </div>
+    </div>
+    <div class="proj-card offline">
+      <div class="pc-head">
+        <div><div class="pc-name">Planta Este — Sector C</div><div class="pc-loc">Zona Portuária</div></div>
+        <div class="pc-badge offline">OFFLINE</div>
+      </div>
+      <div class="pc-sensors">
+        <div class="pc-sensor"><div class="pc-sk">pH</div><div class="pc-sv" style="color:var(--text3)">—</div></div>
+        <div class="pc-sensor"><div class="pc-sk">Cloro</div><div class="pc-sv" style="color:var(--text3)">—</div></div>
+        <div class="pc-sensor"><div class="pc-sk">Nível</div><div class="pc-sv" style="color:var(--text3)">—</div></div>
+      </div>
+      <div class="pc-footer">
+        <div class="pc-alerts none">Última leitura há 14h</div>
+        <button class="btn-enter">ENTRAR →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="s-dashboard" class="screen">
+  <div class="topbar">
+    <span class="tb-logo">AQUA<em>SENSE</em></span>
+    <div class="tb-div"></div>
+    <span class="tb-proj">Planta Norte — Sector A</span>
+    <div class="tb-dot" style="margin-left:8px"></div>
+    <span class="tb-online">ONLINE</span>
+    <div class="tb-right">
+      <span class="tb-badge">2 ALERTAS</span>
+      <span class="tb-time" id="clk"></span>
+      <button class="tb-btn" onclick="goTo('s-projects')">← ESTAÇÕES</button>
+    </div>
+  </div>
+  <div class="dash-body">
+    <div class="dpanel" style="grid-row:1;grid-column:1;">
+      <div class="dpanel-hdr">
+        <span class="dpanel-title">Sinóptico — Fluxo de Tratamento</span>
+        <span class="dpanel-tag ok">AUTO</span>
+        <span class="dpanel-tag warn" style="margin-left:auto">POLLING 5s</span>
+      </div>
+      <div class="syno-wrap">
+        <svg class="syno" viewBox="0 0 820 210" xmlns="http://www.w3.org/2000/svg">
+          <line class="s-pipe" x1="74" y1="102" x2="108" y2="102"/>
+          <line class="s-pipe" x1="168" y1="102" x2="198" y2="102"/>
+          <line class="s-pipe" x1="258" y1="102" x2="288" y2="102"/>
+          <line class="s-pipe" x1="348" y1="102" x2="378" y2="102"/>
+          <line class="s-pipe" x1="438" y1="102" x2="468" y2="102"/>
+          <line class="s-pipe" x1="528" y1="102" x2="558" y2="102"/>
+          <line class="s-pipe" x1="628" y1="102" x2="658" y2="102"/>
+          <line class="s-pipe" x1="718" y1="102" x2="762" y2="102"/>
+          <line class="s-flow" x1="74" y1="102" x2="108" y2="102"/>
+          <line class="s-flow" x1="168" y1="102" x2="198" y2="102"/>
+          <line class="s-flow" x1="258" y1="102" x2="288" y2="102"/>
+          <line class="s-flow" x1="348" y1="102" x2="378" y2="102"/>
+          <line class="s-flow" x1="438" y1="102" x2="468" y2="102"/>
+          <line class="s-flow" x1="528" y1="102" x2="558" y2="102"/>
+          <line class="s-flow" x1="628" y1="102" x2="658" y2="102"/>
+          <line class="s-flow" x1="718" y1="102" x2="762" y2="102"/>
+          <!-- BOMBA CAPTACAO -->
+          <g class="s-ok"><circle cx="45" cy="102" r="30"/></g>
+          <text x="45" y="99" text-anchor="middle" class="s-lbl">BOMBA</text>
+          <text x="45" y="109" text-anchor="middle" class="s-lbl">CAPT.</text>
+          <text x="45" y="150" text-anchor="middle" class="s-val">11.2 m³/h</text>
+          <!-- REJA TAMIZ WARN -->
+          <g class="s-warn"><rect x="108" y="72" width="60" height="60" rx="2"/></g>
+          <text x="138" y="99" text-anchor="middle" class="s-lbl">REJA/</text>
+          <text x="138" y="110" text-anchor="middle" class="s-lbl">TAMIZ</text>
+          <text x="138" y="150" text-anchor="middle" class="s-val-warn">37.5 bar ⚠</text>
+          <rect x="104" y="68" width="68" height="68" rx="4" fill="none" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="6 5" class="alert-ring"/>
+          <!-- COAGULACION -->
+          <g class="s-ok"><rect x="198" y="72" width="60" height="60" rx="2"/></g>
+          <text x="228" y="99" text-anchor="middle" class="s-lbl">COAG./</text>
+          <text x="228" y="110" text-anchor="middle" class="s-lbl">FLOC.</text>
+          <text x="228" y="150" text-anchor="middle" class="s-val">pH 6.39</text>
+          <!-- DECANTADOR -->
+          <g class="s-ok"><rect x="288" y="72" width="60" height="60" rx="2"/></g>
+          <text x="318" y="99" text-anchor="middle" class="s-lbl">DECAN-</text>
+          <text x="318" y="110" text-anchor="middle" class="s-lbl">TADOR</text>
+          <text x="318" y="150" text-anchor="middle" class="s-val">2.8 NTU</text>
+          <!-- FILTRACION -->
+          <g class="s-ok"><rect x="378" y="72" width="60" height="60" rx="2"/></g>
+          <text x="408" y="99" text-anchor="middle" class="s-lbl">FILTRA-</text>
+          <text x="408" y="110" text-anchor="middle" class="s-lbl">ÇÃO</text>
+          <text x="408" y="150" text-anchor="middle" class="s-val">0.83 NTU</text>
+          <!-- DESINFECCION -->
+          <g class="s-ok"><rect x="468" y="72" width="60" height="60" rx="2"/></g>
+          <text x="498" y="99" text-anchor="middle" class="s-lbl">DESIN-</text>
+          <text x="498" y="110" text-anchor="middle" class="s-lbl">FECÇÃO</text>
+          <text x="498" y="150" text-anchor="middle" class="s-val">0.76 mg/L</text>
+          <!-- RESERVORIO WARN -->
+          <g class="s-warn"><rect x="558" y="60" width="70" height="84" rx="2"/></g>
+          <rect x="560" y="112" width="66" height="30" fill="#f5a62312" rx="1"/>
+          <text x="593" y="95" text-anchor="middle" class="s-lbl">RESER-</text>
+          <text x="593" y="106" text-anchor="middle" class="s-lbl">VÓRIO</text>
+          <text x="593" y="160" text-anchor="middle" class="s-val-warn">33.6% ⚠ cloro</text>
+          <!-- BOMBA DISTRIBUCION -->
+          <g class="s-ok"><circle cx="792" cy="102" r="30"/></g>
+          <text x="792" y="99" text-anchor="middle" class="s-lbl">BOMBA</text>
+          <text x="792" y="109" text-anchor="middle" class="s-lbl">DIST.</text>
+          <text x="792" y="150" text-anchor="middle" class="s-val">5.1 m³/h</text>
+          <!-- legend -->
+          <circle cx="650" cy="192" r="4" fill="#00e87a10" stroke="#00e87a" stroke-width="1"/>
+          <text x="658" y="196" class="s-val">Normal</text>
+          <circle cx="706" cy="192" r="4" fill="#f5a62310" stroke="#f5a623" stroke-width="1"/>
+          <text x="714" y="196" class="s-val">Alerta</text>
+          <circle cx="758" cy="192" r="4" fill="#ff3d5a10" stroke="#ff3d5a" stroke-width="1"/>
+          <text x="766" y="196" class="s-val">Crítico</text>
+        </svg>
+      </div>
+    </div>
+    <!-- ALERTS SIDE -->
+    <div class="dpanel" style="grid-row:1;grid-column:2;">
+      <div class="dpanel-hdr">
+        <span class="dpanel-title">Alertas Activas</span>
+        <span class="dpanel-tag warn">2</span>
+      </div>
+      <div class="alerts-scroll">
+        <div class="alert-card">
+          <span class="ac-time">20:31:25</span>
+          <div class="ac-comp">RESERVORIO — ADVERTÊNCIA</div>
+          <div class="ac-msg">Cloro residual abaixo do limite: 0.467 mg/L (mín. 0.5)</div>
+          <div class="ac-action">↳ acção: aumentarCloro</div>
+        </div>
+        <div class="alert-card">
+          <span class="ac-time">20:31:14</span>
+          <div class="ac-comp">REJA/TAMIZ — ADVERTÊNCIA</div>
+          <div class="ac-msg">Diferencial de pressão: 37.5 bar (máx 0.5) — possível colmatação</div>
+          <div class="ac-action">↳ sem acção automática</div>
+        </div>
+        <div style="padding:20px;text-align:center;font-family:var(--mono);font-size:9px;color:var(--text3)">— sem mais alertas —</div>
+      </div>
+    </div>
+    <!-- READINGS -->
+    <div class="dpanel" style="grid-row:2;grid-column:1/3;">
+      <div class="readings-bar">
+        <div class="rb-cell"><div class="rb-name">Bomba<br>Captação</div><div class="rb-vals"><div class="rb-row"><span class="rb-key">caudal</span><span class="rb-num">11.2</span></div><div class="rb-bar"><div class="rb-fill" style="width:74%"></div></div><div class="rb-row"><span class="rb-key">pressão</span><span class="rb-num">1.67</span></div><div class="rb-row"><span class="rb-key">temp</span><span class="rb-num">30.1°</span></div></div><div class="rb-status"></div></div>
+        <div class="rb-cell"><div class="rb-name">Reja/<br>Tamiz</div><div class="rb-vals"><div class="rb-row"><span class="rb-key">∆pressão</span><span class="rb-num warn">37.5</span></div><div class="rb-bar"><div class="rb-fill warn" style="width:99%"></div></div><div class="rb-row"><span class="rb-key">turbidez</span><span class="rb-num">31.9</span></div></div><div class="rb-status warn"></div></div>
+        <div class="rb-cell"><div class="rb-name">Coag./<br>Floc.</div><div class="rb-vals"><div class="rb-row"><span class="rb-key">pH</span><span class="rb-num">6.39</span></div><div class="rb-bar"><div class="rb-fill" style="width:55%"></div></div><div class="rb-row"><span class="rb-key">turbidez</span><span class="rb-num">4.88</span></div><div class="rb-row"><span class="rb-key">PAC</span><span class="rb-num">26.9%</span></div></div><div class="rb-status"></div></div>
+        <div class="rb-cell"><div class="rb-name">Decan-<br>tador</div><div class="rb-vals"><div class="rb-row"><span class="rb-key">turbidez</span><span class="rb-num">2.78</span></div><div class="rb-bar"><div class="rb-fill" style="width:40%"></div></div><div class="rb-row"><span class="rb-key">lodo</span><span class="rb-num">40.1%</span></div><div class="rb-row"><span class="rb-key">caudal</span><span class="rb-num">9.44</span></div></div><div class="rb-status"></div></div>
+        <div class="rb-cell"><div class="rb-name">Filtra-<br>ção</div><div class="rb-vals"><div class="rb-row"><span class="rb-key">turbidez</span><span class="rb-num">0.83</span></div><div class="rb-bar"><div class="rb-fill" style="width:18%"></div></div><div class="rb-row"><span class="rb-key">∆carga</span><span class="rb-num">0.88</span></div><div class="rb-row"><span class="rb-key">horas</span><span class="rb-num">11.98</span></div></div><div class="rb-status"></div></div>
+        <div class="rb-cell"><div class="rb-name">Desin-<br>fecção</div><div class="rb-vals"><div class="rb-row"><span class="rb-key">cloro</span><span class="rb-num">0.76</span></div><div class="rb-bar"><div class="rb-fill" style="width:61%"></div></div><div class="rb-row"><span class="rb-key">pH</span><span class="rb-num">6.65</span></div><div class="rb-row"><span class="rb-key">ORP</span><span class="rb-num">688</span></div></div><div class="rb-status"></div></div>
+        <div class="rb-cell"><div class="rb-name">Reser-<br>vório</div><div class="rb-vals"><div class="rb-row"><span class="rb-key">nível</span><span class="rb-num">33.6%</span></div><div class="rb-bar"><div class="rb-fill warn" style="width:34%"></div></div><div class="rb-row"><span class="rb-key">cloro</span><span class="rb-num warn">0.47</span></div><div class="rb-row"><span class="rb-key">temp</span><span class="rb-num">10.9°</span></div></div><div class="rb-status warn"></div></div>
+        <div class="rb-cell"><div class="rb-name">Bomba<br>Distrib.</div><div class="rb-vals"><div class="rb-row"><span class="rb-key">pressão</span><span class="rb-num">2.92</span></div><div class="rb-bar"><div class="rb-fill" style="width:58%"></div></div><div class="rb-row"><span class="rb-key">caudal</span><span class="rb-num">5.11</span></div><div class="rb-row"><span class="rb-key">corrente</span><span class="rb-num">62.4</span></div></div><div class="rb-status"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERTS PAGE -->
+<div id="s-alerts" class="screen">
+  <div class="topbar">
+    <span class="tb-logo">AQUA<em>SENSE</em></span>
+    <div class="tb-div"></div>
+    <span class="tb-proj">Planta Norte — Alertas</span>
+    <div class="tb-right"><button class="tb-btn" onclick="goTo('s-dashboard')">← DASHBOARD</button></div>
+  </div>
+  <div class="al-header">
+    <h2>Gestão de Alertas</h2>
+    <div class="al-count">6 TOTAL</div>
+    <div class="al-filters">
+      <button class="al-filter active">TODAS</button>
+      <button class="al-filter">ACTIVAS</button>
+      <button class="al-filter">CRÍTICAS</button>
+    </div>
+  </div>
+  <div class="al-table">
+    <div class="al-thead"><span>NÍVEL</span><span>MENSAGEM</span><span>VALOR</span><span>TIMESTAMP</span></div>
+    <div class="al-row advert"><div class="al-nivel advert">ADVERTÊNCIA</div><div><div class="al-msg-text">Cloro reservorio abaixo do limite mínimo</div><div class="al-sub">reservorio · acção: aumentarCloro</div></div><div class="al-val" style="color:var(--amber)">0.467 mg/L</div><div class="al-ts">2026-04-12 20:31:25</div></div>
+    <div class="al-row advert"><div class="al-nivel advert">ADVERTÊNCIA</div><div><div class="al-msg-text">Diferencial de pressão em reja/tamiz elevado</div><div class="al-sub">reja_tamiz · máx permitido: 0.5 bar</div></div><div class="al-val" style="color:var(--amber)">37.49 bar</div><div class="al-ts">2026-04-12 20:31:25</div></div>
+    <div class="al-row advert"><div class="al-nivel advert">ADVERTÊNCIA</div><div><div class="al-msg-text">Cloro reservorio abaixo do limite mínimo</div><div class="al-sub">reservorio · acção: aumentarCloro</div></div><div class="al-val" style="color:var(--amber)">0.467 mg/L</div><div class="al-ts">2026-04-12 20:31:19</div></div>
+    <div class="al-row advert"><div class="al-nivel advert">ADVERTÊNCIA</div><div><div class="al-msg-text">Diferencial de pressão em reja/tamiz elevado</div><div class="al-sub">reja_tamiz · máx permitido: 0.5 bar</div></div><div class="al-val" style="color:var(--amber)">37.53 bar</div><div class="al-ts">2026-04-12 20:31:19</div></div>
+    <div class="al-row crit"><div class="al-nivel crit">CRÍTICA</div><div><div class="al-msg-text">pH abaixo do limite crítico — risco sanitário</div><div class="al-sub">desinfeccion · acção: dosificarNaOH</div></div><div class="al-val" style="color:var(--red)">5.8</div><div class="al-ts">2026-04-12 20:28:01</div></div>
+    <div class="al-row advert"><div class="al-nivel advert">ADVERTÊNCIA</div><div><div class="al-msg-text">Cloro reservorio abaixo do limite mínimo</div><div class="al-sub">reservorio · acção: aumentarCloro</div></div><div class="al-val" style="color:var(--amber)">0.459 mg/L</div><div class="al-ts">2026-04-12 20:31:14</div></div>
+  </div>
+</div>
+
+<!-- HISTORICO -->
+<div id="s-historico" class="screen">
+  <div class="topbar">
+    <span class="tb-logo">AQUA<em>SENSE</em></span>
+    <div class="tb-div"></div>
+    <span class="tb-proj">Planta Norte — Histórico</span>
+    <div class="tb-right"><button class="tb-btn" onclick="goTo('s-dashboard')">← DASHBOARD</button></div>
+  </div>
+  <div class="hist-header">
+    <h2>Histórico de Parâmetros</h2>
+    <div class="hist-sels">
+      <select class="hist-sel"><option>Última hora</option><option>Últimas 6h</option><option>Último dia</option></select>
+      <select class="hist-sel"><option>Todos os componentes</option><option>desinfeccion</option><option>reservorio</option></select>
+    </div>
+  </div>
+  <div class="hist-body">
+    <div class="chart-panel"><div class="chart-title">Cloro Residual (mg/L) <span>desinfeccion + reservorio</span></div><div class="chart-area"><canvas id="c1"></canvas></div></div>
+    <div class="chart-panel"><div class="chart-title">pH <span>desinfeccion + coagulacion</span></div><div class="chart-area"><canvas id="c2"></canvas></div></div>
+    <div class="chart-panel"><div class="chart-title">Nível Reservório (%) <span>reservorio</span></div><div class="chart-area"><canvas id="c3"></canvas></div></div>
+    <div class="chart-panel"><div class="chart-title">Caudal (m³/h) <span>bomba_captacao + bomba_distribucion</span></div><div class="chart-area"><canvas id="c4"></canvas></div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-tabs">
+  <div class="nav-tab active" id="nt-s-login" onclick="goTo('s-login')">LOGIN</div>
+  <div class="nav-tab" id="nt-s-projects" onclick="goTo('s-projects')">ESTAÇÕES</div>
+  <div class="nav-tab" id="nt-s-dashboard" onclick="goTo('s-dashboard')">DASHBOARD</div>
+  <div class="nav-tab" id="nt-s-alerts" onclick="goTo('s-alerts')">ALERTAS</div>
+  <div class="nav-tab" id="nt-s-historico" onclick="goTo('s-historico')">HISTÓRICO</div>
+</div>
+
+<script>
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const nt=document.getElementById('nt-'+id);
+  if(nt)nt.classList.add('active');
+  if(id==='s-historico')setTimeout(drawCharts,80);
+}
+
+setInterval(()=>{
+  const el=document.getElementById('clk');
+  if(el)el.textContent=new Date().toLocaleTimeString('pt-PT');
+},1000);
+
+let drawn=false;
+function drawCharts(){
+  if(drawn)return;drawn=true;
+  const N=24;
+  const lbs=Array.from({length:N},(_,i)=>{const d=new Date();d.setMinutes(d.getMinutes()-((N-1-i)*5));return d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});});
+  const rnd=(b,r)=>Array.from({length:N},()=>parseFloat((b+(Math.random()-.5)*r).toFixed(3)));
+  const cfg=(color,fill)=>({borderColor:color,backgroundColor:fill?color+'20':'transparent',borderWidth:1.5,pointRadius:0,tension:.4,fill:!!fill});
+  const opts=(yLabel,mn,mx)=>({responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{labels:{color:'#607890',font:{family:'JetBrains Mono',size:9},boxWidth:8,padding:8}}},scales:{x:{ticks:{color:'#304060',font:{family:'JetBrains Mono',size:8},maxTicksLimit:6},grid:{color:'#1a2840'}},y:{min:mn,max:mx,ticks:{color:'#304060',font:{family:'JetBrains Mono',size:8}},grid:{color:'#1a2840'},title:{display:true,text:yLabel,color:'#304060',font:{family:'JetBrains Mono',size:8}}}}});
+
+  new Chart(document.getElementById('c1'),{type:'line',data:{labels:lbs,datasets:[{label:'desinfeccion',...cfg('#00c8e8',true),data:rnd(.76,.15)},{label:'reservorio',...cfg('#f5a623'),data:rnd(.47,.08)}]},options:opts('mg/L',.1,1.2)});
+  new Chart(document.getElementById('c2'),{type:'line',data:{labels:lbs,datasets:[{label:'desinfeccion',...cfg('#00e87a',true),data:rnd(6.65,.3)},{label:'coagulacion',...cfg('#00c8e8'),data:rnd(6.39,.25)}]},options:opts('pH',5.5,8.5)});
+  new Chart(document.getElementById('c3'),{type:'line',data:{labels:lbs,datasets:[{label:'nível',...cfg('#00c8e8',true),data:rnd(33.6,4)}]},options:opts('%',0,100)});
+  new Chart(document.getElementById('c4'),{type:'line',data:{labels:lbs,datasets:[{label:'bomba_captacao',...cfg('#00e87a',true),data:rnd(11.2,1.5)},{label:'bomba_distribucion',...cfg('#f5a623'),data:rnd(5.1,1)}]},options:opts('m³/h',0,20)});
+}
+Chart.defaults.color='#607890';
+</script>
+</body>
+</html>

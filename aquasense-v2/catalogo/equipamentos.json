@@ -1,0 +1,378 @@
+{
+  "version": "1.0.0",
+  "note": "Catálogo canônico de componentes do AquaSense. Tag ISA é prefixo; o sistema autocompleta com número sequencial por projeto.",
+  "categorias": [
+    {
+      "id": "bombas",
+      "nombre": "Bombas",
+      "prefixoTag": "P",
+      "items": [
+        {
+          "id": "bomba_centrifuga",
+          "nombre": "Bomba centrífuga",
+          "descripcion": "Bomba padrão para água bruta e distribuição",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["caudal", "presionSuccion", "presionDescarga", "temperaturaMotor", "corrienteMotor"],
+          "controles": ["LIGAR", "DESLIGAR", "MODO_AUTO", "MODO_MANUAL"]
+        },
+        {
+          "id": "bomba_dosadora",
+          "nombre": "Bomba dosadora",
+          "descripcion": "Dosagem precisa de químicos (pistão ou diafragma)",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["caudalDosagem", "contadorGolpes", "nivelDeposito"],
+          "controles": ["LIGAR", "DESLIGAR", "AJUSTAR_CAUDAL"]
+        },
+        {
+          "id": "bomba_submersivel",
+          "nombre": "Bomba submersível",
+          "descripcion": "Captação em poço ou reservatório profundo",
+          "puertos": ["saida"],
+          "parametros": ["caudal", "presionDescarga", "nivelPozo", "temperaturaMotor"],
+          "controles": ["LIGAR", "DESLIGAR", "MODO_AUTO"]
+        },
+        {
+          "id": "bomba_booster",
+          "nombre": "Bomba booster",
+          "descripcion": "Aumenta pressão na rede de distribuição",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["caudal", "presionSuccion", "presionDescarga", "frecuenciaVFD"],
+          "controles": ["LIGAR", "DESLIGAR", "AJUSTAR_FRECUENCIA"]
+        },
+        {
+          "id": "bomba_captacao_poco",
+          "nombre": "Bomba captação de poço",
+          "descripcion": "Vertical submersa em poço profundo",
+          "puertos": ["saida"],
+          "parametros": ["caudal", "nivelPozo", "presionDescarga", "horasOperacion"],
+          "controles": ["LIGAR", "DESLIGAR"]
+        }
+      ]
+    },
+    {
+      "id": "tanques",
+      "nombre": "Tanques e reatores",
+      "prefixoTag": "TK",
+      "items": [
+        {
+          "id": "reservorio",
+          "nombre": "Reservatório",
+          "descripcion": "Armazenamento de água tratada",
+          "puertos": ["entrada", "saida", "respiro", "dreno"],
+          "parametros": ["nivel", "volumen", "cloroResidual", "temperatura", "turbidez"],
+          "controles": ["ABRIR_ENTRADA", "CERRAR_ENTRADA"]
+        },
+        {
+          "id": "decantador_circular",
+          "nombre": "Decantador circular",
+          "descripcion": "Decantação por gravidade com raspador rotativo",
+          "puertos": ["entrada", "saidaAgua", "saidaLodo"],
+          "parametros": ["turbidezSalida", "nivelLodo", "caudalSalida", "tempoRetencao"],
+          "controles": ["ACIONAR_RASPADOR", "DRENAR_LODO"]
+        },
+        {
+          "id": "decantador_retangular",
+          "nombre": "Decantador retangular",
+          "descripcion": "Decantação por fluxo horizontal",
+          "puertos": ["entrada", "saidaAgua", "saidaLodo"],
+          "parametros": ["turbidezSalida", "nivelLodo", "caudalSalida"],
+          "controles": ["DRENAR_LODO"]
+        },
+        {
+          "id": "tanque_quimico",
+          "nombre": "Tanque químico",
+          "descripcion": "Armazenamento de reagente (cloro, coagulante, cal, ácido)",
+          "puertos": ["entrada", "saida", "respiro"],
+          "parametros": ["nivel", "temperatura", "concentracion"],
+          "controles": ["ABRIR_DRENO"]
+        },
+        {
+          "id": "clarificador",
+          "nombre": "Clarificador de contato sólidos",
+          "descripcion": "Combina floculação e decantação em único equipamento",
+          "puertos": ["entrada", "saidaAgua", "saidaLodo", "dosagemQuimico"],
+          "parametros": ["turbidezSalida", "nivelManto", "caudalRecirculacion"],
+          "controles": ["AJUSTAR_RECIRCULACION"]
+        },
+        {
+          "id": "flotador_daf",
+          "nombre": "Flotador DAF",
+          "descripcion": "Separação por flotação com ar dissolvido",
+          "puertos": ["entrada", "saidaAgua", "saidaLodo", "injeccionAire"],
+          "parametros": ["turbidezSalida", "presionAireSaturacao", "espessuraManta"],
+          "controles": ["AJUSTAR_PRESION_AIRE"]
+        }
+      ]
+    },
+    {
+      "id": "valvulas",
+      "nombre": "Válvulas",
+      "prefixoTag": "V",
+      "items": [
+        {
+          "id": "valvula_gaveta",
+          "nombre": "Válvula de gaveta",
+          "descripcion": "Abertura total ou fechamento total (on/off)",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["posicion"],
+          "controles": ["ABRIR", "CERRAR"]
+        },
+        {
+          "id": "valvula_borboleta",
+          "nombre": "Válvula borboleta",
+          "descripcion": "Controle por rotação de disco, permite modulação",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["posicionPorcentaje"],
+          "controles": ["POSICION", "ABRIR", "CERRAR"]
+        },
+        {
+          "id": "valvula_retencao",
+          "nombre": "Válvula de retenção",
+          "descripcion": "Impede fluxo reverso, não motorizada",
+          "puertos": ["entrada", "saida"],
+          "parametros": [],
+          "controles": []
+        },
+        {
+          "id": "valvula_solenoide",
+          "nombre": "Válvula solenoide",
+          "descripcion": "Acionamento elétrico rápido (on/off)",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["estado", "contadorOperaciones"],
+          "controles": ["ABRIR", "CERRAR"]
+        },
+        {
+          "id": "valvula_globo",
+          "nombre": "Válvula globo",
+          "descripcion": "Controle fino de vazão, posição variável",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["posicionPorcentaje", "perdidaCarga"],
+          "controles": ["POSICION"]
+        },
+        {
+          "id": "valvula_alivio",
+          "nombre": "Válvula de alívio de pressão",
+          "descripcion": "Abre automaticamente se pressão passa do setpoint",
+          "puertos": ["entrada", "descarga"],
+          "parametros": ["setpointPresion", "vecesAcionada"],
+          "controles": ["AJUSTAR_SETPOINT"]
+        },
+        {
+          "id": "valvula_reguladora",
+          "nombre": "Válvula reguladora de pressão",
+          "descripcion": "Mantém pressão à jusante constante",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["presionSalida", "setpointPresion"],
+          "controles": ["AJUSTAR_SETPOINT"]
+        },
+        {
+          "id": "valvula_tres_vias",
+          "nombre": "Válvula de três vias",
+          "descripcion": "Divisão ou mistura de fluxo",
+          "puertos": ["entrada", "saidaA", "saidaB"],
+          "parametros": ["posicion"],
+          "controles": ["POSICION_A", "POSICION_B", "MIXTA"]
+        }
+      ]
+    },
+    {
+      "id": "instrumentacion",
+      "nombre": "Instrumentação",
+      "prefixoTag": "I",
+      "items": [
+        {
+          "id": "medidor_caudal",
+          "nombre": "Medidor de vazão (eletromagnético)",
+          "tagIsa": "FT",
+          "descripcion": "Transmissor de vazão para linhas fechadas",
+          "puertos": ["linea"],
+          "parametros": ["caudal", "totalizador"],
+          "controles": ["RESETEAR_TOTALIZADOR"]
+        },
+        {
+          "id": "transmissor_pressao",
+          "nombre": "Transmissor de pressão",
+          "tagIsa": "PT",
+          "descripcion": "Medição contínua de pressão",
+          "puertos": ["linea"],
+          "parametros": ["presion"],
+          "controles": []
+        },
+        {
+          "id": "sensor_ph",
+          "nombre": "Sensor de pH",
+          "tagIsa": "AIT",
+          "descripcion": "Eletrodo para medição de pH",
+          "puertos": ["insercao"],
+          "parametros": ["ph", "temperatura"],
+          "controles": ["CALIBRAR"]
+        },
+        {
+          "id": "sensor_cloro",
+          "nombre": "Sensor de cloro residual",
+          "tagIsa": "AIT",
+          "descripcion": "Análise amperométrica de cloro livre",
+          "puertos": ["insercao"],
+          "parametros": ["cloroResidual", "temperatura"],
+          "controles": ["CALIBRAR"]
+        },
+        {
+          "id": "sensor_turbidez",
+          "nombre": "Sensor de turbidez",
+          "tagIsa": "AIT",
+          "descripcion": "Nefelômetro para NTU",
+          "puertos": ["insercao"],
+          "parametros": ["turbidez"],
+          "controles": ["LIMPAR_OPTICA"]
+        },
+        {
+          "id": "sensor_nivel_ultrasonico",
+          "nombre": "Sensor de nível ultrassônico",
+          "tagIsa": "LT",
+          "descripcion": "Sem contato, para tanques abertos",
+          "puertos": ["montaje"],
+          "parametros": ["nivel"],
+          "controles": []
+        },
+        {
+          "id": "transmissor_temperatura",
+          "nombre": "Transmissor de temperatura",
+          "tagIsa": "TT",
+          "descripcion": "Pt100 ou termopar",
+          "puertos": ["insercao"],
+          "parametros": ["temperatura"],
+          "controles": []
+        },
+        {
+          "id": "sensor_orp",
+          "nombre": "Sensor de ORP (redox)",
+          "tagIsa": "AIT",
+          "descripcion": "Potencial de oxidorredução",
+          "puertos": ["insercao"],
+          "parametros": ["orp", "temperatura"],
+          "controles": ["CALIBRAR"]
+        },
+        {
+          "id": "sensor_conductividade",
+          "nombre": "Sensor de condutividade",
+          "tagIsa": "AIT",
+          "descripcion": "Indicador de sólidos dissolvidos",
+          "puertos": ["insercao"],
+          "parametros": ["conductividad", "temperatura"],
+          "controles": ["CALIBRAR"]
+        }
+      ]
+    },
+    {
+      "id": "tratamento",
+      "nombre": "Tratamento",
+      "prefixoTag": "T",
+      "items": [
+        {
+          "id": "tamiz",
+          "nombre": "Tamiz / reja",
+          "descripcion": "Remoção de sólidos grossos na captação",
+          "puertos": ["entrada", "saida", "saidaSolidos"],
+          "parametros": ["diferencialPresion", "turbidezEntrada"],
+          "controles": ["ACIONAR_LIMPEZA"]
+        },
+        {
+          "id": "filtro_areia",
+          "nombre": "Filtro de areia",
+          "descripcion": "Filtro rápido descendente com leito granular",
+          "puertos": ["entrada", "saida", "retroLavado"],
+          "parametros": ["turbidezSalida", "perdidaCarga", "horasDesdelavado"],
+          "controles": ["INICIAR_RETROLAVADO"]
+        },
+        {
+          "id": "filtro_carvao",
+          "nombre": "Filtro de carvão ativado",
+          "descripcion": "Remove odor, sabor, orgânicos e cloro residual",
+          "puertos": ["entrada", "saida", "retroLavado"],
+          "parametros": ["turbidezSalida", "perdidaCarga", "saturacionEstimada"],
+          "controles": ["INICIAR_RETROLAVADO"]
+        },
+        {
+          "id": "filtro_multimeios",
+          "nombre": "Filtro multimeios",
+          "descripcion": "Camadas de antracito, areia e granada",
+          "puertos": ["entrada", "saida", "retroLavado"],
+          "parametros": ["turbidezSalida", "perdidaCarga", "horasDesdelavado"],
+          "controles": ["INICIAR_RETROLAVADO"]
+        },
+        {
+          "id": "uv_esterilizador",
+          "nombre": "Esterilizador UV",
+          "descripcion": "Desinfecção por radiação ultravioleta",
+          "puertos": ["entrada", "saida"],
+          "parametros": ["intensidadUV", "horasLampara", "caudal"],
+          "controles": ["LIGAR", "DESLIGAR", "RESETEAR_LAMPARA"]
+        },
+        {
+          "id": "aerador",
+          "nombre": "Aerador",
+          "descripcion": "Remoção de CO₂, ferro, manganês; oxigenação",
+          "puertos": ["entrada", "saida", "entradaAire"],
+          "parametros": ["caudalAire", "oxigenoDissuelto"],
+          "controles": ["LIGAR", "DESLIGAR"]
+        },
+        {
+          "id": "ozonizador",
+          "nombre": "Ozonizador",
+          "descripcion": "Geração e injeção de ozônio para desinfecção",
+          "puertos": ["entrada", "saida", "entradaOxigeno"],
+          "parametros": ["concentracionOzono", "potenciaGerador"],
+          "controles": ["LIGAR", "DESLIGAR", "AJUSTAR_DOSIS"]
+        }
+      ]
+    },
+    {
+      "id": "dosagem",
+      "nombre": "Sistemas de dosagem",
+      "prefixoTag": "D",
+      "items": [
+        {
+          "id": "dosador_cal",
+          "nombre": "Dosador de cal",
+          "descripcion": "Correção de pH e alcalinidade",
+          "puertos": ["aguaDestino", "depositoCal"],
+          "parametros": ["caudalDosagem", "nivelDeposito", "phSalida"],
+          "controles": ["LIGAR", "DESLIGAR", "AJUSTAR_CAUDAL"]
+        },
+        {
+          "id": "dosador_cloro",
+          "nombre": "Dosador de cloro",
+          "descripcion": "Hipoclorito ou cloro gás para desinfecção",
+          "puertos": ["aguaDestino", "depositoCloro"],
+          "parametros": ["caudalDosagem", "nivelDeposito", "cloroResidualObjetivo"],
+          "controles": ["LIGAR", "DESLIGAR", "AJUSTAR_CAUDAL"]
+        },
+        {
+          "id": "dosador_coagulante",
+          "nombre": "Dosador de coagulante",
+          "descripcion": "PAC, sulfato de alumínio ou cloreto férrico",
+          "puertos": ["aguaDestino", "depositoCoagulante"],
+          "parametros": ["caudalDosagem", "nivelDeposito", "turbidezEntrada"],
+          "controles": ["LIGAR", "DESLIGAR", "AJUSTAR_CAUDAL"]
+        },
+        {
+          "id": "dosador_polimero",
+          "nombre": "Dosador de polímero",
+          "descripcion": "Auxiliar de floculação",
+          "puertos": ["aguaDestino", "depositoPolimero"],
+          "parametros": ["caudalDosagem", "nivelDeposito"],
+          "controles": ["LIGAR", "DESLIGAR", "AJUSTAR_CAUDAL"]
+        },
+        {
+          "id": "dosador_acido",
+          "nombre": "Dosador de ácido",
+          "descripcion": "Ácido sulfúrico para correção de pH alto",
+          "puertos": ["aguaDestino", "depositoAcido"],
+          "parametros": ["caudalDosagem", "nivelDeposito", "phSalida"],
+          "controles": ["LIGAR", "DESLIGAR", "AJUSTAR_CAUDAL"]
+        }
+      ]
+    }
+  ],
+  "total": 40
+}
