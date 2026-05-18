@@ -1,38 +1,38 @@
 # aquasense-backend
 
-REST API backend for **AquaSense**, a water treatment plant monitoring SaaS platform. Built with Spring Boot 3 as part of a three-module final course project.
+API REST del *backend* para **AquaSense**, una plataforma SaaS de monitorización de plantas de tratamiento de agua. Desarrollada con Spring Boot 3 como parte de un proyecto final de tres módulos.
 
-> **Modules:** [aquasense-frontend](../aquasense-frontend) (React) · **aquasense-backend** (this) · [aquasense-python](../aquasense-python) (simulation engine)
-
----
-
-## What this module does
-
-- JWT-based authentication (login / logout with token blacklisting)
-- Project management — each authenticated user owns one or more ETAP projects
-- Sensor reading persistence — stores timestamped readings for 8 plant components
-- Alert engine — evaluates incoming readings against per-component thresholds, generates `ADVERTENCIA` / `CRITICA` alerts, fires automatic actions (e.g. `aumentarCloro`, `cerrarValvulaEntrada`, `dosificarNaOH`)
-- Equipment control — accepts commands from the frontend and tracks component state
-- Synoptic layout storage — persists arbitrary JSON layouts per project (used by the React canvas)
-- Internal endpoint for the Python simulation engine — receives readings without CORS or JWT
+> **Módulos:** [aquasense-frontend](../aquasense-frontend) (React) · **aquasense-backend** (este) · [aquasense-python](../aquasense-python) (motor de simulación)
 
 ---
 
-## Tech stack
+## Qué hace este módulo
 
-| Layer | Technology |
+- Autenticación basada en JWT (inicio y cierre de sesión con lista negra de tokens)
+- Gestión de proyectos — cada usuario autenticado gestiona uno o más proyectos ETAP
+- Persistencia de lecturas de sensores — almacena lecturas con marca temporal para los 8 componentes de la planta
+- Motor de alertas — evalúa las lecturas entrantes respecto a los umbrales por componente, genera alertas `ADVERTENCIA` / `CRITICA` y ejecuta acciones automáticas (p. ej. `aumentarCloro`, `cerrarValvulaEntrada`, `dosificarNaOH`)
+- Control de equipos — acepta comandos del *frontend* y registra el estado de los componentes
+- Almacenamiento del layout del sinóptico — persiste layouts JSON arbitrarios por proyecto (usado por el canvas React)
+- *Endpoint* interno para el motor de simulación Python — recibe lecturas sin CORS ni JWT
+
+---
+
+## *Stack* tecnológico
+
+| Capa | Tecnología |
 |---|---|
-| Language | Java 21 |
-| Framework | Spring Boot 3.3.4 |
-| Security | Spring Security 6 + jjwt 0.12.3 |
-| Persistence | Spring Data JPA + Hibernate |
-| Database (dev) | H2 in-memory |
-| Boilerplate reduction | Lombok |
-| Build | Maven (mvnw wrapper included) |
+| Idioma | Java 21 |
+| Marco de trabajo | Spring Boot 3.3.4 |
+| Seguridad | Spring Security 6 + jjwt 0.12.3 |
+| Persistencia | Spring Data JPA + Hibernate |
+| Base de datos (dev) | H2 en memoria |
+| Reducción de código repetitivo | Lombok |
+| Compilación | Maven (wrapper mvnw incluido) |
 
 ---
 
-## Project structure
+## Estructura del proyecto
 
 ```
 src/main/java/com/aquasense/backend/
@@ -90,14 +90,14 @@ src/main/java/com/aquasense/backend/
 
 ---
 
-## Running locally
+## Ejecución local
 
-### Prerequisites
+### Requisitos previos
 
 - Java 21 (`java -version`)
-- No Maven installation needed — the `mvnw` wrapper is included
+- No es necesario instalar Maven — el wrapper `mvnw` está incluido
 
-### Start the server
+### Iniciar el servidor
 
 **Windows:**
 ```cmd
@@ -109,32 +109,32 @@ src/main/java/com/aquasense/backend/
 ./mvnw spring-boot:run
 ```
 
-The server starts on **http://localhost:8080** in ~6 seconds.
+El servidor arranca en **http://localhost:8080** en ~6 segundos.
 
-### H2 console
+### Consola H2
 
-Available at **http://localhost:8080/h2-console**
+Disponible en **http://localhost:8080/h2-console**
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
 | JDBC URL | `jdbc:h2:mem:aquasense` |
-| User name | `sa` |
-| Password | *(leave blank)* |
+| Nombre de usuario | `sa` |
+| Contraseña | *(dejar en blanco)* |
 
-### Demo user
+### Usuario de demostración
 
-A user and a sample project are created automatically on startup:
+Se crean automáticamente un usuario y un proyecto de ejemplo en el arranque:
 
-| Field | Value |
+| Campo | Valor |
 |---|---|
 | Email | `admin@aquasense.com` |
-| Password | `password` |
+| Contraseña | `password` |
 
 ---
 
-## Environment variables
+## Variables de entorno
 
-Copy `.env.example` to `.env` and set your values before deploying:
+Copia `.env.example` a `.env` y establece tus valores antes de desplegar:
 
 ```bash
 cp .env.example .env
@@ -146,12 +146,12 @@ JWT_SECRET=change_me_in_production
 JWT_EXPIRATION=28800000
 ```
 
-| Variable | Default (dev fallback) | Description |
+| Variable | Valor por defecto (dev) | Descripción |
 |---|---|---|
-| `JWT_SECRET` | `dev_secret_key_aquasense_...` | HMAC-SHA signing key. Must be ≥ 32 chars. **Change before any public deployment.** |
-| `JWT_EXPIRATION` | `28800000` | Token lifetime in milliseconds (default: 8 hours) |
+| `JWT_SECRET` | `dev_secret_key_aquasense_...` | Clave de firma HMAC-SHA. Debe tener ≥ 32 caracteres. **Cambia antes de cualquier despliegue público.** |
+| `JWT_EXPIRATION` | `28800000` | Duración del token en milisegundos (por defecto: 8 horas) |
 
-`application.properties` reads these via:
+`application.properties` los lee mediante:
 ```properties
 jwt.secret=${JWT_SECRET:dev_secret_key_aquasense_change_in_production_32chars}
 jwt.expiration=28800000
@@ -159,39 +159,39 @@ jwt.expiration=28800000
 
 ---
 
-## API endpoints
+## *Endpoints* de la API
 
-### Auth
+### Autenticación
 
-| Method | Path | Auth | Description |
+| Método | Ruta | Auth | Descripción |
 |---|---|---|---|
-| `POST` | `/auth/login` | Public | Receives `{ email, password }`, returns `{ token, expiresIn: 28800, usuario }` |
-| `POST` | `/auth/logout` | Public | Invalidates the current Bearer token (in-memory blacklist) |
+| `POST` | `/auth/login` | Público | Recibe `{ email, password }`, devuelve `{ token, expiresIn: 28800, usuario }` |
+| `POST` | `/auth/logout` | Público | Invalida el token Bearer actual (lista negra en memoria) |
 
-### Projects
+### Proyectos
 
-All project endpoints require `Authorization: Bearer <token>`. Every endpoint validates that the requested project belongs to the authenticated user.
+Todos los *endpoints* de proyecto requieren `Authorization: Bearer <token>`. Cada *endpoint* valida que el proyecto solicitado pertenece al usuario autenticado.
 
-| Method | Path | Description |
+| Método | Ruta | Descripción |
 |---|---|---|
-| `GET` | `/api/proyectos` | List all projects for the authenticated user |
-| `POST` | `/api/proyectos` | Create a new project (auto-initialises equipment for all 8 components) |
-| `GET` | `/api/proyectos/:id` | Project details |
-| `GET` | `/api/proyectos/:id/estado` | Current state of all 8 components (latest reading per component) |
-| `GET` | `/api/proyectos/:id/historico` | Reading history. Query params: `componente`, `desde` (ISO datetime), `hasta` (ISO datetime) |
-| `GET` | `/api/proyectos/:id/alertas` | Alert list. Query param: `activas=true` to filter active alerts only |
-| `POST` | `/api/proyectos/:id/control` | Send a command to a component: `{ componente, comando }` |
-| `GET` | `/api/proyectos/:id/equipos` | Current equipment state for all components |
-| `GET` | `/api/proyectos/:id/layout` | Retrieve the synoptic layout JSON |
-| `POST` | `/api/proyectos/:id/layout` | Save the synoptic layout JSON |
+| `GET` | `/api/proyectos` | Lista todos los proyectos del usuario autenticado |
+| `POST` | `/api/proyectos` | Crea un nuevo proyecto (inicializa automáticamente los equipos de los 8 componentes) |
+| `GET` | `/api/proyectos/:id` | Detalles del proyecto |
+| `GET` | `/api/proyectos/:id/estado` | Estado actual de los 8 componentes (última lectura por componente) |
+| `GET` | `/api/proyectos/:id/historico` | Historial de lecturas. Parámetros: `componente`, `desde` (datetime ISO), `hasta` (datetime ISO) |
+| `GET` | `/api/proyectos/:id/alertas` | Lista de alertas. Parámetro: `activas=true` para filtrar solo las alertas activas |
+| `POST` | `/api/proyectos/:id/control` | Envía un comando a un componente: `{ componente, comando }` |
+| `GET` | `/api/proyectos/:id/equipos` | Estado actual de los equipos de todos los componentes |
+| `GET` | `/api/proyectos/:id/layout` | Recupera el JSON del layout del sinóptico |
+| `POST` | `/api/proyectos/:id/layout` | Guarda el JSON del layout del sinóptico |
 
-### Internal (Python engine only)
+### Interno (solo motor Python)
 
-| Method | Path | Auth | Description |
+| Método | Ruta | Auth | Descripción |
 |---|---|---|---|
-| `POST` | `/interno/proyectos/:id/lecturas` | None | Persist a sensor reading and trigger threshold evaluation |
+| `POST` | `/interno/proyectos/:id/lecturas` | Ninguna | Persiste una lectura de sensor y dispara la evaluación de umbrales |
 
-Request body:
+Cuerpo de la petición:
 ```json
 {
   "componente": "desinfeccion",
@@ -207,11 +207,11 @@ Request body:
 
 ---
 
-## Component IDs and fields
+## IDs de componentes y campos
 
-The 8 monitored components and their exact camelCase field names:
+Los 8 componentes monitorizados y sus nombres de campo exactos en camelCase:
 
-| Component ID | Fields |
+| ID de componente | Campos |
 |---|---|
 | `bomba_captacao` | `caudal`, `presionSuccion`, `temperaturaMotor` |
 | `reja_tamiz` | `diferencialPresion`, `turbidezEntrada` |
@@ -224,11 +224,11 @@ The 8 monitored components and their exact camelCase field names:
 
 ---
 
-## Alert engine
+## Motor de alertas
 
-`AlertaService` evaluates every incoming reading against thresholds and persists alerts without duplicating already-active ones. Key rules:
+`AlertaService` evalúa cada lectura entrante respecto a los umbrales y persiste las alertas sin duplicar las que ya están activas. Reglas principales:
 
-| Condition | Level | Auto-action |
+| Condición | Nivel | Acción automática |
 |---|---|---|
 | `cloroResidual` < 0.5 mg/L | `ADVERTENCIA` | `aumentarCloro` |
 | `cloroResidual` < 0.2 mg/L | `CRITICA` | `aumentarCloro` |
@@ -239,36 +239,36 @@ The 8 monitored components and their exact camelCase field names:
 | `temperaturaMotor` > 70°C | `ADVERTENCIA` | — |
 | `diferencialPresion` > 0.5 bar | `ADVERTENCIA` | — |
 
-Auto-actions update the `Equipamento.estado` field for the affected component.
+Las acciones automáticas actualizan el campo `Equipamento.estado` del componente afectado.
 
 ---
 
 ## CORS
 
-Only the following origins are allowed on `/auth/**` and `/api/**`:
+Solo los siguientes orígenes están permitidos en `/auth/**` y `/api/**`:
 
-- `http://localhost:5173` (React frontend — Vite default)
-- `http://localhost:3000` (React frontend — CRA default)
+- `http://localhost:5173` (*frontend* React — Vite por defecto)
+- `http://localhost:3000` (*frontend* React — CRA por defecto)
 
-The `/interno/**` path has no CORS configuration — it is intended for server-to-server calls from the Python engine only.
+La ruta `/interno/**` no tiene configuración CORS — está destinada únicamente a llamadas servidor a servidor desde el motor Python.
 
 ---
 
-## Integration with other modules
+## Integración con otros módulos
 
-| Module | Role | Default port |
+| Módulo | Rol | Puerto por defecto |
 |---|---|---|
-| `aquasense-frontend` | React UI, calls `/auth/**` and `/api/**` with Bearer token | 5173 |
-| `aquasense-backend` | This module | 8080 |
-| `aquasense-python` | Simulation engine, calls `/interno/proyectos/:id/lecturas` | — |
+| `aquasense-frontend` | Interfaz React, llama a `/auth/**` y `/api/**` con token Bearer | 5173 |
+| `aquasense-backend` | Este módulo | 8080 |
+| `aquasense-python` | Motor de simulación, llama a `/interno/proyectos/:id/lecturas` | — |
 
-Full integration of all three modules was completed in week 3 of the project.
+La integración completa de los tres módulos se completó en la semana 3 del proyecto.
 
 ---
 
-## Git rules
+## Reglas de Git
 
-The following are in `.gitignore` and must never be committed:
+Los siguientes elementos están en `.gitignore` y no deben confirmarse nunca:
 
 ```
 target/
@@ -277,4 +277,4 @@ target/
 .env
 ```
 
-Never commit a real `JWT_SECRET`. Use `.env.example` as the template and keep `.env` local only.
+Nunca confirmes un `JWT_SECRET` real. Usa `.env.example` como plantilla y mantén `.env` solo en local.
