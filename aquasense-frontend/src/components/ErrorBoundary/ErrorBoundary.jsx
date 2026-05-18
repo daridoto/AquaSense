@@ -18,15 +18,15 @@ export default class ErrorBoundary extends Component {
           display: 'flex', flexDirection: 'column', alignItems: 'center',
           justifyContent: 'center', height: '100vh', gap: '1rem', padding: '2rem'
         }}>
-          <h2>Algo correu mal</h2>
+          <h2>Algo salió mal</h2>
           <p style={{ color: '#888', maxWidth: 400, textAlign: 'center' }}>
-            {this.state.error?.message || 'Erro inesperado na aplicação.'}
+            {this.state.error?.message || 'Error inesperado en la aplicación.'}
           </p>
           <button
             onClick={() => this.setState({ hasError: false, error: null })}
             style={{ padding: '0.5rem 1.5rem', cursor: 'pointer' }}
           >
-            Tentar novamente
+            Volver a intentar
           </button>
         </div>
       );
