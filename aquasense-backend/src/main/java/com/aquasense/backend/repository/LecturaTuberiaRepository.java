@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface LecturaTuberiaRepository extends JpaRepository<LecturaTuberia, Long> {
 
-    // Ordered by timestamp DESC — matches the composite index (tuberia_id, timestamp DESC)
+    // Ordenado por timestamp DESC — coincide con el índice compuesto (tuberia_id, timestamp DESC)
     List<LecturaTuberia> findByTuberiaIdOrderByTimestampDesc(Long tuberiaId);
 
     List<LecturaTuberia> findByTuberiaIdAndTimestampBetweenOrderByTimestampDesc(
