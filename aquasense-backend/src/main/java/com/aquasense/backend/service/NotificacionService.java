@@ -65,7 +65,7 @@ public class NotificacionService {
                 emailService.enviarAlertaCritica(emailDestino, projeto.getNombre(),
                         componente, mensagem, projeto.getId());
             } catch (Exception e) {
-                log.warn("[NOTIFICACION] Erro ao notificar usuario {}: {}", usuario.getEmail(), e.getMessage());
+                log.warn("[NOTIFICACION] Error al notificar usuario {}: {}", usuario.getEmail(), e.getMessage());
             }
         }
     }
