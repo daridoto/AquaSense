@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
- * Endpoint interno — chamado exclusivamente pelo motor de simulação Python.
- * Sem JWT (rota permitida em SecurityConfig sob /interno/**).
- * Sem CORS (Python não envia cabeçalho Origin).
- * Requer header X-Internal-Token (validado por InternalTokenFilter).
+ * Endpoint interno — llamado exclusivamente por el motor de simulación Python.
+ * Sin JWT (ruta permitida en SecurityConfig bajo /interno/**).
+ * Sin CORS (Python no envía cabecera Origin).
+ * Requiere header X-Internal-Token (validado por InternalTokenFilter).
  */
 @RestController
 @RequestMapping("/interno/proyectos")
