@@ -22,9 +22,9 @@ export default function Notificaciones() {
     setSaving(true); setMsg(null);
     try {
       await api.put(`/api/proyectos/${id}/notificaciones`, prefs);
-      setMsg({ type: 'success', text: 'Preferências guardadas.' });
+      setMsg({ type: 'success', text: 'Preferencias guardadas.' });
     } catch {
-      setMsg({ type: 'error', text: 'Erro ao guardar. Tenta novamente.' });
+      setMsg({ type: 'error', text: 'Error al guardar. Inténtalo de nuevo.' });
     } finally {
       setSaving(false);
     }
@@ -37,16 +37,16 @@ export default function Notificaciones() {
       <header className={s.header}>
         <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>← Dashboard</button>
         <div className={s.sep} />
-        <span className={s.title}>NOTIFICAÇÕES</span>
+        <span className={s.title}>NOTIFICACIONES</span>
       </header>
       <div className={s.body}>
         <div className={s.card}>
-          <span className={s.cardTitle}>Preferências de alertas por email</span>
+          <span className={s.cardTitle}>Preferencias de alertas por email</span>
 
           <div className={s.toggle}>
             <div className={s.toggleInfo}>
               <span className={s.toggleLabel}>Alertas CRÍTICAS</span>
-              <span className={s.toggleDesc}>Receber email imediato quando uma alerta crítica for criada</span>
+              <span className={s.toggleDesc}>Recibir email inmediato cuando se cree una alerta crítica</span>
             </div>
             <label className={s.switch}>
               <input type="checkbox" checked={prefs.notificarCritica}
@@ -57,8 +57,8 @@ export default function Notificaciones() {
 
           <div className={s.toggle}>
             <div className={s.toggleInfo}>
-              <span className={s.toggleLabel}>Alertas de ADVERTÊNCIA</span>
-              <span className={s.toggleDesc}>Receber email para alertas de advertência</span>
+              <span className={s.toggleLabel}>Alertas de ADVERTENCIA</span>
+              <span className={s.toggleDesc}>Recibir email para alertas de advertencia</span>
             </div>
             <label className={s.switch}>
               <input type="checkbox" checked={prefs.notificarAdvertencia}
@@ -69,7 +69,7 @@ export default function Notificaciones() {
 
           <div className={s.field}>
             <label className={s.label}>Email de destino (opcional)</label>
-            <input className={s.input} type="email" placeholder="Deixa vazio para usar o email da conta"
+            <input className={s.input} type="email" placeholder="Deja vacío para usar el email de la cuenta"
               value={prefs.emailDestino ?? ''}
               onChange={e => setPrefs(p => ({ ...p, emailDestino: e.target.value }))} />
           </div>
@@ -77,7 +77,7 @@ export default function Notificaciones() {
           {msg && <p className={msg.type === 'success' ? s.success : s.error}>{msg.text}</p>}
 
           <button className={s.saveBtn} onClick={handleSave} disabled={saving}>
-            {saving ? 'A guardar...' : 'Guardar preferências'}
+            {saving ? 'Guardando...' : 'Guardar preferencias'}
           </button>
         </div>
       </div>
