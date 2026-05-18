@@ -19,14 +19,14 @@ public interface LeituraRepository extends JpaRepository<LeituraSensor, Long> {
 
     void deleteByProjetoId(Long projetoId);
 
-    // Versões paginadas para /historico (evita retornar 100k+ rows)
+    // Versiones paginadas para /historico (evita retornar 100k+ rows)
     List<LeituraSensor> findByProjetoIdAndComponenteAndTimestampBetweenOrderByTimestampAsc(
             Long projetoId, String componente, LocalDateTime desde, LocalDateTime hasta, Pageable pageable);
 
     List<LeituraSensor> findByProjetoIdAndTimestampBetweenOrderByTimestampAsc(
             Long projetoId, LocalDateTime desde, LocalDateTime hasta, Pageable pageable);
 
-    // DESC variants — returns the N most recent rows (used by getHistorico)
+    // Variantes DESC — devuelve las N filas más recientes (usado por getHistorico)
     @Query("SELECT l FROM LeituraSensor l WHERE l.projeto.id = :projetoId AND l.componente = :componente AND l.timestamp BETWEEN :desde AND :hasta ORDER BY l.timestamp DESC")
     List<LeituraSensor> findRecentByProjetoIdAndComponenteAndTimestampBetween(
             @Param("projetoId") Long projetoId, @Param("componente") String componente,
@@ -40,7 +40,7 @@ public interface LeituraRepository extends JpaRepository<LeituraSensor, Long> {
     @Query("SELECT DISTINCT l.componente FROM LeituraSensor l WHERE l.projeto.id = :projetoId")
     List<String> findDistinctComponentesByProjetoId(@Param("projetoId") Long projetoId);
 
-    // 1 query para /estado em vez de 8 (fix N+1)
+    // 1 query para /estado en vez de 8 (fix N+1)
     @Query("""
         SELECT l FROM LeituraSensor l
         WHERE l.projeto.id = :projetoId
