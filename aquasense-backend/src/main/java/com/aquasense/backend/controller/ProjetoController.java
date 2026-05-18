@@ -99,12 +99,12 @@ public class ProjetoController {
             @PathVariable Long id,
             @RequestParam(required = false) Boolean activas,
             Authentication auth) {
-        // Validate ownership
+        // Validar propiedad
         projetoService.findOwnedProject(id, auth.getName());
         return ResponseEntity.ok(alertaService.getAlertas(id, activas));
     }
 
-    // POST /api/proyectos/:id/lecturas  (leitura manual via UI — requer JWT)
+    // POST /api/proyectos/:id/lecturas  (lectura manual vía UI — requiere JWT)
     @PostMapping("/{id}/lecturas")
     public ResponseEntity<Map<String, Object>> saveLeituraManual(
             @PathVariable Long id,
