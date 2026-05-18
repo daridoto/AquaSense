@@ -58,7 +58,7 @@ export const translations = {
     warning_level: 'WARNING',
     critical_level: 'CRITICAL',
 
-    // Alertas page
+    // Página de alertas
     back_to_dashboard: '← DASHBOARD',
     alerts_active_badge: 'ACTIVE',
     filter_all: 'ALL',
@@ -100,7 +100,7 @@ export const translations = {
     // Dashboard
     backend_error: '⚠ Backend not responding — data may be outdated',
 
-    // Simulation
+    // Simulación
     start_simulation: '▶ START SIMULATION',
     stop_simulation: '■ STOP SIMULATION',
     simulation_inactive: 'Simulation inactive',
@@ -108,11 +108,11 @@ export const translations = {
     simulation_active: 'SIMULATION ACTIVE',
     no_data: 'NO DATA',
 
-    // Status
+    // Estado
     offline: 'OFFLINE',
     maintenance: 'MAINTENANCE',
 
-    // Manual mode
+    // Modo manual
     mode_auto: 'AUTO',
     mode_manual: 'MANUAL',
     mode_label: 'MODE:',
