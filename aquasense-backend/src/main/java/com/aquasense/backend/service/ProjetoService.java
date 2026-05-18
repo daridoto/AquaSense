@@ -62,9 +62,9 @@ public class ProjetoService {
 
     public List<ProjetoDTO> listByUsuario(String email) {
         Usuario usuario = findUsuario(email);
-        // Projetos criados pelo utilizador
+        // Proyectos creados por el usuario
         List<Projeto> owned = projetoRepository.findByUsuarioId(usuario.getId());
-        // Projetos partilhados (onde tem um rol explícito)
+        // Proyectos compartidos (donde tiene un rol explícito)
         List<Long> sharedIds = usuarioProyectoRolRepository.findByUsuarioId(usuario.getId())
                 .stream()
                 .map(r -> r.getProjeto().getId())
@@ -92,7 +92,7 @@ public class ProjetoService {
                 .build();
         Projeto saved = projetoRepository.save(projeto);
 
-        // Initialise equipment entries for all 8 components
+        // Inicializar entradas de equipamiento para los 8 componentes
         COMPONENTES.forEach(comp ->
                 equipamentoRepository.save(Equipamento.builder()
                         .projeto(saved)
@@ -120,17 +120,17 @@ public class ProjetoService {
     public EstadoDTO getEstado(Long id, String email) {
         findOwnedProject(id, email);
 
-        // Carrega modos de todos os componentes (tabela equipamentos)
+        // Carga los modos de todos los componentes (tabla equipamentos)
         Map<String, String> modoComponentes = new HashMap<>();
         equipamentoRepository.findByProjetoId(id).forEach(eq ->
                 modoComponentes.put(eq.getComponenteId(), eq.getEstado()));
-        // Garante que todos os 8 componentes aparecem (default AUTO)
+        // Garantiza que los 8 componentes aparecen (por defecto AUTO)
         COMPONENTES.forEach(c -> modoComponentes.putIfAbsent(c, "AUTO"));
 
         Map<String, EstadoDTO.ComponenteEstado> componentes = new HashMap<>();
         LocalDateTime lastUpdate = null;
 
-        // 1 query para todos os componentes (fix N+1: eram 8 queries por request)
+        // 1 query para todos los componentes (fix N+1: eran 8 queries por request)
         Map<String, LeituraSensor> latestByComp = leituraRepository
                 .findLatestPerComponente(id)
                 .stream()
@@ -177,7 +177,7 @@ public class ProjetoService {
         if (desde == null) desde = LocalDateTime.now().minusDays(7);
         if (hasta == null) hasta = LocalDateTime.now();
 
-        // Fetch newest MAX_HISTORICO_ROWS rows first (DESC), then sort ASC for chart rendering
+        // Obtener las MAX_HISTORICO_ROWS filas más recientes primero (DESC), luego ordenar ASC para el gráfico
         var limit = PageRequest.of(0, MAX_HISTORICO_ROWS);
 
         List<LeituraSensor> lecturas;
@@ -247,8 +247,8 @@ public class ProjetoService {
     public Map<String, String> sendControl(Long id, String email, Map<String, Object> comando) {
         Projeto projeto = findOwnedProject(id, email);
 
-        // Suporta novo contrato: { "modo": "MANUAL"|"AUTO", "componenteId": "..." }
-        // e contrato legado:     { "componente": "...", "comando": "..." }
+        // Soporta nuevo contrato: { "modo": "MANUAL"|"AUTO", "componenteId": "..." }
+        // y contrato legado:      { "componente": "...", "comando": "..." }
         String componenteId = comando.containsKey("componenteId")
                 ? (String) comando.get("componenteId")
                 : (String) comando.get("componente");
@@ -261,7 +261,7 @@ public class ProjetoService {
                     "Campos 'componenteId'+'modo' (ou legado 'componente'+'comando') são obrigatórios");
         }
 
-        // Valida valor do modo
+        // Valida el valor del modo
         if (!modo.equals("AUTO") && !modo.equals("MANUAL")) {
             throw new IllegalArgumentException("Valor de 'modo' inválido: apenas 'AUTO' ou 'MANUAL' são aceites");
         }
@@ -306,7 +306,7 @@ public class ProjetoService {
     }
 
     // -------------------------------------------------------------------------
-    // Simulation control
+    // Control de simulación
     // -------------------------------------------------------------------------
 
     @Transactional
@@ -339,8 +339,8 @@ public class ProjetoService {
     }
 
     /**
-     * Persiste uma leitura manual enviada pelo operador via UI (requer JWT).
-     * O campo origen é forçado a "MANUAL".
+     * Persiste una lectura manual enviada por el operador vía UI (requiere JWT).
+     * El campo origen se fuerza a "MANUAL".
      */
     @Transactional
     public Map<String, Object> saveLeituraManual(Long id, String email, LeituraDTO dto) {
@@ -365,7 +365,7 @@ public class ProjetoService {
 
         leituraRepository.save(lectura);
 
-        // Avalia limiares e gera alertas
+        // Evalúa umbrales y genera alertas
         alertaService.evaluarUmbral(projeto, dto.getComponente(), dto.getValores());
 
         log.info("[manual] Leitura MANUAL guardada: projeto={}, componente={}, ts={}",
@@ -381,21 +381,21 @@ public class ProjetoService {
     }
 
     /**
-     * Devolve mapa componenteId → modo (AUTO|MANUAL) para uso interno do simulador Python.
-     * Não requer validação de ownership — chamado via token interno.
+     * Devuelve mapa componenteId → modo (AUTO|MANUAL) para uso interno del simulador Python.
+     * No requiere validación de ownership — llamado vía token interno.
      */
     public Map<String, String> getModoComponentes(Long projetoId) {
         Map<String, String> modos = new HashMap<>();
-        // Default: todos AUTO
+        // Por defecto: todos AUTO
         COMPONENTES.forEach(c -> modos.put(c, "AUTO"));
-        // Sobrepõe com valores guardados
+        // Sobreescribe con valores guardados
         equipamentoRepository.findByProjetoId(projetoId)
                 .forEach(eq -> modos.put(eq.getComponenteId(), eq.getEstado()));
         return modos;
     }
 
     // -------------------------------------------------------------------------
-    // Used by internal (Python) endpoint — no ownership check required
+    // Usado por el endpoint interno (Python) — no requiere comprobación de ownership
     // -------------------------------------------------------------------------
     public Projeto findOwnedProjectById(Long id) {
         return projetoRepository.findById(id)
@@ -403,16 +403,16 @@ public class ProjetoService {
     }
 
     // -------------------------------------------------------------------------
-    // Used by API endpoints — validates that the project belongs to or is shared with user
+    // Usado por los endpoints de la API — valida que el proyecto pertenece al usuario o está compartido con él
     // -------------------------------------------------------------------------
     public Projeto findOwnedProject(Long id, String email) {
         Usuario usuario = findUsuario(email);
-        // Owner has full access
+        // El propietario tiene acceso completo
         var ownerMatch = projetoRepository.findByIdAndUsuarioId(id, usuario.getId());
         if (ownerMatch.isPresent()) {
             return ownerMatch.get();
         }
-        // Check shared role
+        // Verificar rol compartido
         var rolEntry = usuarioProyectoRolRepository.findByUsuarioEmailAndProjetoId(email, id);
         if (rolEntry.isPresent()) {
             return projetoRepository.findById(id)
@@ -422,11 +422,11 @@ public class ProjetoService {
     }
 
     // -------------------------------------------------------------------------
-    // Role management methods
+    // Métodos de gestión de roles
     // -------------------------------------------------------------------------
 
     public RolProyecto getRolForUser(Long projetoId, String email) {
-        // Check if owner
+        // Verificar si es propietario
         Projeto projeto = projetoRepository.findById(projetoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Proyecto no encontrado: " + projetoId));
         if (projeto.getUsuario().getEmail().equals(email)) {
@@ -439,7 +439,7 @@ public class ProjetoService {
 
     @Transactional
     public RolAssignmentDTO setRol(Long projetoId, String requesterEmail, String targetEmail, RolProyecto rol) {
-        // Only ADMIN can set roles
+        // Solo ADMIN puede asignar roles
         RolProyecto requesterRol = getRolForUser(projetoId, requesterEmail);
         if (requesterRol != RolProyecto.ADMIN) {
             throw new AccessDeniedException("Solo ADMIN puede asignar roles");
@@ -491,7 +491,7 @@ public class ProjetoService {
     }
 
     // -------------------------------------------------------------------------
-    // Private helpers
+    // Métodos auxiliares privados
     // -------------------------------------------------------------------------
 
     private Usuario findUsuario(String email) {
@@ -500,13 +500,13 @@ public class ProjetoService {
     }
 
     private ProjetoDTO toDTO(Projeto p) {
-        // Última leitura de qualquer componente
+        // Última lectura de cualquier componente
         LocalDateTime ultimaLeitura = leituraRepository
                 .findTopByProjetoIdOrderByTimestampDesc(p.getId())
                 .map(LeituraSensor::getTimestamp)
                 .orElse(null);
 
-        // Estado baseado no tempo desde a última leitura
+        // Estado basado en el tiempo desde la última lectura
         String estado;
         if (ultimaLeitura == null || ultimaLeitura.isBefore(LocalDateTime.now().minusSeconds(90))) {
             estado = "OFFLINE";
@@ -514,11 +514,11 @@ public class ProjetoService {
             estado = "ONLINE";
         }
 
-        // Contagem de alertas ativos
+        // Recuento de alertas activas
         long alertasAtivas = alertaRepository
                 .findByProjetoIdAndAtivaOrderByCreadaEnDesc(p.getId(), true).size();
 
-        // Resumo de sensores — última leitura de desinfeccion e reservorio
+        // Resumen de sensores — última lectura de desinfeccion y reservorio
         ProjetoDTO.ResumenSensores resumen = buildResumen(p.getId());
 
         return ProjetoDTO.builder()
