@@ -16,8 +16,8 @@ api.interceptors.request.use(config => {
 api.interceptors.response.use(
   res => res,
   err => {
-    // Só redireciona para login em caso de 401 em rotas protegidas.
-    // NÃO redireciona quando a própria chamada de login/register falha com 401.
+    // Solo redirige al login en caso de 401 en rutas protegidas.
+    // NO redirige cuando la propia llamada de login/register falla con 401.
     const isAuthEndpoint = err.config?.url?.includes('/auth/');
     if (err.response?.status === 401 && !isAuthEndpoint) {
       localStorage.removeItem('aquasense_token');
