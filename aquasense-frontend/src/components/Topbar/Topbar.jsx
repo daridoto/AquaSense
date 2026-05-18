@@ -29,7 +29,7 @@ export default function Topbar({ projectName, alertCount, simulacaoAtiva, simLoa
         </span>
       </div>
       <div className={s.right}>
-        {/* Simulation toggle button */}
+        {/* Botón de toggle de simulación */}
         <button
           className={simulacaoAtiva ? s.simBtnStop : s.simBtnStart}
           onClick={onToggleSimulacao}
