@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import s from './AlertaModal.module.css';
 
-export default function AlertaModal({ title, fields = [], onConfirm, onClose, confirmLabel = 'CONFIRMAR' }) {
+export default function AlertaModal({ title, fields = [], onConfirm, onClose, confirmLabel }) {
+  const { t } = useLanguage();
   const initial = Object.fromEntries(fields.map(f => [f.key, f.defaultValue ?? '']));
   const [values, setValues] = useState(initial);
   const [loading, setLoading] = useState(false);
@@ -14,7 +16,7 @@ export default function AlertaModal({ title, fields = [], onConfirm, onClose, co
       await onConfirm(values);
       onClose();
     } catch (e) {
-      setError(e?.response?.data?.message ?? e?.message ?? 'Erro inesperado');
+      setError(e?.response?.data?.message ?? e?.message ?? t('backend_error'));
     } finally {
       setLoading(false);
     }
@@ -52,9 +54,9 @@ export default function AlertaModal({ title, fields = [], onConfirm, onClose, co
         </div>
         {error && <p className={s.error}>{error}</p>}
         <div className={s.footer}>
-          <button className={s.btnCancel} onClick={onClose}>CANCELAR</button>
+          <button className={s.btnCancel} onClick={onClose}>{t('cancel').toUpperCase()}</button>
           <button className={s.btnConfirm} onClick={handleConfirm} disabled={loading}>
-            {loading ? '...' : confirmLabel}
+            {loading ? '...' : (confirmLabel ?? t('confirm'))}
           </button>
         </div>
       </div>

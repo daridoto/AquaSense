@@ -3,6 +3,10 @@ import api from '../services/api';
 
 const cache = {};
 
+export function clearRoleCache() {
+  Object.keys(cache).forEach(k => delete cache[k]);
+}
+
 export function useRole(projectId) {
   const [rol, setRol] = useState(cache[projectId] ?? null);
   const [loading, setLoading] = useState(!cache[projectId]);

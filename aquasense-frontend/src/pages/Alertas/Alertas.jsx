@@ -1,28 +1,38 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { useLanguage } from '../../context/LanguageContext';
 import AlertaModal from '../../components/AlertaModal/AlertaModal';
 import s from './Alertas.module.css';
 
 const NIVEL_COLOR = { CRITICA: 'critica', ADVERTENCIA: 'advertencia', INFO: 'info' };
 
-const fmt = ts => ts ? new Date(ts).toLocaleString('pt-PT', { dateStyle: 'short', timeStyle: 'short' }) : '—';
-
-function NivelBadge({ nivel }) {
-  return <span className={`${s.badge} ${s[NIVEL_COLOR[nivel] ?? 'info']}`}>{nivel}</span>;
+function NivelBadge({ nivel, t }) {
+  const label = nivel === 'CRITICA'
+    ? t('critical_level')
+    : nivel === 'ADVERTENCIA'
+      ? t('warning_level')
+      : nivel;
+  return <span className={`${s.badge} ${s[NIVEL_COLOR[nivel] ?? 'info']}`}>{label}</span>;
 }
 
-function EstadoBadge({ alerta }) {
-  if (!alerta.ativa) return <span className={`${s.badge} ${s.resolved}`}>RESUELTA</span>;
+function EstadoBadge({ alerta, t }) {
+  if (!alerta.ativa) return <span className={`${s.badge} ${s.resolved}`}>{t('status_resolved')}</span>;
   if (alerta.silenciadaHasta && new Date(alerta.silenciadaHasta) > new Date())
-    return <span className={`${s.badge} ${s.silenced}`}>SILENCIADA</span>;
-  if (alerta.reconocidaPor) return <span className={`${s.badge} ${s.acked}`}>ACK</span>;
-  return <span className={`${s.badge} ${s.active}`}>ACTIVA</span>;
+    return <span className={`${s.badge} ${s.silenced}`}>{t('status_silenced')}</span>;
+  if (alerta.reconocidaPor) return <span className={`${s.badge} ${s.acked}`}>{t('status_ack')}</span>;
+  return <span className={`${s.badge} ${s.active}`}>{t('status_active')}</span>;
 }
 
 export default function Alertas() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t, localeCode } = useLanguage();
+
+  const fmt = ts => ts
+    ? new Date(ts).toLocaleString(localeCode, { dateStyle: 'short', timeStyle: 'short' })
+    : '—';
+
   const [alertas, setAlertas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterNivel, setFilterNivel] = useState('TODOS');
@@ -74,86 +84,117 @@ export default function Alertas() {
     await api.post(`/api/proyectos/${id}/alertas/${alerta.id}/comentarios`, { texto: vals.texto });
   };
 
+  const nivelFilters = [
+    { value: 'TODOS', label: t('filter_all') },
+    { value: 'CRITICA', label: t('filter_critical') },
+    { value: 'ADVERTENCIA', label: t('warning_level') },
+    { value: 'INFO', label: 'INFO' },
+  ];
+
+  const estadoFilters = [
+    { value: 'TODOS', label: t('filter_all') },
+    { value: 'ACTIVA', label: t('status_active') },
+    { value: 'RESUELTA', label: t('status_resolved') },
+  ];
+
   return (
     <div className={s.root}>
       <header className={s.header}>
         <div className={s.headerLeft}>
-          <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>← Dashboard</button>
+          <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>{t('back_to_dashboard')}</button>
           <div className={s.sep} />
-          <span className={s.title}>ALERTAS</span>
-          {activeCount > 0 && <span className={s.countBadge}>{activeCount} activas</span>}
+          <span className={s.title}>{t('alerts_title')}</span>
+          {activeCount > 0 && (
+            <span className={s.countBadge}>{activeCount} {t('active_count_suffix')}</span>
+          )}
         </div>
-        <button className={s.refreshBtn} onClick={load}>↻ Actualizar</button>
+        <button className={s.refreshBtn} onClick={load}>{t('refresh_btn')}</button>
       </header>
 
       <div className={s.filters}>
         <div className={s.filterGroup}>
-          <span className={s.filterLabel}>NIVEL</span>
-          {['TODOS', 'CRITICA', 'ADVERTENCIA', 'INFO'].map(v => (
-            <button key={v} className={`${s.filterBtn} ${filterNivel === v ? s.active : ''}`}
-              onClick={() => setFilterNivel(v)}>{v}</button>
+          <span className={s.filterLabel}>{t('filter_level')}</span>
+          {nivelFilters.map(({ value, label }) => (
+            <button key={value} className={`${s.filterBtn} ${filterNivel === value ? s.active : ''}`}
+              onClick={() => setFilterNivel(value)}>{label}</button>
           ))}
         </div>
         <div className={s.filterGroup}>
-          <span className={s.filterLabel}>ESTADO</span>
-          {['TODOS', 'ACTIVA', 'RESUELTA'].map(v => (
-            <button key={v} className={`${s.filterBtn} ${filterEstado === v ? s.active : ''}`}
-              onClick={() => setFilterEstado(v)}>{v}</button>
+          <span className={s.filterLabel}>{t('filter_status')}</span>
+          {estadoFilters.map(({ value, label }) => (
+            <button key={value} className={`${s.filterBtn} ${filterEstado === value ? s.active : ''}`}
+              onClick={() => setFilterEstado(value)}>{label}</button>
           ))}
         </div>
         <div className={s.filterGroup}>
-          <span className={s.filterLabel}>COMPONENTE</span>
+          <span className={s.filterLabel}>{t('filter_component_label')}</span>
           <select className={s.select} value={filterComp} onChange={e => setFilterComp(e.target.value)}>
-            {componentes.map(c => <option key={c} value={c}>{c === 'TODOS' ? 'Todos' : c.replace(/_/g, ' ')}</option>)}
+            {componentes.map(c => (
+              <option key={c} value={c}>
+                {c === 'TODOS' ? t('filter_all') : c.replace(/_/g, ' ')}
+              </option>
+            ))}
           </select>
         </div>
       </div>
 
       <div className={s.tableWrap}>
         {loading ? (
-          <p className={s.loading}>Cargando...</p>
+          <p className={s.loading}>{t('loading')}</p>
         ) : (
           <table className={s.table}>
             <thead>
               <tr>
-                <th>Nivel</th>
-                <th>Componente</th>
-                <th>Mensaje</th>
-                <th>Creada en</th>
-                <th>Estado</th>
-                <th>Reconocida</th>
-                <th>Asignada</th>
-                <th>Acciones</th>
+                <th>{t('col_level')}</th>
+                <th>{t('col_component')}</th>
+                <th>{t('col_message')}</th>
+                <th>{t('col_created_at')}</th>
+                <th>{t('filter_status')}</th>
+                <th>{t('col_acknowledged')}</th>
+                <th>{t('col_assigned_to')}</th>
+                <th>{t('col_actions')}</th>
               </tr>
             </thead>
             <tbody>
               {visible.length === 0 ? (
-                <tr><td colSpan={8} className={s.empty}>Sin alertas para los filtros seleccionados.</td></tr>
+                <tr><td colSpan={8} className={s.empty}>{t('no_alerts_filtered')}</td></tr>
               ) : visible.map(a => (
                 <>
                   <tr key={a.id} className={`${s.row} ${!a.ativa ? s.resolved : ''}`}
                     onClick={() => setExpanded(expanded === a.id ? null : a.id)}
                     style={{ cursor: 'pointer' }}>
-                    <td><NivelBadge nivel={a.nivel} /></td>
+                    <td><NivelBadge nivel={a.nivel} t={t} /></td>
                     <td className={s.comp}>{a.componente?.replace(/_/g, ' ')}</td>
                     <td className={s.msg}>{a.mensagem}</td>
                     <td className={s.ts}>{fmt(a.creadaEn)}</td>
-                    <td><EstadoBadge alerta={a} /></td>
-                    <td className={s.meta}>{a.reconocidaPor ? `${a.reconocidaPor.split('@')[0]} ${fmt(a.reconocidaEn)}` : '—'}</td>
+                    <td><EstadoBadge alerta={a} t={t} /></td>
+                    <td className={s.meta}>
+                      {a.reconocidaPor ? `${a.reconocidaPor.split('@')[0]} ${fmt(a.reconocidaEn)}` : '—'}
+                    </td>
                     <td className={s.meta}>{a.asignadaA ?? '—'}</td>
                     <td onClick={e => e.stopPropagation()}>
                       <div className={s.actions}>
                         {!a.reconocidaPor && a.ativa && (
-                          <button className={s.actionBtn} onClick={() => openModal('ack', a)}>ACK</button>
+                          <button className={s.actionBtn} onClick={() => openModal('ack', a)}>
+                            {t('status_ack')}
+                          </button>
                         )}
                         {a.ativa && (
-                          <button className={s.actionBtn} onClick={() => openModal('silence', a)}>✕ Silenciar</button>
+                          <button className={s.actionBtn} onClick={() => openModal('silence', a)}>
+                            {t('silence_btn')}
+                          </button>
                         )}
-                        <button className={s.actionBtn} onClick={() => openModal('assign', a)}>→ Asignar</button>
+                        <button className={s.actionBtn} onClick={() => openModal('assign', a)}>
+                          {t('assign_btn')}
+                        </button>
                         {a.ativa && (
-                          <button className={`${s.actionBtn} ${s.resolve}`} onClick={() => openModal('resolve', a)}>✓ Resolver</button>
+                          <button className={`${s.actionBtn} ${s.resolve}`} onClick={() => openModal('resolve', a)}>
+                            {t('resolve_btn')}
+                          </button>
                         )}
-                        <button className={s.actionBtn} onClick={() => openModal('comment', a)}>+ Nota</button>
+                        <button className={s.actionBtn} onClick={() => openModal('comment', a)}>
+                          {t('note_btn')}
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -161,9 +202,9 @@ export default function Alertas() {
                     <tr key={`${a.id}-exp`} className={s.expandedRow}>
                       <td colSpan={8}>
                         <div className={s.expandedInner}>
-                          <span className={s.expandLabel}>COMENTARIOS</span>
+                          <span className={s.expandLabel}>{t('comments_header')}</span>
                           {(!a.comentarios || a.comentarios.length === 0) ? (
-                            <span className={s.noComments}>Sin comentarios</span>
+                            <span className={s.noComments}>{t('no_comments')}</span>
                           ) : (
                             <div className={s.comments}>
                               {a.comentarios.map(c => (
@@ -177,7 +218,8 @@ export default function Alertas() {
                           )}
                           {a.resueltaPor && (
                             <div className={s.resolvedBy}>
-                              Resuelta por <strong>{a.resueltaPor}</strong> el {fmt(a.resueltaEn)}
+                              {t('resolved_by_prefix')} <strong>{a.resueltaPor}</strong>{' '}
+                              {t('resolved_on_prefix')} {fmt(a.resueltaEn)}
                             </div>
                           )}
                         </div>
@@ -192,29 +234,29 @@ export default function Alertas() {
       </div>
 
       {modal?.type === 'ack' && (
-        <AlertaModal title="RECONOCER ALERTA" confirmLabel="ACK"
-          fields={[{ key: 'comentario', label: 'Comentario (opcional)', type: 'textarea', placeholder: 'Acción tomada...' }]}
+        <AlertaModal title={t('modal_ack_title')} confirmLabel={t('status_ack')}
+          fields={[{ key: 'comentario', label: t('field_comment_opt'), type: 'textarea', placeholder: t('field_action_taken') }]}
           onConfirm={vals => doAck(modal.alerta, vals)} onClose={closeModal} />
       )}
       {modal?.type === 'silence' && (
-        <AlertaModal title="SILENCIAR HASTA" confirmLabel="SILENCIAR"
-          fields={[{ key: 'hasta', label: 'Silenciar hasta', type: 'datetime-local',
-            defaultValue: new Date(Date.now() + 3600000).toISOString().slice(0,16) }]}
+        <AlertaModal title={t('modal_silence_title')} confirmLabel={t('btn_silence')}
+          fields={[{ key: 'hasta', label: t('field_silence_until'), type: 'datetime-local',
+            defaultValue: new Date(Date.now() + 3600000).toISOString().slice(0, 16) }]}
           onConfirm={vals => doSilence(modal.alerta, vals)} onClose={closeModal} />
       )}
       {modal?.type === 'assign' && (
-        <AlertaModal title="ASIGNAR A TÉCNICO" confirmLabel="ASIGNAR"
-          fields={[{ key: 'email', label: 'Email del técnico', type: 'email', placeholder: 'tecnico@empresa.com' }]}
+        <AlertaModal title={t('modal_assign_title')} confirmLabel={t('btn_assign')}
+          fields={[{ key: 'email', label: t('field_technician_email'), type: 'email', placeholder: 'tecnico@empresa.com' }]}
           onConfirm={vals => doAssign(modal.alerta, vals)} onClose={closeModal} />
       )}
       {modal?.type === 'resolve' && (
-        <AlertaModal title="RESOLVER ALERTA" confirmLabel="RESOLVER"
-          fields={[{ key: 'comentario', label: 'Comentario (opcional)', type: 'textarea', placeholder: 'Cómo fue resuelta...' }]}
+        <AlertaModal title={t('modal_resolve_title')} confirmLabel={t('btn_resolve')}
+          fields={[{ key: 'comentario', label: t('field_comment_opt'), type: 'textarea', placeholder: t('field_how_resolved') }]}
           onConfirm={vals => doResolve(modal.alerta, vals)} onClose={closeModal} />
       )}
       {modal?.type === 'comment' && (
-        <AlertaModal title="AÑADIR NOTA" confirmLabel="GUARDAR"
-          fields={[{ key: 'texto', label: 'Nota', type: 'textarea', placeholder: 'Observación...' }]}
+        <AlertaModal title={t('modal_comment_title')} confirmLabel={t('btn_save')}
+          fields={[{ key: 'texto', label: t('field_note'), type: 'textarea', placeholder: t('field_observation') }]}
           onConfirm={vals => doComment(modal.alerta, vals)} onClose={closeModal} />
       )}
     </div>

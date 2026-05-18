@@ -66,19 +66,20 @@ export default function Dashboard() {
       {isAdmin && (
         <div style={{ display: 'flex', gap: '8px', padding: '6px 16px', borderBottom: '1px solid var(--border)', background: 'var(--bg2)', flexShrink: 0 }}>
           <Link to={`/proyectos/${id}/equipa`} style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '1px', color: 'var(--text3)', textDecoration: 'none', padding: '3px 8px', border: '1px solid var(--border2)', borderRadius: '2px' }}>
-            Equipa
+            {t('equipa_nav')}
           </Link>
           <Link to={`/proyectos/${id}/auditoria`} style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '1px', color: 'var(--text3)', textDecoration: 'none', padding: '3px 8px', border: '1px solid var(--border2)', borderRadius: '2px' }}>
-            Auditoria
+            {t('auditoria_nav')}
           </Link>
           <Link to={`/proyectos/${id}/notificaciones`} style={{ fontFamily: 'var(--mono)', fontSize: '10px', letterSpacing: '1px', color: 'var(--text3)', textDecoration: 'none', padding: '3px 8px', border: '1px solid var(--border2)', borderRadius: '2px' }}>
-            Notificações
+            {t('notificaciones_nav')}
           </Link>
         </div>
       )}
       <div className={s.body}>
         <main className={s.main}>
           <Sinoptico
+            key={id}
             projectId={id}
             estado={estado}
             alertas={alertas}

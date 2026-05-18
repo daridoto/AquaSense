@@ -40,6 +40,8 @@ export default function Proyectos() {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
+  const handleLogout = async () => { await logout(); navigate('/login'); };
+
   const loadProjects = useCallback(() => {
     setLoading(true);
     api.get('/api/proyectos').then(r => setProjects(r.data)).finally(() => setLoading(false));
@@ -90,7 +92,11 @@ export default function Proyectos() {
           <button className={s.newBtn} onClick={() => { setShowForm(v => !v); setFormError(''); }}>
             {t('new_project_btn')}
           </button>
-          <button className={s.logout} onClick={logout}>{t('sign_out')}</button>
+          <button className={s.logout} onClick={() => navigate('/perfil')}
+            style={{ background: 'transparent', border: '1px solid var(--border2)', color: 'var(--text3)', fontFamily: 'var(--mono)', fontSize: '11px', letterSpacing: '1px', padding: '5px 12px', borderRadius: '2px', cursor: 'pointer' }}>
+            {t('my_account')}
+          </button>
+          <button className={s.logout} onClick={handleLogout}>{t('sign_out')}</button>
         </div>
       </header>
 

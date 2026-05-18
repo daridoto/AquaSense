@@ -126,7 +126,7 @@ export default function Historico() {
               URL.revokeObjectURL(url);
             } catch {} finally { setExporting(false); }
           }}
-        >{exporting ? 'A exportar...' : '↓ Exportar CSV'}</button>
+        >{exporting ? t('exporting_csv_btn') : t('export_csv_btn')}</button>
       </header>
       <div className={s.body}>
         {loading ? (

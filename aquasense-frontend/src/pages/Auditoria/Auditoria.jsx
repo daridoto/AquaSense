@@ -1,14 +1,20 @@
 import { useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { useLanguage } from '../../context/LanguageContext';
 import s from './Auditoria.module.css';
 
-const fmt = ts => ts ? new Date(ts).toLocaleString('pt-PT', { dateStyle: 'short', timeStyle: 'short' }) : '—';
 const truncate = (str, n = 50) => !str ? '—' : str.length > n ? str.slice(0, n) + '…' : str;
 
 export default function Auditoria() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t, localeCode } = useLanguage();
+
+  const fmt = ts => ts
+    ? new Date(ts).toLocaleString(localeCode, { dateStyle: 'short', timeStyle: 'short' })
+    : '—';
+
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
@@ -49,50 +55,50 @@ export default function Auditoria() {
     <div className={s.root}>
       <header className={s.header}>
         <div className={s.headerLeft}>
-          <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>← Dashboard</button>
+          <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>{t('back_to_dashboard')}</button>
           <div className={s.sep} />
-          <span className={s.title}>AUDITORIA</span>
+          <span className={s.title}>{t('auditoria_title')}</span>
         </div>
       </header>
 
       <div className={s.filters}>
         <div className={s.field}>
-          <span className={s.label}>Acción</span>
+          <span className={s.label}>{t('filter_action_label')}</span>
           <input className={s.input} placeholder="CONTROL_MANUAL..." value={filters.accion}
             onChange={e => setFilters(f => ({ ...f, accion: e.target.value }))} />
         </div>
         <div className={s.field}>
-          <span className={s.label}>Usuario</span>
+          <span className={s.label}>{t('filter_user_label')}</span>
           <input className={s.input} placeholder="email@..." value={filters.usuario}
             onChange={e => setFilters(f => ({ ...f, usuario: e.target.value }))} />
         </div>
         <div className={s.field}>
-          <span className={s.label}>Desde</span>
+          <span className={s.label}>{t('filter_from_label')}</span>
           <input className={s.input} type="date" value={filters.desde}
             onChange={e => setFilters(f => ({ ...f, desde: e.target.value }))} />
         </div>
         <div className={s.field}>
-          <span className={s.label}>Hasta</span>
+          <span className={s.label}>{t('filter_to_label')}</span>
           <input className={s.input} type="date" value={filters.hasta}
             onChange={e => setFilters(f => ({ ...f, hasta: e.target.value }))} />
         </div>
-        <button className={s.searchBtn} onClick={handleSearch}>Buscar</button>
+        <button className={s.searchBtn} onClick={handleSearch}>{t('search_btn')}</button>
       </div>
 
       <div className={s.tableWrap}>
         {loading ? (
-          <p className={s.loading}>Cargando...</p>
+          <p className={s.loading}>{t('loading')}</p>
         ) : rows.length === 0 ? (
-          <p className={s.empty}>Haz clic en Buscar para cargar eventos de auditoría.</p>
+          <p className={s.empty}>{t('audit_empty_hint')}</p>
         ) : (
           <table className={s.table}>
             <thead>
               <tr>
-                <th>Timestamp</th>
-                <th>Usuario</th>
-                <th>Acción</th>
-                <th>Entidad</th>
-                <th>Valor después</th>
+                <th>{t('col_timestamp')}</th>
+                <th>{t('col_user')}</th>
+                <th>{t('col_action')}</th>
+                <th>{t('col_entity')}</th>
+                <th>{t('col_value_after')}</th>
                 <th>IP</th>
               </tr>
             </thead>
@@ -114,9 +120,15 @@ export default function Auditoria() {
 
       {totalPages > 1 && (
         <div className={s.pagination}>
-          <span className={s.pageInfo}>{total} eventos · Pág. {page + 1} / {totalPages}</span>
-          <button className={s.pageBtn} onClick={() => goPage(page - 1)} disabled={page === 0}>← Anterior</button>
-          <button className={s.pageBtn} onClick={() => goPage(page + 1)} disabled={page >= totalPages - 1}>Siguiente →</button>
+          <span className={s.pageInfo}>
+            {total} {t('audit_events_label')} · {t('page_label')} {page + 1} {t('of_label')} {totalPages}
+          </span>
+          <button className={s.pageBtn} onClick={() => goPage(page - 1)} disabled={page === 0}>
+            {t('prev_page')}
+          </button>
+          <button className={s.pageBtn} onClick={() => goPage(page + 1)} disabled={page >= totalPages - 1}>
+            {t('next_page')}
+          </button>
         </div>
       )}
     </div>

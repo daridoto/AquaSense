@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { useLanguage } from '../../context/LanguageContext';
 import s from './Notificaciones.module.css';
 
 export default function Notificaciones() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [prefs, setPrefs] = useState({ notificarCritica: true, notificarAdvertencia: false, emailDestino: '' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -22,9 +24,9 @@ export default function Notificaciones() {
     setSaving(true); setMsg(null);
     try {
       await api.put(`/api/proyectos/${id}/notificaciones`, prefs);
-      setMsg({ type: 'success', text: 'Preferencias guardadas.' });
+      setMsg({ type: 'success', text: t('notif_saved_ok') });
     } catch {
-      setMsg({ type: 'error', text: 'Error al guardar. Inténtalo de nuevo.' });
+      setMsg({ type: 'error', text: t('notif_save_error') });
     } finally {
       setSaving(false);
     }
@@ -35,18 +37,18 @@ export default function Notificaciones() {
   return (
     <div className={s.root}>
       <header className={s.header}>
-        <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>← Dashboard</button>
+        <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>{t('back_to_dashboard')}</button>
         <div className={s.sep} />
-        <span className={s.title}>NOTIFICACIONES</span>
+        <span className={s.title}>{t('notificaciones_title')}</span>
       </header>
       <div className={s.body}>
         <div className={s.card}>
-          <span className={s.cardTitle}>Preferencias de alertas por email</span>
+          <span className={s.cardTitle}>{t('notif_prefs_heading')}</span>
 
           <div className={s.toggle}>
             <div className={s.toggleInfo}>
-              <span className={s.toggleLabel}>Alertas CRÍTICAS</span>
-              <span className={s.toggleDesc}>Recibir email inmediato cuando se cree una alerta crítica</span>
+              <span className={s.toggleLabel}>{t('notif_critical_label')}</span>
+              <span className={s.toggleDesc}>{t('notif_critical_desc')}</span>
             </div>
             <label className={s.switch}>
               <input type="checkbox" checked={prefs.notificarCritica}
@@ -57,8 +59,8 @@ export default function Notificaciones() {
 
           <div className={s.toggle}>
             <div className={s.toggleInfo}>
-              <span className={s.toggleLabel}>Alertas de ADVERTENCIA</span>
-              <span className={s.toggleDesc}>Recibir email para alertas de advertencia</span>
+              <span className={s.toggleLabel}>{t('notif_warning_label')}</span>
+              <span className={s.toggleDesc}>{t('notif_warning_desc')}</span>
             </div>
             <label className={s.switch}>
               <input type="checkbox" checked={prefs.notificarAdvertencia}
@@ -68,8 +70,8 @@ export default function Notificaciones() {
           </div>
 
           <div className={s.field}>
-            <label className={s.label}>Email de destino (opcional)</label>
-            <input className={s.input} type="email" placeholder="Deja vacío para usar el email de la cuenta"
+            <label className={s.label}>{t('email_dest_label')}</label>
+            <input className={s.input} type="email" placeholder={t('email_dest_placeholder')}
               value={prefs.emailDestino ?? ''}
               onChange={e => setPrefs(p => ({ ...p, emailDestino: e.target.value }))} />
           </div>
@@ -77,7 +79,7 @@ export default function Notificaciones() {
           {msg && <p className={msg.type === 'success' ? s.success : s.error}>{msg.text}</p>}
 
           <button className={s.saveBtn} onClick={handleSave} disabled={saving}>
-            {saving ? 'Guardando...' : 'Guardar preferencias'}
+            {saving ? t('saving_prefs') : t('save_prefs_btn')}
           </button>
         </div>
       </div>

@@ -14,6 +14,7 @@ const Historico      = lazy(() => import('./pages/Historico/Historico'));
 const Equipa         = lazy(() => import('./pages/Equipa/Equipa'));
 const Auditoria      = lazy(() => import('./pages/Auditoria/Auditoria'));
 const Notificaciones = lazy(() => import('./pages/Notificaciones/Notificaciones'));
+const Perfil         = lazy(() => import('./pages/Perfil/Perfil'));
 
 export default function App() {
   return (
@@ -29,7 +30,7 @@ export default function App() {
             <Route path="/proyectos/:id/alertas" element={<ProtectedRoute><Alertas /></ProtectedRoute>} />
             <Route path="/proyectos/:id/historico" element={
               <ProtectedRoute>
-                <Suspense fallback={<p style={{ padding: '2rem', textAlign: 'center' }}>Cargando...</p>}>
+                <Suspense fallback={<p style={{ padding: '2rem', textAlign: 'center' }}>···</p>}>
                   <Historico />
                 </Suspense>
               </ProtectedRoute>
@@ -47,6 +48,11 @@ export default function App() {
             <Route path="/proyectos/:id/notificaciones" element={
               <ProtectedRoute>
                 <Suspense fallback={null}><Notificaciones /></Suspense>
+              </ProtectedRoute>
+            } />
+            <Route path="/perfil" element={
+              <ProtectedRoute>
+                <Suspense fallback={null}><Perfil /></Suspense>
               </ProtectedRoute>
             } />
             <Route path="*" element={<Navigate to="/login" replace />} />

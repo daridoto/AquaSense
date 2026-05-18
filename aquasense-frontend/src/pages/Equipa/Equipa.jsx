@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useRole } from '../../hooks/useRole';
+import { useLanguage } from '../../context/LanguageContext';
 import s from './Equipa.module.css';
 
 const ROLES = ['ADMIN', 'OPERADOR', 'MANTENIMIENTO', 'VISUALIZADOR'];
@@ -9,6 +10,7 @@ const ROLES = ['ADMIN', 'OPERADOR', 'MANTENIMIENTO', 'VISUALIZADOR'];
 export default function Equipa() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const { isAdmin, loading: roleLoading } = useRole(id);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +40,7 @@ export default function Equipa() {
       setAddEmail('');
       load();
     } catch (e) {
-      setError(e?.response?.data?.message ?? 'Error al añadir miembro');
+      setError(e?.response?.data?.message ?? t('error_add_member_default'));
     } finally {
       setAdding(false);
     }
@@ -64,26 +66,26 @@ export default function Equipa() {
     <div className={s.root}>
       <header className={s.header}>
         <div className={s.headerLeft}>
-          <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>← Dashboard</button>
+          <button className={s.back} onClick={() => navigate(`/proyectos/${id}`)}>{t('back_to_dashboard')}</button>
           <div className={s.sep} />
-          <span className={s.title}>EQUIPO</span>
+          <span className={s.title}>{t('equipa_title')}</span>
         </div>
       </header>
       <div className={s.body}>
-        <span className={s.sectionTitle}>MIEMBROS CON ACCESO</span>
+        <span className={s.sectionTitle}>{t('members_heading')}</span>
         <table className={s.table}>
           <thead>
             <tr>
               <th>Email</th>
-              <th>Nome</th>
-              <th>Rol</th>
+              <th>{t('col_name')}</th>
+              <th>{t('col_role')}</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {members.length === 0 ? (
               <tr><td colSpan={4} style={{ padding: '20px', textAlign: 'center', color: 'var(--text3)', fontFamily: 'var(--mono)', fontSize: '11px' }}>
-                Solo el propietario tiene acceso.
+                {t('only_owner_msg')}
               </td></tr>
             ) : members.map(m => (
               <tr key={m.usuarioId}>
@@ -96,14 +98,16 @@ export default function Equipa() {
                   </select>
                 </td>
                 <td>
-                  <button className={s.removeBtn} onClick={() => handleRemove(m.usuarioId)}>Eliminar</button>
+                  <button className={s.removeBtn} onClick={() => handleRemove(m.usuarioId)}>
+                    {t('remove_btn')}
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <span className={s.sectionTitle}>AÑADIR MIEMBRO</span>
+        <span className={s.sectionTitle}>{t('add_member_heading')}</span>
         <div className={s.addForm}>
           <input className={s.addInput} type="email" placeholder="email@empresa.com"
             value={addEmail} onChange={e => setAddEmail(e.target.value)}
@@ -112,7 +116,7 @@ export default function Equipa() {
             {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
           </select>
           <button className={s.addBtn} onClick={handleAdd} disabled={adding || !addEmail.trim()}>
-            {adding ? '...' : '+ Adicionar'}
+            {adding ? '...' : t('add_member_btn')}
           </button>
         </div>
         {error && <p className={s.error}>{error}</p>}

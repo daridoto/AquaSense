@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import api from '../services/api';
 import { useLanguage } from './LanguageContext';
+import { clearRoleCache } from '../hooks/useRole';
 
 const AuthContext = createContext(null);
 
@@ -35,14 +36,41 @@ export function AuthProvider({ children }) {
     } catch (_) {
       // fallo silencioso — logout local continúa
     } finally {
+      clearRoleCache();
       localStorage.removeItem('aquasense_token');
       localStorage.removeItem('aquasense_user');
       setUser(null);
     }
   };
 
+  const updateProfile = async (nombre, language) => {
+    const res = await api.put('/api/usuarios/me', { nombre, language });
+    const updated = { ...user, nombre: res.data.nombre, language: res.data.language };
+    localStorage.setItem('aquasense_user', JSON.stringify(updated));
+    setUser(updated);
+    if (language) setLang(language);
+    return res.data;
+  };
+
+  const changePassword = async (currentPassword, newPassword) => {
+    await api.put('/api/usuarios/me/password', { currentPassword, newPassword });
+  };
+
+  const changeEmail = async (newEmail, password) => {
+    await api.put('/api/usuarios/me/email', { newEmail, password });
+    await logout();
+  };
+
+  const deleteAccount = async (password) => {
+    await api.delete('/api/usuarios/me', { data: { password } });
+    clearRoleCache();
+    localStorage.removeItem('aquasense_token');
+    localStorage.removeItem('aquasense_user');
+    setUser(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, updateProfile, changePassword, changeEmail, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );
