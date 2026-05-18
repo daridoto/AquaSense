@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 public class DataInitializer implements CommandLineRunner {
 
-    // Os 8 componenteIds canónicos da planta ETAP, em ordem de processo
+    // Los 8 componenteIds canónicos de la planta ETAP, en orden de proceso
     private static final List<String> COMPONENTES = List.of(
             "bomba_captacao",
             "reja_tamiz",
@@ -31,8 +31,8 @@ public class DataInitializer implements CommandLineRunner {
             "bomba_distribucion"
     );
 
-    // Layout inicial: 8 componentes alinhados da esquerda para a direita,
-    // separados 150px, centrados verticalmente em y=200.
+    // Layout inicial: 8 componentes alineados de izquierda a derecha,
+    // separados 150px, centrados verticalmente en y=200.
     private static final String LAYOUT_INICIAL = buildLayout();
 
     private final UsuarioRepository usuarioRepository;
@@ -42,13 +42,13 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Corre apenas se o utilizador demo ainda não existir
+        // Solo se ejecuta si el usuario de demostración aún no existe
         if (usuarioRepository.existsByEmail("operador@aquasense.com")) {
             log.info("=== Seed já aplicado — nada a fazer ===");
             return;
         }
 
-        // 1. Criar utilizador demo
+        // 1. Crear usuario de demostración
         Usuario operador = usuarioRepository.save(Usuario.builder()
                 .email("operador@aquasense.com")
                 .password(passwordEncoder.encode("password123"))
@@ -56,7 +56,7 @@ public class DataInitializer implements CommandLineRunner {
                 .language("pt")
                 .build());
 
-        // 2. Criar projeto demo
+        // 2. Crear proyecto de demostración
         Projeto demo = projetoRepository.save(Projeto.builder()
                 .nombre("ETAP Demo")
                 .descripcion("Planta de tratamento de água — ambiente demo")
@@ -66,7 +66,7 @@ public class DataInitializer implements CommandLineRunner {
                 .layout(LAYOUT_INICIAL)
                 .build());
 
-        // 3. Criar os 8 equipamentos com componenteIds canónicos
+        // 3. Crear los 8 equipos con componenteIds canónicos
         for (int i = 0; i < COMPONENTES.size(); i++) {
             equipamentoRepository.save(Equipamento.builder()
                     .projeto(demo)
@@ -79,10 +79,10 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     /**
-     * Gera o JSON de layout no formato canónico {componentes, tuberias}.
-     * Posições horizontais calculadas para acomodar as bounding boxes reais de cada
-     * shape ISA (ver equipShapes.jsx). As 7 ligações do fluxo principal são incluídas
-     * com pipeType correto segundo conexiones-equipos.md.
+     * Genera el JSON de layout en el formato canónico {componentes, tuberias}.
+     * Posiciones horizontales calculadas para acomodar los bounding boxes reales de cada
+     * shape ISA (ver equipShapes.jsx). Los 7 enlaces del flujo principal se incluyen
+     * con el pipeType correcto según conexiones-equipos.md.
      */
     private static String buildLayout() {
         // id, componenteId, label, x, y
