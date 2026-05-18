@@ -16,7 +16,7 @@ export function usePolling(url, interval = 5000) {
     async function tick() {
       if (cancelled) return;
 
-      // Pausa quando o tab está em background — retoma ao voltar ao primeiro plano
+      // Pausa cuando el tab está en background — reanuda al volver al primer plano
       if (document.hidden) {
         timerRef.current = setTimeout(tick, interval);
         return;
