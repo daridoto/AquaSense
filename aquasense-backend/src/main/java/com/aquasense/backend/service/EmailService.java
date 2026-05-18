@@ -29,7 +29,7 @@ public class EmailService {
     public void enviarAlertaCritica(String destino, String projetoNombre,
                                      String componente, String mensagem, Long projetoId) {
         if (!isEnabled()) {
-            log.debug("[EMAIL] SMTP não configurado — alerta crítica não enviada para {}", destino);
+            log.debug("[EMAIL] SMTP no configurado — alerta crítica no enviada a {}", destino);
             return;
         }
 
@@ -60,7 +60,7 @@ public class EmailService {
                           <td style="padding:8px">%s</td>
                         </tr>
                         <tr>
-                          <td style="padding:8px;background:#fff5f5;font-weight:bold">Mensagem</td>
+                          <td style="padding:8px;background:#fff5f5;font-weight:bold">Mensaje</td>
                           <td style="padding:8px;background:#fff5f5">%s</td>
                         </tr>
                         <tr>
@@ -80,9 +80,9 @@ public class EmailService {
 
             helper.setText(body, true);
             mailSender.send(message);
-            log.info("[EMAIL] Alerta crítica enviada para {}: componente={}", destino, componente);
+            log.info("[EMAIL] Alerta crítica enviada a {}: componente={}", destino, componente);
         } catch (Exception e) {
-            log.warn("[EMAIL] Falha ao enviar alerta crítica para {}: {}", destino, e.getMessage());
+            log.warn("[EMAIL] Fallo al enviar alerta crítica a {}: {}", destino, e.getMessage());
         }
     }
 }
