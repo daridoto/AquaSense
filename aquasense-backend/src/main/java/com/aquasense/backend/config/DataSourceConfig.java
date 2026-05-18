@@ -19,7 +19,7 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource dataSource() {
-        // Aceita tanto "postgresql://" como "jdbc:postgresql://"
+        // Acepta tanto "postgresql://" como "jdbc:postgresql://"
         String raw = databaseUrl.startsWith("jdbc:") ? databaseUrl.substring(5) : databaseUrl;
 
         try {
