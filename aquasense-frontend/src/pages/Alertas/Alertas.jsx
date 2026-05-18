@@ -13,7 +13,7 @@ function NivelBadge({ nivel }) {
 }
 
 function EstadoBadge({ alerta }) {
-  if (!alerta.ativa) return <span className={`${s.badge} ${s.resolved}`}>RESOLVIDA</span>;
+  if (!alerta.ativa) return <span className={`${s.badge} ${s.resolved}`}>RESUELTA</span>;
   if (alerta.silenciadaHasta && new Date(alerta.silenciadaHasta) > new Date())
     return <span className={`${s.badge} ${s.silenced}`}>SILENCIADA</span>;
   if (alerta.reconocidaPor) return <span className={`${s.badge} ${s.acked}`}>ACK</span>;
@@ -88,7 +88,7 @@ export default function Alertas() {
 
       <div className={s.filters}>
         <div className={s.filterGroup}>
-          <span className={s.filterLabel}>NÍVEL</span>
+          <span className={s.filterLabel}>NIVEL</span>
           {['TODOS', 'CRITICA', 'ADVERTENCIA', 'INFO'].map(v => (
             <button key={v} className={`${s.filterBtn} ${filterNivel === v ? s.active : ''}`}
               onClick={() => setFilterNivel(v)}>{v}</button>
@@ -111,24 +111,24 @@ export default function Alertas() {
 
       <div className={s.tableWrap}>
         {loading ? (
-          <p className={s.loading}>A carregar...</p>
+          <p className={s.loading}>Cargando...</p>
         ) : (
           <table className={s.table}>
             <thead>
               <tr>
-                <th>Nível</th>
+                <th>Nivel</th>
                 <th>Componente</th>
-                <th>Mensagem</th>
-                <th>Criada em</th>
+                <th>Mensaje</th>
+                <th>Creada en</th>
                 <th>Estado</th>
-                <th>Reconhecida</th>
-                <th>Atribuída</th>
-                <th>Ações</th>
+                <th>Reconocida</th>
+                <th>Asignada</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {visible.length === 0 ? (
-                <tr><td colSpan={8} className={s.empty}>Sem alertas para os filtros seleccionados.</td></tr>
+                <tr><td colSpan={8} className={s.empty}>Sin alertas para los filtros seleccionados.</td></tr>
               ) : visible.map(a => (
                 <>
                   <tr key={a.id} className={`${s.row} ${!a.ativa ? s.resolved : ''}`}
@@ -149,7 +149,7 @@ export default function Alertas() {
                         {a.ativa && (
                           <button className={s.actionBtn} onClick={() => openModal('silence', a)}>✕ Silenciar</button>
                         )}
-                        <button className={s.actionBtn} onClick={() => openModal('assign', a)}>→ Atribuir</button>
+                        <button className={s.actionBtn} onClick={() => openModal('assign', a)}>→ Asignar</button>
                         {a.ativa && (
                           <button className={`${s.actionBtn} ${s.resolve}`} onClick={() => openModal('resolve', a)}>✓ Resolver</button>
                         )}
@@ -161,9 +161,9 @@ export default function Alertas() {
                     <tr key={`${a.id}-exp`} className={s.expandedRow}>
                       <td colSpan={8}>
                         <div className={s.expandedInner}>
-                          <span className={s.expandLabel}>COMENTÁRIOS</span>
+                          <span className={s.expandLabel}>COMENTARIOS</span>
                           {(!a.comentarios || a.comentarios.length === 0) ? (
-                            <span className={s.noComments}>Sem comentários</span>
+                            <span className={s.noComments}>Sin comentarios</span>
                           ) : (
                             <div className={s.comments}>
                               {a.comentarios.map(c => (
@@ -177,7 +177,7 @@ export default function Alertas() {
                           )}
                           {a.resueltaPor && (
                             <div className={s.resolvedBy}>
-                              Resolvida por <strong>{a.resueltaPor}</strong> em {fmt(a.resueltaEn)}
+                              Resuelta por <strong>{a.resueltaPor}</strong> el {fmt(a.resueltaEn)}
                             </div>
                           )}
                         </div>
@@ -192,29 +192,29 @@ export default function Alertas() {
       </div>
 
       {modal?.type === 'ack' && (
-        <AlertaModal title="RECONHECER ALERTA" confirmLabel="ACK"
-          fields={[{ key: 'comentario', label: 'Comentário (opcional)', type: 'textarea', placeholder: 'Acção tomada...' }]}
+        <AlertaModal title="RECONOCER ALERTA" confirmLabel="ACK"
+          fields={[{ key: 'comentario', label: 'Comentario (opcional)', type: 'textarea', placeholder: 'Acción tomada...' }]}
           onConfirm={vals => doAck(modal.alerta, vals)} onClose={closeModal} />
       )}
       {modal?.type === 'silence' && (
-        <AlertaModal title="SILENCIAR ATÉ" confirmLabel="SILENCIAR"
-          fields={[{ key: 'hasta', label: 'Silenciar até', type: 'datetime-local',
+        <AlertaModal title="SILENCIAR HASTA" confirmLabel="SILENCIAR"
+          fields={[{ key: 'hasta', label: 'Silenciar hasta', type: 'datetime-local',
             defaultValue: new Date(Date.now() + 3600000).toISOString().slice(0,16) }]}
           onConfirm={vals => doSilence(modal.alerta, vals)} onClose={closeModal} />
       )}
       {modal?.type === 'assign' && (
-        <AlertaModal title="ATRIBUIR A TÉCNICO" confirmLabel="ATRIBUIR"
-          fields={[{ key: 'email', label: 'Email do técnico', type: 'email', placeholder: 'tecnico@empresa.com' }]}
+        <AlertaModal title="ASIGNAR A TÉCNICO" confirmLabel="ASIGNAR"
+          fields={[{ key: 'email', label: 'Email del técnico', type: 'email', placeholder: 'tecnico@empresa.com' }]}
           onConfirm={vals => doAssign(modal.alerta, vals)} onClose={closeModal} />
       )}
       {modal?.type === 'resolve' && (
         <AlertaModal title="RESOLVER ALERTA" confirmLabel="RESOLVER"
-          fields={[{ key: 'comentario', label: 'Comentário (opcional)', type: 'textarea', placeholder: 'Como foi resolvida...' }]}
+          fields={[{ key: 'comentario', label: 'Comentario (opcional)', type: 'textarea', placeholder: 'Cómo fue resuelta...' }]}
           onConfirm={vals => doResolve(modal.alerta, vals)} onClose={closeModal} />
       )}
       {modal?.type === 'comment' && (
-        <AlertaModal title="ADICIONAR NOTA" confirmLabel="GUARDAR"
-          fields={[{ key: 'texto', label: 'Nota', type: 'textarea', placeholder: 'Observação...' }]}
+        <AlertaModal title="AÑADIR NOTA" confirmLabel="GUARDAR"
+          fields={[{ key: 'texto', label: 'Nota', type: 'textarea', placeholder: 'Observación...' }]}
           onConfirm={vals => doComment(modal.alerta, vals)} onClose={closeModal} />
       )}
     </div>
