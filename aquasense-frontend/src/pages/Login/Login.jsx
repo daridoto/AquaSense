@@ -14,7 +14,7 @@ const LANGUAGES = [
 
 function extractError(err, fallback) {
   if (!err.response) {
-    return null; // handled by caller with t() key
+    return null; // gestionado por el llamador con clave t()
   }
   const data = err.response.data;
   return data?.detail ?? data?.message ?? data?.error ?? fallback;
