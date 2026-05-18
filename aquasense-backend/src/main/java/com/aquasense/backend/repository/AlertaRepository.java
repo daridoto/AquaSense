@@ -12,15 +12,15 @@ public interface AlertaRepository extends JpaRepository<Alerta, Long> {
 
     List<Alerta> findByProjetoIdAndAtivaOrderByCreadaEnDesc(Long projetoId, boolean ativa);
 
-    // Deduplication check: one active alert per (project, component, tipo)
+    // Comprobación de duplicados: una alerta activa por (proyecto, componente, tipo)
     Optional<Alerta> findByProjetoIdAndComponenteAndTipoAndAtivaTrue(
             Long projetoId, String componente, String tipo);
 
-    // Used by resolverAlertasSi to close all active alerts for a component
+    // Usado por resolverAlertasSi para cerrar todas las alertas activas de un componente
     List<Alerta> findByProjetoIdAndComponenteAndAtivaTrue(Long projetoId, String componente);
 
     void deleteByProjetoId(Long projetoId);
 
-    // Lifecycle: find specific alert belonging to a project
+    // Ciclo de vida: buscar una alerta específica perteneciente a un proyecto
     Optional<Alerta> findByProjetoIdAndId(Long projetoId, Long alertaId);
 }
