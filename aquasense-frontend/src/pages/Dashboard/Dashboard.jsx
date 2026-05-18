@@ -27,7 +27,7 @@ export default function Dashboard() {
   const alertCount = alertas.filter(a => a.ativa).length;
   const hasError = estadoErr || alertasErr;
 
-  // Load simulation status on mount
+  // Carga el estado de simulación al montar
   useEffect(() => {
     api.get(`/api/proyectos/${id}/simulacao/status`)
       .then(r => setSimulacaoAtiva(r.data.status === 'RUNNING'))
@@ -45,7 +45,7 @@ export default function Dashboard() {
         setSimulacaoAtiva(true);
       }
     } catch {
-      // silently ignore — state stays unchanged
+      // ignorar silenciosamente — el estado no cambia
     } finally {
       setSimLoading(false);
     }
