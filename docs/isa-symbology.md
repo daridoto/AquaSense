@@ -1,119 +1,119 @@
-# AquaSense — Simbologia ISA 5.1
+# AquaSense — Simbología ISA 5.1
 
 > ISA 5.1-2009: *Instrumentation Symbols and Identification*
-> Este documento mapeia cada componente da paleta do CanvasEditor ao símbolo ISA 5.1 mais próximo,
-> descreve a forma SVG implementada e justifica a decisão quando não existe equivalente direto.
+> Este documento mapea cada componente de la paleta del CanvasEditor al símbolo ISA 5.1 más cercano,
+> describe la forma SVG implementada y justifica la decisión cuando no existe equivalente directo.
 
 ---
 
-## 1. Componentes canónicos (8 IDs do contrato)
+## 1. Componentes canónicos (8 IDs del contrato)
 
-| componenteId | Label UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificação |
+| componenteId | Etiqueta UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificación |
 |---|---|---|---|---|
-| `bomba_captacao` | B. Captação | Pump — centrifugal (círculo com rotor) | Círculo com ponto central + 3 pás radiais | ISA 5.1 §5.3: bomba centrífuga representada por círculo com indicação de sentido de rotação. As pás radiais indicam movimento rotatório. |
-| `reja_tamiz` | Reja/Tamiz | Screen / Strainer (linhas paralelas verticais) | 7 linhas verticais ligeiramente inclinadas + base horizontal | ISA 5.1 §5.6: filtro de partículas grosseiras representado por conjunto de barras paralelas. A inclinação sugere a posição de uma grelha de entrada. |
-| `coagulacion` | Coagulação | Mixer / Inline mixer (câmara com agitador) | Retângulo com 3 divisórias verticais, entrada no topo, saída na base | ISA 5.1 não define coagulação como símbolo autónomo. Aproximação: câmara de mistura (mixing vessel) com canais de fluxo interno. |
-| `decantador` | Decantador | Vessel — gravity separator | Círculo com 2 eixos de simetria + círculo central de recolha de lodos | ISA 5.1 §5.7: separador de fases por gravidade. Forma circular indica decantador circular (Dortmund/Imhoff). O círculo interior representa o cone de extração de lodos. |
-| `filtracion` | Filtração | Filter vessel (retângulo com meio filtrante) | Retângulo com linha de separação + 5 círculos representando grãos de areia | ISA 5.1 §5.6: vessel de filtração. Os círculos no interior representam o leito filtrante de areia/antracite. |
-| `desinfeccion` | Desinfeção | Chemical injection point / UV reactor | Retângulo com indicação "UV" e linha tracejada (radiação) | ISA 5.1 não define desinfeção UV como símbolo próprio. Aproximação: câmara de reação com identificação de agente (UV). A linha tracejada representa radiação ultravioleta. |
-| `reservorio` | Reservório | Storage vessel — open top | Retângulo largo com linha de nível médio | ISA 5.1 §5.7: tanque de armazenamento aberto. A largura maior que a altura indica grande capacidade de reserva. A linha interna representa o nível nominal de operação. |
-| `bomba_distribucion` | B. Distribuição | Pump — centrifugal | Idêntico a `bomba_captacao` | ISA 5.1 §5.3: mesma forma que qualquer bomba centrífuga. A distinção entre captação e distribuição é feita por posição no diagrama e etiqueta, não por forma — conforme ISA 5.1. |
+| `bomba_captacao` | B. Captación | Pump — centrifugal (círculo con rotor) | Círculo con punto central + 3 paletas radiales | ISA 5.1 §5.3: bomba centrífuga representada por un círculo con indicación del sentido de rotación. Las paletas radiales indican movimiento rotatorio. |
+| `reja_tamiz` | Reja/Tamiz | Screen / Strainer (líneas paralelas verticales) | 7 líneas verticales ligeramente inclinadas + base horizontal | ISA 5.1 §5.6: filtro de partículas gruesas representado por un conjunto de barras paralelas. La inclinación sugiere la posición de una rejilla de entrada. |
+| `coagulacion` | Coagulación | Mixer / Inline mixer (cámara con agitador) | Rectángulo con 3 divisiones verticales, entrada en la parte superior, salida en la base | ISA 5.1 no define la coagulación como símbolo autónomo. Aproximación: cámara de mezcla *(mixing vessel)* con canales de flujo interno. |
+| `decantador` | Decantador | Vessel — gravity separator | Círculo con 2 ejes de simetría + círculo central de recogida de lodos | ISA 5.1 §5.7: separador de fases por gravedad. La forma circular indica decantador circular (Dortmund/Imhoff). El círculo interior representa el cono de extracción de lodos. |
+| `filtracion` | Filtración | Filter vessel (rectángulo con medio filtrante) | Rectángulo con línea de separación + 5 círculos que representan granos de arena | ISA 5.1 §5.6: vessel de filtración. Los círculos en el interior representan el lecho filtrante de arena/antracita. |
+| `desinfeccion` | Desinfección | Chemical injection point / UV reactor | Rectángulo con indicación "UV" y línea discontinua (radiación) | ISA 5.1 no define la desinfección UV como símbolo propio. Aproximación: cámara de reacción con identificación de agente (UV). La línea discontinua representa la radiación ultravioleta. |
+| `reservorio` | Reservorio | Storage vessel — open top | Rectángulo ancho con línea de nivel medio | ISA 5.1 §5.7: tanque de almacenamiento abierto. El ancho mayor que el alto indica gran capacidad de reserva. La línea interna representa el nivel nominal de operación. |
+| `bomba_distribucion` | B. Distribución | Pump — centrifugal | Idéntico a `bomba_captacao` | ISA 5.1 §5.3: misma forma que cualquier bomba centrífuga. La distinción entre captación y distribución se hace por posición en el diagrama y etiqueta, no por forma — conforme a ISA 5.1. |
 
 ---
 
-## 2. Grupo Bombagem (paleta expandida)
+## 2. Grupo de Bombeo (paleta expandida)
 
-| componenteId | Label UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificação |
+| componenteId | Etiqueta UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificación |
 |---|---|---|---|---|
-| `bomba_centrifuga` | B. Centrífuga | Pump — centrifugal | Círculo + ponto central + 3 pás | ISA 5.1 §5.3 — símbolo canónico. |
-| `bomba_dosificadora` | B. Doseadora | Pump — positive displacement / metering | Retângulo com círculo interno + duas saídas laterais + linha de dosagem | ISA 5.1 §5.3: bomba de deslocamento positivo indicada por forma retangular com elemento de pistão. As linhas laterais representam as ligações de aspiração e descarga. |
-| `bomba_vacio` | B. Vácuo | Pump — vacuum / liquid ring | Elipse com linha tracejada horizontal (vácuo) + conexões topo/base | ISA 5.1 não distingue bomba de vácuo com símbolo próprio. Aproximação: elipse (diferencia de centrífuga) com tracejado indicando fase gasosa aspirada. |
-| `bomba_sumergible` | B. Submersa | Pump — submersible | Retângulo vertical (carcaça estanque) + círculo interior + linha de fundo dupla | ISA 5.1 §5.3: nota de campo — bomba submersa representada com carcaça fechada. As linhas duplas na base indicam lâmina de água. |
-| `bomba_peristaltica` | B. Peristáltica | Pump — peristaltic | Círculo com 3 roletes (preenchidos) + conexões esquerda/direita | ISA 5.1 não tem símbolo específico. Aproximação: roda peristáltica com 3 roletes de compressão, conforme prática comum em P&ID de indústria farmacêutica. |
-| `bomba_tornillo` | B. Parafuso | Pump — screw / progressive cavity | Retângulo horizontal com curva sinusoidal dupla (parafuso de Arquimedes) | ISA 5.1 §5.3: bomba de cavidade progressiva. A sinusoide representa o perfil do parafuso hélicoidal. |
+| `bomba_centrifuga` | B. Centrífuga | Pump — centrifugal | Círculo + punto central + 3 paletas | ISA 5.1 §5.3 — símbolo canónico. |
+| `bomba_dosificadora` | B. Dosificadora | Pump — positive displacement / metering | Rectángulo con círculo interno + dos salidas laterales + línea de dosificación | ISA 5.1 §5.3: bomba de desplazamiento positivo indicada por forma rectangular con elemento de pistón. Las líneas laterales representan las conexiones de aspiración y descarga. |
+| `bomba_vacio` | B. Vacío | Pump — vacuum / liquid ring | Elipse con línea discontinua horizontal (vacío) + conexiones superior/inferior | ISA 5.1 no distingue la bomba de vacío con símbolo propio. Aproximación: elipse (diferencia de la centrífuga) con discontinuo que indica la fase gaseosa aspirada. |
+| `bomba_sumergible` | B. Sumergible | Pump — submersible | Rectángulo vertical (carcasa estanca) + círculo interior + línea de fondo doble | ISA 5.1 §5.3: nota de campo — bomba sumergible representada con carcasa cerrada. Las líneas dobles en la base indican lámina de agua. |
+| `bomba_peristaltica` | B. Peristáltica | Pump — peristaltic | Círculo con 3 rodillos (rellenos) + conexiones izquierda/derecha | ISA 5.1 no tiene símbolo específico. Aproximación: rueda peristáltica con 3 rodillos de compresión, conforme a la práctica común en P&ID de la industria farmacéutica. |
+| `bomba_tornillo` | B. Tornillo | Pump — screw / progressive cavity | Rectángulo horizontal con curva sinusoidal doble (tornillo de Arquímedes) | ISA 5.1 §5.3: bomba de cavidad progresiva. La sinusoide representa el perfil del tornillo helicoidal. |
 
 ---
 
-## 3. Grupo Filtragem
+## 3. Grupo de Filtración
 
-| componenteId | Label UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificação |
+| componenteId | Etiqueta UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificación |
 |---|---|---|---|---|
-| `filtro_arena` | F. Areia | Filter vessel — granular media | Retângulo + linha divisória + 5 grãos (círculos) | ISA 5.1 §5.6: leito filtrante granular. Idêntico ao `filtracion` canónico. |
-| `filtro_antracita` | F. Antracite | Filter vessel — dual media | Retângulo + 2 linhas de separação + blocos rectangulares de antracite | ISA 5.1 §5.6: filtro de duplo meio (areia + antracite). As 2 linhas de separação distinguem as camadas. |
-| `filtro_cartucho` | F. Cartucho | Filter — cartridge | Retângulo estreito e alto (cartucho) + 4 linhas horizontais (plissados) | ISA 5.1 §5.6: filtro de cartucho pleated. As linhas horizontais representam as pregas filtrantes. |
-| `filtro_manga` | F. Manga | Filter — bag/sock | Forma trapeizoidal fechada em baixo (manga) + 2 costuras tracejadas | ISA 5.1 §5.6: filtro de manga. A forma arredondada na base indica saco colector. |
-| `filtro_uv` | F. UV | UV disinfection chamber | Retângulo com etiqueta "UV" + linha tracejada central (feixe UV) | ISA 5.1 não define. Prática comum em P&ID de ETAs: câmara retangular com indicação de radiação (tracejado). |
-| `membrana_uf` | Membrana UF | Membrane separator — ultrafiltration | Retângulo com 6 linhas verticais (fibras ocas) + linha horizontal de separação | ISA 5.1 §5.6: separador por membrana. As linhas verticais representam as fibras ocas da UF. A linha horizontal indica a barreira de pressão transmembrana. |
+| `filtro_arena` | F. Arena | Filter vessel — granular media | Rectángulo + línea divisoria + 5 granos (círculos) | ISA 5.1 §5.6: lecho filtrante granular. Idéntico al `filtracion` canónico. |
+| `filtro_antracita` | F. Antracita | Filter vessel — dual media | Rectángulo + 2 líneas de separación + bloques rectangulares de antracita | ISA 5.1 §5.6: filtro de doble medio (arena + antracita). Las 2 líneas de separación distinguen las capas. |
+| `filtro_cartucho` | F. Cartucho | Filter — cartridge | Rectángulo estrecho y alto (cartucho) + 4 líneas horizontales (plisados) | ISA 5.1 §5.6: filtro de cartucho *pleated*. Las líneas horizontales representan los pliegues filtrantes. |
+| `filtro_manga` | F. Manga | Filter — bag/sock | Forma trapezoidal cerrada en la parte inferior (manga) + 2 costuras discontinuas | ISA 5.1 §5.6: filtro de manga. La forma redondeada en la base indica bolsa colectora. |
+| `filtro_uv` | F. UV | UV disinfection chamber | Rectángulo con etiqueta "UV" + línea discontinua central (haz UV) | ISA 5.1 no define. Práctica común en P&ID de ETAPs: cámara rectangular con indicación de radiación (discontinuo). |
+| `membrana_uf` | Membrana UF | Membrane separator — ultrafiltration | Rectángulo con 6 líneas verticales (fibras huecas) + línea horizontal de separación | ISA 5.1 §5.6: separador por membrana. Las líneas verticales representan las fibras huecas de la UF. La línea horizontal indica la barrera de presión transmembrana. |
 
 ---
 
-## 4. Grupo Tanques
+## 4. Grupo de Tanques
 
-| componenteId | Label UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificação |
+| componenteId | Etiqueta UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificación |
 |---|---|---|---|---|
-| `tanque_agua_cruda` | T. Água Bruta | Storage vessel — open, with inlet | Retângulo com ellipse no topo (entrada aberta) + 2 linhas de nível | ISA 5.1 §5.7: tanque de água bruta (entrada no topo). As linhas de nível indicam as marcas de operação. |
-| `tanque_pac` | T. PAC | Chemical storage vessel — reagent | Retângulo com ellipse no topo + etiqueta "PAC" | ISA 5.1 §5.7: tanque de reagente químico identificado por etiqueta. O PAC (Policloreto de Alumínio) é o coagulante. |
-| `tanque_cloro` | T. Cloro | Pressure vessel — gas/liquid chlorine | Círculo (pressurizado) + etiqueta "Cl₂" | ISA 5.1 §5.7: recipiente pressurizado (cilindro de gás ou tanque de hipoclorito). O círculo (vs. retângulo) indica contentor pressurizado conforme ISA 5.1. |
-| `tanque_lodos` | T. Lodos | Sludge vessel — conical bottom | Forma trapezoidal invertida (cone de lodos) + ellipse no topo + nível tracejado | ISA 5.1 §5.7: tanque de lodos com fundo cónico para extração gravitacional. A linha tracejada indica a interface lodo/sobrenadante. |
-| `reservorio` | Reservório | Storage vessel — open top | Ver secção 1. | — |
-| `cisterna` | Cisterna | Underground storage vessel | Forma cilíndrica (elipses topo e base + laterais) | ISA 5.1 §5.7: cisterna enterrada ou cisterna horizontal. A forma elítica em topo e base indica recipiente cilíndrico deitado ou enterrado. |
+| `tanque_agua_cruda` | T. Agua Bruta | Storage vessel — open, with inlet | Rectángulo con elipse en la parte superior (entrada abierta) + 2 líneas de nivel | ISA 5.1 §5.7: tanque de agua bruta (entrada en la parte superior). Las líneas de nivel indican las marcas de operación. |
+| `tanque_pac` | T. PAC | Chemical storage vessel — reagent | Rectángulo con elipse en la parte superior + etiqueta "PAC" | ISA 5.1 §5.7: tanque de reactivo químico identificado por etiqueta. El PAC (Policloruro de Aluminio) es el coagulante. |
+| `tanque_cloro` | T. Cloro | Pressure vessel — gas/liquid chlorine | Círculo (presurizado) + etiqueta "Cl₂" | ISA 5.1 §5.7: recipiente presurizado (cilindro de gas o tanque de hipoclorito). El círculo (frente al rectángulo) indica contenedor presurizado conforme a ISA 5.1. |
+| `tanque_lodos` | T. Lodos | Sludge vessel — conical bottom | Forma trapezoidal invertida (cono de lodos) + elipse en la parte superior + nivel discontinuo | ISA 5.1 §5.7: tanque de lodos con fondo cónico para extracción gravitacional. La línea discontinua indica la interfaz lodo/sobrenadante. |
+| `reservorio` | Reservorio | Storage vessel — open top | Ver sección 1. | — |
+| `cisterna` | Cisterna | Underground storage vessel | Forma cilíndrica (elipses superior e inferior + laterales) | ISA 5.1 §5.7: cisterna enterrada o cisterna horizontal. La forma elíptica en la parte superior e inferior indica recipiente cilíndrico tumbado o enterrado. |
 
 ---
 
-## 5. Grupo Tratamento
+## 5. Grupo de Tratamiento
 
-| componenteId | Label UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificação |
+| componenteId | Etiqueta UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificación |
 |---|---|---|---|---|
-| `coagulador` | Coagulador | Mixing vessel — rapid mix | Retângulo com 3 câmaras + entrada topo + saída base | ISA 5.1 não tem símbolo direto. Aproximação: câmara de mistura rápida com divisórias de fluxo em plug-flow. |
-| `floculador` | Floculador | Mixing vessel — slow mix / flocculation | Retângulo com agitador central (linha vertical) + 3 curvas de fluxo | ISA 5.1 §5.4: agitador em câmara fechada. As curvas representam fluxo laminar de baixa velocidade (floculação gentil). |
-| `decantador_laminar` | Dec. Laminar | Settler — lamella / tube settler | Trapézio (perfil de decantador) + 5 linhas de lamelas inclinadas | ISA 5.1 §5.7: decantador com módulos lamelares. As linhas inclinadas são a representação canónica de lamelas em P&ID. |
-| `decantador_circular` | Dec. Circular | Settler — circular clarifier | Círculo + eixos de simetria + círculo central | ISA 5.1 §5.7: clarificador circular (Dortmund). Idêntico ao `decantador` canónico. |
-| `reactor_biologico` | Reator Bio. | Bioreactor — aerobic | Retângulo arredondado + 3 círculos (biomassa) + conexões topo/base | ISA 5.1 não define reator biológico. Aproximação: vessel com indicação de fase biológica (círculos = flocos de biomassa). |
-| `torre_aireacion` | Torre Aeração | Cooling tower / aeration tower | Retângulo alto + grelhas horizontais internas + curva de respingo | ISA 5.1 §5.7: torre de aeração. As grelhas internas representam os distribuidores de água; a curva na base representa o respingo/dispersão. |
+| `coagulador` | Coagulador | Mixing vessel — rapid mix | Rectángulo con 3 cámaras + entrada superior + salida inferior | ISA 5.1 no tiene símbolo directo. Aproximación: cámara de mezcla rápida con divisiones de flujo en *plug-flow*. |
+| `floculador` | Floculador | Mixing vessel — slow mix / flocculation | Rectángulo con agitador central (línea vertical) + 3 curvas de flujo | ISA 5.1 §5.4: agitador en cámara cerrada. Las curvas representan flujo laminar de baja velocidad (floculación suave). |
+| `decantador_laminar` | Dec. Laminar | Settler — lamella / tube settler | Trapecio (perfil de decantador) + 5 líneas de láminas inclinadas | ISA 5.1 §5.7: decantador con módulos lamelares. Las líneas inclinadas son la representación canónica de láminas en P&ID. |
+| `decantador_circular` | Dec. Circular | Settler — circular clarifier | Círculo + ejes de simetría + círculo central | ISA 5.1 §5.7: clarificador circular (Dortmund). Idéntico al `decantador` canónico. |
+| `reactor_biologico` | Reactor Bio. | Bioreactor — aerobic | Rectángulo redondeado + 3 círculos (biomasa) + conexiones superior/inferior | ISA 5.1 no define reactor biológico. Aproximación: *vessel* con indicación de fase biológica (círculos = flóculos de biomasa). |
+| `torre_aireacion` | Torre de Aireación | Cooling tower / aeration tower | Rectángulo alto + rejillas horizontales internas + curva de salpicadura | ISA 5.1 §5.7: torre de aireación. Las rejillas internas representan los distribuidores de agua; la curva en la base representa la salpicadura/dispersión. |
 
 ---
 
-## 6. Grupo Medição
+## 6. Grupo de Medición
 
-| componenteId | Label UI | Tag ISA 5.1 | Forma SVG implementada | Justificação |
+| componenteId | Etiqueta UI | Tag ISA 5.1 | Forma SVG implementada | Justificación |
 |---|---|---|---|---|
-| `caudalimetro` | Caudalímetro | FE / FT (Flow Element / Transmitter) | Círculo + curva sinusoidal (forma de onda de caudal) + conexões topo/base | ISA 5.1 §4: instrumentos de medição representados por círculo. A sinusoide indica variável de caudal (Flow). Tag recomendado: FIT (Flow Indicator Transmitter). |
-| `manometro` | Manómetro | PI / PT (Pressure Indicator / Transmitter) | Círculo + ponteiro (linha diagonal) + ponto de pivô + marcas de escala | ISA 5.1 §4: manómetro — círculo com ponteiro. Forma diretamente derivada da ISA 5.1 Fig. 4-1. Tag recomendado: PIT. |
-| `ph_sensor` | Sensor pH | AT (Analyzer Transmitter) — pH | Elipse vertical (eléctrodo) + conexão topo + etiqueta "pH" | ISA 5.1 §4: analisador de qualidade representado por elipse. A etiqueta "pH" identifica a variável. Tag: AIT-pH. |
-| `orp_sensor` | Sensor ORP | AT (Analyzer Transmitter) — ORP | Elipse vertical + conexão topo + etiqueta "ORP" | ISA 5.1 §4: idem ao pH. ORP (Oxidation Reduction Potential) é variável de qualidade. Tag: AIT-ORP. |
-| `turbidimetro` | Turbidímetro | AT (Analyzer Transmitter) — turbidity | Círculo + feixe incidente (linha sólida) + feixe disperso (linha tracejada) + ponto de dispersão | ISA 5.1 §4: analisador óptico. O feixe refletido a 90° representa o princípio nefelométrico (NTU). Tag: AIT-NTU. |
-| `nivel_sensor` | Sensor Nível | LE / LT (Level Element / Transmitter) | Régua vertical (retângulo estreito) + marcas de nível + ponto de flutuador | ISA 5.1 §4: instrumento de nível. A régua com ponto de contato representa um sensor de nível por flutuador ou ultrassónico. Tag: LIT. |
+| `caudalimetro` | Caudalímetro | FE / FT (Flow Element / Transmitter) | Círculo + curva sinusoidal (forma de onda de caudal) + conexiones superior/inferior | ISA 5.1 §4: instrumentos de medición representados por un círculo. La sinusoide indica variable de caudal (Flow). Tag recomendado: FIT (Flow Indicator Transmitter). |
+| `manometro` | Manómetro | PI / PT (Pressure Indicator / Transmitter) | Círculo + puntero (línea diagonal) + punto de pivote + marcas de escala | ISA 5.1 §4: manómetro — círculo con puntero. Forma directamente derivada de ISA 5.1 Fig. 4-1. Tag recomendado: PIT. |
+| `ph_sensor` | Sensor pH | AT (Analyzer Transmitter) — pH | Elipse vertical (electrodo) + conexión superior + etiqueta "pH" | ISA 5.1 §4: analizador de calidad representado por elipse. La etiqueta "pH" identifica la variable. Tag: AIT-pH. |
+| `orp_sensor` | Sensor ORP | AT (Analyzer Transmitter) — ORP | Elipse vertical + conexión superior + etiqueta "ORP" | ISA 5.1 §4: ídem al pH. ORP (Oxidation Reduction Potential) es variable de calidad. Tag: AIT-ORP. |
+| `turbidimetro` | Turbidímetro | AT (Analyzer Transmitter) — turbidity | Círculo + haz incidente (línea sólida) + haz disperso (línea discontinua) + punto de dispersión | ISA 5.1 §4: analizador óptico. El haz reflejado a 90° representa el principio nefelométrico (NTU). Tag: AIT-NTU. |
+| `nivel_sensor` | Sensor de Nivel | LE / LT (Level Element / Transmitter) | Regla vertical (rectángulo estrecho) + marcas de nivel + punto de flotador | ISA 5.1 §4: instrumento de nivel. La regla con punto de contacto representa un sensor de nivel por flotador o ultrasónico. Tag: LIT. |
 
 ---
 
-## 7. Grupo Controlo
+## 7. Grupo de Control
 
-| componenteId | Label UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificação |
+| componenteId | Etiqueta UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificación |
 |---|---|---|---|---|
-| `valvula_manual` | V. Manual | Valve — globe / manual | Duas setas em V (borboleta) + haste + volante (linha horizontal grossa) | ISA 5.1 §5.1: válvula manual representada por dois triângulos em V com volante no topo. Forma canónica ISA. |
-| `valvula_motorizada` | V. Motorizada | Valve — motor operated (MOV) | Dois triângulos em V + haste + rectângulo de actuador eléctrico | ISA 5.1 §5.1: válvula com actuador eléctrico indicado por rectângulo sobre a haste. |
-| `valvula_solenoide` | V. Solenóide | Valve — solenoid operated (SOV) | Dois triângulos em V + haste + elipse de solenóide com bobine | ISA 5.1 §5.1: válvula com actuador electromagnético indicado por elipse (solenóide). |
-| `variador_frequencia` | Variador Freq | VFD (Variable Frequency Drive) | Rectângulo com curva de frequência variável + etiqueta "VFD" | ISA 5.1 não define VFD como símbolo de processo. Prática comum em P&ID: rectângulo com onda de frequência variável. |
-| `plc` | PLC | Control system / shared controller | Rectângulo com dois blocos de E/S + linha de barramento + terminais de I/O | ISA 5.1 §4 / ISA 88: controlador partilhado representado por rectângulo com blocos de módulos de E/S. |
+| `valvula_manual` | V. Manual | Valve — globe / manual | Dos flechas en V (mariposa) + vástago + volante (línea horizontal gruesa) | ISA 5.1 §5.1: válvula manual representada por dos triángulos en V con volante en la parte superior. Forma canónica ISA. |
+| `valvula_motorizada` | V. Motorizada | Valve — motor operated (MOV) | Dos triángulos en V + vástago + rectángulo de actuador eléctrico | ISA 5.1 §5.1: válvula con actuador eléctrico indicado por rectángulo sobre el vástago. |
+| `valvula_solenoide` | V. Solenoide | Valve — solenoid operated (SOV) | Dos triángulos en V + vástago + elipse de solenoide con bobina | ISA 5.1 §5.1: válvula con actuador electromagnético indicado por elipse (solenoide). |
+| `variador_frequencia` | Variador Freq. | VFD (Variable Frequency Drive) | Rectángulo con curva de frecuencia variable + etiqueta "VFD" | ISA 5.1 no define el VFD como símbolo de proceso. Práctica común en P&ID: rectángulo con onda de frecuencia variable. |
+| `plc` | PLC | Control system / shared controller | Rectángulo con dos bloques de E/S + línea de bus + terminales de I/O | ISA 5.1 §4 / ISA 88: controlador compartido representado por rectángulo con bloques de módulos de E/S. |
 
 ---
 
-## 8. Grupo Estrutura
+## 8. Grupo de Estructura
 
-| componenteId | Label UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificação |
+| componenteId | Etiqueta UI | Símbolo ISA 5.1 | Forma SVG implementada | Justificación |
 |---|---|---|---|---|
-| `reja_tamiz` | Reja/Tamiz | Screen (ver secção 1) | Ver secção 1 | — |
-| `reja_gruesa` | Reja Grossa | Coarse screen | 5 barras verticais espessas + base horizontal | ISA 5.1 §5.6: grelha de desbaste. Barras mais espessas e espaçadas que a reja fina. |
-| `reja_fina` | Reja Fina | Fine screen / microscreen | 7 barras verticais finas + base horizontal | ISA 5.1 §5.6: grelha de pré-filtração. Mais barras e mais finas que a reja grossa. |
-| `canal_entrada` | Canal Entrada | Open channel — flow | Perfil em U aberto + curva de superfície livre | ISA 5.1 não define canal aberto. Aproximação: perfil trapezoidal de canal com indicação de superfície livre (curva sinusoidal). |
-| `pozo_bombeo` | Poço Bombagem | Wet well / pump sump | Cilindro vertical (elipses topo e base + laterais) + conexão de entrada | ISA 5.1 §5.7: poço húmido de estação elevatória. Forma cilíndrica vertical distingue-o da cisterna horizontal. |
-| `caixa_distribuicao` | Cx. Distribuição | Distribution box / splitter | Quadrado com 4 conexões (topo, esquerda, direita, base) + círculo central de distribuição | ISA 5.1 não define caixa de distribuição. Aproximação: junction box com 4 saídas simétricas, conforme prática em P&ID de redes de distribuição. |
+| `reja_tamiz` | Reja/Tamiz | Screen (ver sección 1) | Ver sección 1 | — |
+| `reja_gruesa` | Reja Gruesa | Coarse screen | 5 barras verticales gruesas + base horizontal | ISA 5.1 §5.6: reja de desbaste. Barras más gruesas y espaciadas que la reja fina. |
+| `reja_fina` | Reja Fina | Fine screen / microscreen | 7 barras verticales finas + base horizontal | ISA 5.1 §5.6: reja de prefiltración. Más barras y más finas que la reja gruesa. |
+| `canal_entrada` | Canal de Entrada | Open channel — flow | Perfil en U abierto + curva de superficie libre | ISA 5.1 no define canal abierto. Aproximación: perfil trapezoidal de canal con indicación de superficie libre (curva sinusoidal). |
+| `pozo_bombeo` | Pozo de Bombeo | Wet well / pump sump | Cilindro vertical (elipses superior e inferior + laterales) + conexión de entrada | ISA 5.1 §5.7: pozo húmedo de estación de bombeo. La forma cilíndrica vertical lo distingue de la cisterna horizontal. |
+| `caixa_distribuicao` | Cx. Distribución | Distribution box / splitter | Cuadrado con 4 conexiones (superior, izquierda, derecha, inferior) + círculo central de distribución | ISA 5.1 no define caja de distribución. Aproximación: *junction box* con 4 salidas simétricas, conforme a la práctica en P&ID de redes de distribución. |
 
 ---
 
-## Notas gerais
+## Notas generales
 
-1. **Escala de visualização**: todos os ícones são renderizados em `viewBox="0 0 48 48"` dentro de uma célula de `80 × 72 px` no canvas SVG.
-2. **Cor e estado**: a cor do stroke de cada símbolo reflecte o estado de alerta (`#00e87a` OK, `#f5a623` aviso, `#ff3d5a` crítico), conforme ISA 101 — ver `docs/hmi-decisions.md`.
-3. **Etiquetas de identificação**: ISA 5.1 §3 define as tags de instrumentação (FIT, PIT, AIT, LIT). O AquaSense usa `componenteId` em vez de tags ISA — a correspondência está na coluna "Tag ISA 5.1" acima.
-4. **Componentes sem equivalente direto**: coagulação, desinfeção UV, VFD, PLC, caixa de distribuição e canal de entrada não têm símbolo próprio em ISA 5.1-2009. A forma usada é a aproximação mais comum em P&IDs de estações de tratamento de água (ETAs), conforme AWWA M49 e prática europeia EN ISO 10628.
+1. **Escala de visualización**: todos los iconos se renderizan en `viewBox="0 0 48 48"` dentro de una celda de `80 × 72 px` en el canvas SVG.
+2. **Color y estado**: el color del trazo de cada símbolo refleja el estado de alerta (`#00e87a` OK, `#f5a623` aviso, `#ff3d5a` crítico), conforme a ISA 101 — ver `docs/hmi-decisions.md`.
+3. **Etiquetas de identificación**: ISA 5.1 §3 define las tags de instrumentación (FIT, PIT, AIT, LIT). AquaSense usa `componenteId` en lugar de tags ISA — la correspondencia está en la columna "Tag ISA 5.1" anterior.
+4. **Componentes sin equivalente directo**: la coagulación, la desinfección UV, el VFD, el PLC, la caja de distribución y el canal de entrada no tienen símbolo propio en ISA 5.1-2009. La forma utilizada es la aproximación más común en P&IDs de estaciones de tratamiento de agua (ETAPs), conforme a AWWA M49 y la práctica europea EN ISO 10628.
