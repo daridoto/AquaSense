@@ -1,33 +1,33 @@
 /**
  * equipShapes.jsx
- * Formas SVG nativas para os 8 componenteIds canónicos do AquaSense.
- * Cada shape é renderizada dentro de um <g transform="translate(x,y)"> externo.
- * Portos anatómicos definidos por conexiones-equipos.md.
+ * Formas SVG nativas para los 8 componenteIds canónicos de AquaSense.
+ * Cada shape se renderiza dentro de un <g transform="translate(x,y)"> externo.
+ * Puertos anatómicos definidos por conexiones-equipos.md.
  *
  * API pública:
  *   getShapeDef(componenteId)  → { width, height, ports, render(color, strokeW) }
- *   CANONICAL_IDS              → Set dos 8 ids canónicos
+ *   CANONICAL_IDS              → Set de los 8 ids canónicos
  */
 
-// ── Dimensões padrão ──────────────────────────────────────────────────────────
-// Cada equipamento define as suas próprias dimensões.
-// A bounding box é [0,0,width,height]; portos são {x,y} nesse espaço.
+// ── Dimensiones por defecto ───────────────────────────────────────────────────
+// Cada equipamiento define sus propias dimensiones.
+// La bounding box es [0,0,width,height]; los puertos son {x,y} en ese espacio.
 
 // ── bomba_captacao / bomba_distribucion ──────────────────────────────────────
-// Símbolo ISA de bomba centrífuga: círculo com pás radiais.
-// Bounding box: 72×72. Centro em (36,36), raio 28.
-// Portos: succion=(0,36) esquerda, descarga=(36,0) topo
+// Símbolo ISA de bomba centrífuga: círculo con paletas radiales.
+// Bounding box: 72×72. Centro en (36,36), radio 28.
+// Puertos: succion=(0,36) izquierda, descarga=(36,0) arriba
 function shapeBomba(color, sw) {
-  const R = 28;   // raio do corpo — deixa margem para os stubs de tubo
+  const R = 28;   // radio del cuerpo — deja margen para los stubs de tubo
   const cx = 36;
   const cy = 36;
   return (
     <>
-      {/* Corpo circular */}
+      {/* Cuerpo circular */}
       <circle cx={cx} cy={cy} r={R} fill="none" stroke={color} strokeWidth={sw} />
       {/* Núcleo central */}
       <circle cx={cx} cy={cy} r={5} fill={color} />
-      {/* Pás radiais — 3 pás a 120° separação, símbolo ISA bomba centrífuga */}
+      {/* Paletas radiales — 3 paletas a 120° de separación, símbolo ISA bomba centrífuga */}
       <line x1={cx} y1={cy} x2={cx} y2={cy - R + 6} stroke={color} strokeWidth={sw} />
       <line x1={cx} y1={cy}
             x2={cx + (R - 6) * Math.sin((2 * Math.PI) / 3)}
@@ -37,17 +37,17 @@ function shapeBomba(color, sw) {
             x2={cx - (R - 6) * Math.sin((2 * Math.PI) / 3)}
             y2={cy + (R - 6) * Math.cos((2 * Math.PI) / 3) * -1 + (R - 6) * 0.5}
             stroke={color} strokeWidth={sw} />
-      {/* Stub de sucção — da borda esquerda da caixa até ao círculo */}
+      {/* Stub de succión — desde el borde izquierdo de la caja hasta el círculo */}
       <line x1={0} y1={cy} x2={cx - R} y2={cy} stroke={color} strokeWidth={sw} />
-      {/* Stub de descarga — do topo da caixa até ao círculo */}
+      {/* Stub de descarga — desde la parte superior de la caja hasta el círculo */}
       <line x1={cx} y1={0} x2={cx} y2={cy - R} stroke={color} strokeWidth={sw} />
     </>
   );
 }
 
 // ── reja_tamiz ────────────────────────────────────────────────────────────────
-// Retângulo com linhas horizontais paralelas (barras de reja).
-// Portos: alimentacao=esquerda, salida=direita
+// Rectángulo con líneas horizontales paralelas (barras de reja).
+// Puertos: alimentacao=izquierda, salida=derecha
 function shapeRejaTamiz(color, sw) {
   const W = 48;
   const H = 80;
@@ -55,9 +55,9 @@ function shapeRejaTamiz(color, sw) {
   const gap = H / (barCount + 1);
   return (
     <>
-      {/* Moldura */}
+      {/* Marco */}
       <rect x={0} y={0} width={W} height={H} rx="2" fill="none" stroke={color} strokeWidth={sw} />
-      {/* Barras horizontais */}
+      {/* Barras horizontales */}
       {Array.from({ length: barCount }).map((_, i) => (
         <line
           key={i}
@@ -66,70 +66,70 @@ function shapeRejaTamiz(color, sw) {
           stroke={color} strokeWidth={sw * 1.2}
         />
       ))}
-      {/* Tubo entrada esquerda */}
+      {/* Tubo entrada izquierda */}
       <line x1={-12} y1={H / 2} x2={0} y2={H / 2} stroke={color} strokeWidth={sw} />
-      {/* Tubo saída direita */}
+      {/* Tubo salida derecha */}
       <line x1={W} y1={H / 2} x2={W + 12} y2={H / 2} stroke={color} strokeWidth={sw} />
     </>
   );
 }
 
 // ── coagulacion ───────────────────────────────────────────────────────────────
-// Tanque cilíndrico com hélice de mistura e entradas.
-// Portos: entrada=esquerda, entrada_pac=topo, salida=direita
+// Tanque cilíndrico con hélice de mezcla y entradas.
+// Puertos: entrada=izquierda, entrada_pac=arriba, salida=derecha
 function shapeCoagulacion(color, sw) {
   const W = 72;
   const H = 80;
   const cx = W / 2;
-  const eH = 10; // altura da elipse topo/fundo
+  const eH = 10; // altura de la elipse superior/inferior
   return (
     <>
-      {/* Corpo cilíndrico lateral */}
+      {/* Cuerpo cilíndrico lateral */}
       <line x1={0} y1={eH} x2={0} y2={H - eH} stroke={color} strokeWidth={sw} />
       <line x1={W} y1={eH} x2={W} y2={H - eH} stroke={color} strokeWidth={sw} />
-      {/* Elipse topo */}
+      {/* Elipse superior */}
       <ellipse cx={cx} cy={eH} rx={W / 2} ry={eH}
         fill="none" stroke={color} strokeWidth={sw} />
-      {/* Elipse fundo (sólida) */}
+      {/* Elipse inferior (sólida) */}
       <ellipse cx={cx} cy={H - eH} rx={W / 2} ry={eH}
         fill="none" stroke={color} strokeWidth={sw} />
-      {/* Linha de nível de fluido */}
+      {/* Línea de nivel de fluido */}
       <line x1={0} y1={H * 0.55} x2={W} y2={H * 0.55}
         stroke={color} strokeWidth={sw * 0.4} strokeDasharray="4 3" opacity="0.5" />
-      {/* Hélice de mistura — eixo vertical + 2 pás */}
+      {/* Hélice de mezcla — eje vertical + 2 paletas */}
       <line x1={cx} y1={eH} x2={cx} y2={H - eH} stroke={color} strokeWidth={sw * 0.8} />
       <path d={`M ${cx - 14} ${H * 0.45} Q ${cx} ${H * 0.35} ${cx + 14} ${H * 0.45}`}
         fill="none" stroke={color} strokeWidth={sw} />
       <path d={`M ${cx - 14} ${H * 0.58} Q ${cx} ${H * 0.48} ${cx + 14} ${H * 0.58}`}
         fill="none" stroke={color} strokeWidth={sw} />
-      {/* Entrada lateral esquerda */}
+      {/* Entrada lateral izquierda */}
       <line x1={-12} y1={H * 0.4} x2={0} y2={H * 0.4} stroke={color} strokeWidth={sw} />
-      {/* Entrada PAC pelo topo */}
+      {/* Entrada PAC por la parte superior */}
       <line x1={cx * 0.6} y1={0} x2={cx * 0.6} y2={eH} stroke={color} strokeWidth={sw}
         strokeDasharray="3 2" />
-      {/* Saída lateral direita */}
+      {/* Salida lateral derecha */}
       <line x1={W} y1={H * 0.4} x2={W + 12} y2={H * 0.4} stroke={color} strokeWidth={sw} />
     </>
   );
 }
 
 // ── decantador ────────────────────────────────────────────────────────────────
-// Trapézio invertido (cone de sedimentação) com linha de nível de lodo.
-// Portos: entrada=topo centro, salida=lateral direito, salida_lodos=fundo
+// Trapecio invertido (cono de sedimentación) con línea de nivel de lodo.
+// Puertos: entrada=arriba centro, salida=lateral derecho, salida_lodos=abajo
 function shapeDecantador(color, sw) {
-  const TW = 80;    // largura topo
-  const BW = 28;   // largura fundo
+  const TW = 80;    // anchura superior
+  const BW = 28;   // anchura inferior
   const H = 80;
-  const offL = (TW - BW) / 2;  // offset horizontal do fundo
+  const offL = (TW - BW) / 2;  // offset horizontal del fondo
   const cx = TW / 2;
   return (
     <>
-      {/* Corpo trapezoidal */}
+      {/* Cuerpo trapezoidal */}
       <path
         d={`M 0,0 L ${TW},0 L ${TW - offL},${H} L ${offL},${H} Z`}
         fill="none" stroke={color} strokeWidth={sw}
       />
-      {/* Linha de nível de lodo — 65% da altura */}
+      {/* Línea de nivel de lodo — 65% de la altura */}
       {(() => {
         const frac = 0.65;
         const wAtFrac = TW - (TW - BW) * frac;
@@ -143,11 +143,11 @@ function shapeDecantador(color, sw) {
           />
         );
       })()}
-      {/* Entrada topo centro */}
+      {/* Entrada arriba centro */}
       <line x1={cx} y1={-12} x2={cx} y2={0} stroke={color} strokeWidth={sw} />
-      {/* Saída lateral direita (rebose) */}
+      {/* Salida lateral derecha (rebose) */}
       <line x1={TW} y1={H * 0.25} x2={TW + 12} y2={H * 0.25} stroke={color} strokeWidth={sw} />
-      {/* Saída lodos pelo fundo — ponto central inferior */}
+      {/* Salida de lodos por el fondo — punto central inferior */}
       <line x1={cx} y1={H} x2={cx} y2={H + 12} stroke={color} strokeWidth={sw}
         strokeDasharray="3 2" />
     </>
@@ -155,8 +155,8 @@ function shapeDecantador(color, sw) {
 }
 
 // ── filtracion ────────────────────────────────────────────────────────────────
-// Cilindro vertical com camadas internas (areia/antracita).
-// Portos: entrada=topo, salida=fundo, salida_lavado=lateral, ar_escape=topo lateral
+// Cilindro vertical con capas internas (arena/antracita).
+// Puertos: entrada=arriba, salida=abajo, salida_lavado=lateral, ar_escape=lateral superior
 function shapeFiltracion(color, sw) {
   const W = 56;
   const H = 88;
@@ -164,33 +164,33 @@ function shapeFiltracion(color, sw) {
   const eH = 10;
   return (
     <>
-      {/* Corpo cilíndrico */}
+      {/* Cuerpo cilíndrico */}
       <line x1={0} y1={eH} x2={0} y2={H - eH} stroke={color} strokeWidth={sw} />
       <line x1={W} y1={eH} x2={W} y2={H - eH} stroke={color} strokeWidth={sw} />
-      {/* Elipse topo */}
+      {/* Elipse superior */}
       <ellipse cx={cx} cy={eH} rx={W / 2} ry={eH} fill="none" stroke={color} strokeWidth={sw} />
-      {/* Elipse fundo */}
+      {/* Elipse inferior */}
       <ellipse cx={cx} cy={H - eH} rx={W / 2} ry={eH} fill="none" stroke={color} strokeWidth={sw} />
 
-      {/* Camada 1 — antracita (superior) */}
+      {/* Capa 1 — antracita (superior) */}
       <rect x={4} y={H * 0.28} width={W - 8} height={H * 0.18}
         fill="none" stroke={color} strokeWidth={sw * 0.6} />
-      {/* Camada 2 — areia (inferior) */}
+      {/* Capa 2 — arena (inferior) */}
       <rect x={4} y={H * 0.50} width={W - 8} height={H * 0.22}
         fill="none" stroke={color} strokeWidth={sw * 0.6} />
-      {/* Pontos de areia */}
+      {/* Puntos de arena */}
       {[[10, H * 0.60], [18, H * 0.63], [26, H * 0.58], [34, H * 0.62], [42, H * 0.59]].map(([px, py], i) => (
         <circle key={i} cx={px} cy={py} r={2} fill={color} opacity="0.6" />
       ))}
 
-      {/* Entrada topo */}
+      {/* Entrada superior */}
       <line x1={cx} y1={0} x2={cx} y2={eH} stroke={color} strokeWidth={sw} />
-      {/* Saída fundo */}
+      {/* Salida inferior */}
       <line x1={cx} y1={H - eH} x2={cx} y2={H} stroke={color} strokeWidth={sw} />
-      {/* Saída retrolavado lateral direito */}
+      {/* Salida retrolavado lateral derecho */}
       <line x1={W} y1={H * 0.38} x2={W + 12} y2={H * 0.38}
         stroke={color} strokeWidth={sw} strokeDasharray="4 2" />
-      {/* Ar escape — topo lateral esquerdo */}
+      {/* Escape de aire — lateral superior izquierdo */}
       <line x1={cx * 0.4} y1={0} x2={cx * 0.4} y2={eH}
         stroke={color} strokeWidth={sw * 0.8} strokeDasharray="2 2" opacity="0.6" />
     </>
@@ -198,27 +198,27 @@ function shapeFiltracion(color, sw) {
 }
 
 // ── desinfeccion ──────────────────────────────────────────────────────────────
-// Cilindro horizontal com símbolo UV (raios) e tubo de cloro.
-// Portos: entrada=esquerda, entrada_cloro=superior, salida=direita
+// Cilindro horizontal con símbolo UV (rayos) y tubo de cloro.
+// Puertos: entrada=izquierda, entrada_cloro=superior, salida=derecha
 function shapeDesinfeccion(color, sw) {
   const W = 88;
   const H = 48;
   const cy = H / 2;
-  const eW = 10;   // largura das elipses laterais
+  const eW = 10;   // anchura de las elipses laterales
   return (
     <>
-      {/* Corpo cilíndrico horizontal */}
+      {/* Cuerpo cilíndrico horizontal */}
       <line x1={eW} y1={0} x2={W - eW} y2={0} stroke={color} strokeWidth={sw} />
       <line x1={eW} y1={H} x2={W - eW} y2={H} stroke={color} strokeWidth={sw} />
-      {/* Elipse esquerda */}
+      {/* Elipse izquierda */}
       <ellipse cx={eW} cy={cy} rx={eW} ry={H / 2} fill="none" stroke={color} strokeWidth={sw} />
-      {/* Elipse direita */}
+      {/* Elipse derecha */}
       <ellipse cx={W - eW} cy={cy} rx={eW} ry={H / 2} fill="none" stroke={color} strokeWidth={sw} />
 
-      {/* Lâmpada UV — cilindro interno */}
+      {/* Lámpara UV — cilindro interno */}
       <rect x={eW + 6} y={cy - 4} width={W - 2 * eW - 12} height={8} rx="3"
         fill="none" stroke={color} strokeWidth={sw * 0.6} opacity="0.8" />
-      {/* Raios UV — 4 linhas curtas acima e abaixo */}
+      {/* Rayos UV — 4 líneas cortas arriba y abajo */}
       {[W * 0.3, W * 0.42, W * 0.54, W * 0.66].map((px, i) => (
         <g key={i}>
           <line x1={px} y1={cy - 4} x2={px - 2} y2={cy - 11} stroke={color} strokeWidth={sw * 0.7} opacity="0.7" />
@@ -226,15 +226,15 @@ function shapeDesinfeccion(color, sw) {
         </g>
       ))}
 
-      {/* Entrada esquerda */}
+      {/* Entrada izquierda */}
       <line x1={0} y1={cy} x2={eW} y2={cy} stroke={color} strokeWidth={sw} />
-      {/* Entrada cloro pelo topo */}
+      {/* Entrada de cloro por la parte superior */}
       <line x1={W * 0.6} y1={0} x2={W * 0.6} y2={-12}
         stroke={color} strokeWidth={sw} strokeDasharray="3 2" />
-      {/* Saída direita */}
+      {/* Salida derecha */}
       <line x1={W - eW} y1={cy} x2={W} y2={cy} stroke={color} strokeWidth={sw} />
 
-      {/* Label Cl abreviado */}
+      {/* Etiqueta Cl abreviada */}
       <text x={W * 0.78} y={cy + 4} textAnchor="middle" fontSize="8"
         fontWeight="bold" fill={color} fontFamily="monospace" opacity="0.85">Cl</text>
     </>
@@ -242,8 +242,8 @@ function shapeDesinfeccion(color, sw) {
 }
 
 // ── reservorio ────────────────────────────────────────────────────────────────
-// Tanque cilíndrico grande com indicador de nível.
-// Portos: entrada=lateral superior esquerdo, salida=fundo lateral
+// Tanque cilíndrico grande con indicador de nivel.
+// Puertos: entrada=lateral superior izquierdo, salida=lateral inferior
 function shapeReservorio(color, sw) {
   const W = 72;
   const H = 96;
@@ -251,23 +251,23 @@ function shapeReservorio(color, sw) {
   const eH = 12;
   return (
     <>
-      {/* Corpo cilíndrico */}
+      {/* Cuerpo cilíndrico */}
       <line x1={0} y1={eH} x2={0} y2={H - eH} stroke={color} strokeWidth={sw} />
       <line x1={W} y1={eH} x2={W} y2={H - eH} stroke={color} strokeWidth={sw} />
-      {/* Elipse topo */}
+      {/* Elipse superior */}
       <ellipse cx={cx} cy={eH} rx={W / 2} ry={eH} fill="none" stroke={color} strokeWidth={sw} />
-      {/* Elipse fundo */}
+      {/* Elipse inferior */}
       <ellipse cx={cx} cy={H - eH} rx={W / 2} ry={eH} fill="none" stroke={color} strokeWidth={sw} />
 
-      {/* Indicador de nível — barra lateral interna */}
+      {/* Indicador de nivel — barra lateral interna */}
       <line x1={W - 10} y1={eH + 4} x2={W - 10} y2={H - eH - 4}
         stroke={color} strokeWidth={sw * 0.6} opacity="0.4" />
-      {/* Nível a 60% */}
+      {/* Nivel al 60% */}
       <line x1={W - 14} y1={eH + 4 + (H - 2 * eH - 8) * 0.4}
             x2={W - 6}  y2={eH + 4 + (H - 2 * eH - 8) * 0.4}
         stroke={color} strokeWidth={sw * 1.2} />
 
-      {/* Linhas de água */}
+      {/* Líneas de agua */}
       {[0.4, 0.6, 0.75].map((frac, i) => (
         <line key={i}
           x1={6} y1={eH + (H - 2 * eH) * frac}
@@ -275,19 +275,19 @@ function shapeReservorio(color, sw) {
           stroke={color} strokeWidth={sw * 0.4} strokeDasharray="5 4" opacity="0.35" />
       ))}
 
-      {/* Entrada lateral superior esquerdo */}
+      {/* Entrada lateral superior izquierdo */}
       <line x1={-12} y1={H * 0.25} x2={0} y2={H * 0.25} stroke={color} strokeWidth={sw} />
-      {/* Saída fundo lateral */}
+      {/* Salida lateral inferior */}
       <line x1={W} y1={H - eH * 1.2} x2={W + 12} y2={H - eH * 1.2} stroke={color} strokeWidth={sw} />
     </>
   );
 }
 
-// ── Tabela de shapes canónicas ────────────────────────────────────────────────
+// ── Tabla de shapes canónicas ─────────────────────────────────────────────────
 /**
  * ports: lista de { id, x, y, dir }
- *   id  → nome do porto (conforme conexiones-equipos.md)
- *   x,y → posição relativa dentro da bounding box [0,0,width,height]
+ *   id  → nombre del puerto (según conexiones-equipos.md)
+ *   x,y → posición relativa dentro de la bounding box [0,0,width,height]
  *   dir → 'in' | 'out' | 'io'
  */
 const SHAPES = {
@@ -370,20 +370,20 @@ const SHAPES = {
   },
 };
 
-// IDs canónicos dos 8 equipamentos principais
+// IDs canónicos de los 8 equipamientos principales
 export const CANONICAL_IDS = new Set(Object.keys(SHAPES));
 
 /**
- * Devolve a definição de forma para um componenteId.
- * Se não for canónico, devolve null (usa fallback genérico).
+ * Devuelve la definición de forma para un componenteId.
+ * Si no es canónico, devuelve null (usa fallback genérico).
  */
 export function getShapeDef(componenteId) {
   return SHAPES[componenteId] ?? null;
 }
 
 /**
- * Devolve as posições de porto para um componenteId, mapeadas para o espaço
- * do canvas. Combina portos anatómicos (canónicos) com os 4 genéricos.
+ * Devuelve las posiciones de puerto para un componenteId, mapeadas al espacio
+ * del canvas. Combina puertos anatómicos (canónicos) con los 4 genéricos.
  *
  * @param {string} componenteId
  * @returns {Array<{id: string, x: number, y: number, dir: string}>}
@@ -395,8 +395,8 @@ export function getPortPositions(componenteId) {
 }
 
 /**
- * Renderiza a forma SVG nativa dentro de um <g> externo.
- * Não inclui o <g> em si — o caller faz translate(x,y).
+ * Renderiza la forma SVG nativa dentro de un <g> externo.
+ * No incluye el <g> en sí — el caller hace translate(x,y).
  */
 export function renderShape(componenteId, color, strokeW = 2) {
   const shape = SHAPES[componenteId];
@@ -405,11 +405,11 @@ export function renderShape(componenteId, color, strokeW = 2) {
 }
 
 /**
- * Devolve {width, height} da bounding box de um componenteId.
- * Para não-canónicos usa dimensões genéricas do editor.
+ * Devuelve {width, height} de la bounding box de un componenteId.
+ * Para no canónicos usa dimensiones genéricas del editor.
  */
 export function getShapeSize(componenteId) {
   const shape = SHAPES[componenteId];
   if (shape) return { width: shape.width, height: shape.height };
-  return { width: 80, height: 72 }; // fallback = dimensões do CanvasEditor
+  return { width: 80, height: 72 }; // fallback = dimensiones del CanvasEditor
 }
