@@ -26,8 +26,8 @@ public class JwtConfig {
         boolean isProd = Arrays.asList(env.getActiveProfiles()).contains("prod");
         if (isProd && DEV_SECRET.equals(secret)) {
             throw new IllegalStateException(
-                "SEGURANÇA: JWT_SECRET está a usar o valor default em produção. " +
-                "Defina a variável de ambiente JWT_SECRET antes de arrancar.");
+                "SEGURIDAD: JWT_SECRET está usando el valor por defecto en producción. " +
+                "Define la variable de entorno JWT_SECRET antes de arrancar.");
         }
     }
 }
