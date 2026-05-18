@@ -1,19 +1,19 @@
-# Simulador de planta de tratamento de água com drift gradual.
-# Cada sensor tem um valor actual que muda suavemente a cada ciclo.
-# Os valores não saltam aleatoriamente — derivam devagar como um sistema físico real.
+# Simulador de planta de tratamiento de agua con drift gradual.
+# Cada sensor tiene un valor actual que cambia suavemente en cada ciclo.
+# Los valores no saltan aleatoriamente — derivan despacio como un sistema físico real.
 
 import random
 
 
 class SensorSimulator:
-    """Mantém o estado de um sensor e aplica pequenas variações incrementais."""
+    """Mantiene el estado de un sensor y aplica pequeñas variaciones incrementales."""
 
     def __init__(self, base, min_val, max_val, drift_rate=0.02, noise=0.005):
         self.value = base
         self.min = min_val
         self.max = max_val
-        self.drift_rate = drift_rate   # variação máxima por ciclo como fracção do range
-        self.noise = noise             # ruído estocástico mínimo
+        self.drift_rate = drift_rate   # variación máxima por ciclo como fracción del rango
+        self.noise = noise             # ruido estocástico mínimo
 
     def next(self):
         range_size = self.max - self.min
@@ -23,14 +23,14 @@ class SensorSimulator:
         return round(self.value, 3)
 
     def push_toward(self, target, step_fraction=0.1):
-        """Move o valor gradualmente em direcção a um alvo (para anomalias)."""
+        """Mueve el valor gradualmente hacia un objetivo (para anomalías)."""
         self.value += (target - self.value) * step_fraction
         self.value = max(self.min, min(self.max, self.value))
         return round(self.value, 3)
 
 
-# ── Definição dos sensores ────────────────────────────────────────────────────
-# Chaves em camelCase para compatibilidade com client.py
+# ── Definición de los sensores ───────────────────────────────────────────────
+# Claves en camelCase para compatibilidad con client.py
 
 _sensors = {
     "bombaCaptacao": {
@@ -60,12 +60,12 @@ _sensors = {
     },
     "desinfeccion": {
         "cloroResidual":    SensorSimulator(0.8, 0.3, 1.5, 0.01, 0.002),
-        "ph":               SensorSimulator(7.0, 6.0, 7.8, 0.006, 0.001),   # min=6.0 permite anomalias abaixo de 6.5
+        "ph":               SensorSimulator(7.0, 6.0, 7.8, 0.006, 0.001),   # min=6.0 permite anomalías por debajo de 6.5
         "orp":              SensorSimulator(700, 600, 800, 0.008, 0.002),
         "nivelTanqueCloro": SensorSimulator(60.0, 10.0, 95.0, 0.003, 0.0),
     },
     "reservorio": {
-        "nivel":         SensorSimulator(50.0, 20.0, 98.0, 0.004, 0.001),   # max=98 permite anomalias acima de 90
+        "nivel":         SensorSimulator(50.0, 20.0, 98.0, 0.004, 0.001),   # max=98 permite anomalías por encima de 90
         "cloroResidual": SensorSimulator(0.6, 0.2, 1.2, 0.008, 0.002),
         "temperatura":   SensorSimulator(18.0, 10.0, 28.0, 0.003, 0.001),
         "turbidez":      SensorSimulator(0.5, 0.1, 2.0, 0.008, 0.002),
@@ -77,42 +77,42 @@ _sensors = {
     },
 }
 
-# Grupos de actualização — simula que não tudo muda ao mesmo tempo
+# Grupos de actualización — simula que no todo cambia al mismo tiempo
 _UPDATE_GROUPS = [
     ["bombaCaptacao", "rejaTamiz"],           # caudal de entrada
-    ["coagulacion", "decantador"],            # cadeia de tratamento
-    ["filtracion", "desinfeccion"],           # pós-tratamento
-    ["reservorio", "bombaDistribucion"],      # distribuição
+    ["coagulacion", "decantador"],            # cadena de tratamiento
+    ["filtracion", "desinfeccion"],           # postratamiento
+    ["reservorio", "bombaDistribucion"],      # distribución
 ]
 
-# Anomalias programadas — eventos realistas que disparam alertas
+# Anomalías programadas — eventos realistas que disparan alertas
 _ANOMALIES = [
-    # target abaixo de 0.5 dispara cloro_bajo (ADVERTENCIA) no AlertaService
+    # target por debajo de 0.5 dispara cloro_bajo (ADVERTENCIA) en AlertaService
     {"sensor": ("reservorio",    "cloroResidual"),     "target": 0.35, "duration": 6},
-    # target acima de 0.5 dispara diferencial_alto (ADVERTENCIA)
+    # target por encima de 0.5 dispara diferencial_alto (ADVERTENCIA)
     {"sensor": ("rejaTamiz",     "diferencialPresion"), "target": 0.70, "duration": 4},
-    # target abaixo de 6.5 dispara ph_bajo (ADVERTENCIA) — sensor min=6.0
+    # target por debajo de 6.5 dispara ph_bajo (ADVERTENCIA) — sensor min=6.0
     {"sensor": ("desinfeccion",  "ph"),                "target": 6.20, "duration": 3},
-    # target acima de 90 dispara nivel_alto (ADVERTENCIA) — sensor max=98
+    # target por encima de 90 dispara nivel_alto (ADVERTENCIA) — sensor max=98
     {"sensor": ("reservorio",    "nivel"),             "target": 92.0, "duration": 8},
 ]
 
-# Estado interno do ciclo de anomalia
+# Estado interno del ciclo de anomalía
 _anomaly_state = {
-    "next_in": random.randint(60, 120),  # ciclos até próxima anomalia
-    "active": None,                      # anomalia activa actual
-    "cycles_left": 0,                    # ciclos restantes na anomalia
+    "next_in": random.randint(60, 120),  # ciclos hasta la próxima anomalía
+    "active": None,                      # anomalía activa actual
+    "cycles_left": 0,                    # ciclos restantes en la anomalía
     "recovering": False,
 }
 
 
 def _tick_anomaly(estado):
-    """Gere o ciclo de anomalia: dispara, mantém e recupera."""
+    """Gestiona el ciclo de anomalía: dispara, mantiene y recupera."""
     a = _anomaly_state
     a["next_in"] -= 1
 
     if a["active"] is None and a["next_in"] <= 0:
-        # Iniciar nova anomalia
+        # Iniciar nueva anomalía
         a["active"] = random.choice(_ANOMALIES)
         a["cycles_left"] = a["active"]["duration"]
         a["recovering"] = False
@@ -130,28 +130,28 @@ def _tick_anomaly(estado):
             if a["cycles_left"] <= 0:
                 a["recovering"] = True
         else:
-            # Recupera em direcção ao centro do range
+            # Recupera en dirección al centro del rango
             mid = (sensor_obj.min + sensor_obj.max) / 2
             sensor_obj.push_toward(mid, step_fraction=0.05)
-            # Considera recuperado quando está a menos de 5% do range do centro
+            # Considera recuperado cuando está a menos del 5% del rango desde el centro
             if abs(sensor_obj.value - mid) < 0.05 * (sensor_obj.max - sensor_obj.min):
                 a["active"] = None
                 a["recovering"] = False
 
 
 def inicializar_estado() -> dict:
-    """Retorna o estado actual (os sensores já estão inicializados no módulo)."""
+    """Retorna el estado actual (los sensores ya están inicializados en el módulo)."""
     return {comp: {k: s.next() for k, s in sensors.items()}
             for comp, sensors in _sensors.items()}
 
 
 def actualizar_estado(estado) -> dict:
     """
-    Actualiza um subconjunto de grupos de sensores por ciclo.
-    Simula que não tudo muda simultaneamente.
-    Aplica anomalias quando programadas.
+    Actualiza un subconjunto de grupos de sensores por ciclo.
+    Simula que no todo cambia simultáneamente.
+    Aplica anomalías cuando están programadas.
     """
-    # Escolher 1-2 grupos para actualizar neste ciclo
+    # Elegir 1-2 grupos para actualizar en este ciclo
     groups_to_update = random.sample(_UPDATE_GROUPS, k=random.randint(1, 2))
     comps_to_update = {comp for group in groups_to_update for comp in group}
 
@@ -160,10 +160,10 @@ def actualizar_estado(estado) -> dict:
         if comp in comps_to_update:
             estado_novo[comp] = {k: s.next() for k, s in sensors.items()}
         else:
-            # Mantém valores do ciclo anterior
+            # Mantiene los valores del ciclo anterior
             estado_novo[comp] = estado.get(comp, {k: s.value for k, s in sensors.items()})
 
-    # Tick de anomalias
+    # Tick de anomalías
     _tick_anomaly(estado_novo)
 
     return estado_novo
