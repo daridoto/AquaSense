@@ -47,7 +47,7 @@ public class AuthController {
     public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
         String token = extractTokenFromCookie(request);
         if (token == null) {
-            // fallback: Authorization header (compatibilidade com clientes não-browser)
+            // fallback: Authorization header (compatibilidad con clientes no-browser)
             String authHeader = request.getHeader("Authorization");
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
