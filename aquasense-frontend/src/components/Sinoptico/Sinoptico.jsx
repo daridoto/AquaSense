@@ -7,7 +7,7 @@ import { PALETA_MAP } from './paletaItems.jsx';
 import ModoPanel from '../ModoPanel/ModoPanel';
 import s from './Sinoptico.module.css';
 
-// ── Dados de telemetria por componenteId ─────────────────────────────────────
+// ── Datos de telemetría por componenteId ─────────────────────────────────────
 const PRIMARY = {
   bomba_captacao:     { key: 'caudal',            unit: 'm³/h' },
   reja_tamiz:         { key: 'diferencialPresion', unit: 'mbar' },
@@ -29,7 +29,7 @@ function getAlertState(type, alertas) {
 
 const STATE_STROKE = { ok: '#00e87a', warn: '#f5a623', err: '#ff3d5a' };
 
-// Sistema de tipos de tubagem — espelho de CanvasEditor (sem importar para evitar acoplamento)
+// Sistema de tipos de tubería — espejo de CanvasEditor (sin importar para evitar acoplamiento)
 const PIPE_TYPES = {
   aguaCruda:           { color: '#00d4ff', width: 4, dasharray: 'none' },
   aguaTratada:         { color: '#00e87a', width: 4, dasharray: 'none' },
@@ -40,7 +40,7 @@ const PIPE_TYPES = {
 };
 const PIPE_TYPE_KEYS = Object.keys(PIPE_TYPES);
 
-// Migração legacy: style antigo → pipeType
+// Migración legacy: style antiguo → pipeType
 const LEGACY_STYLE_MAP = {
   solid:  'aguaCruda',
   dashed: 'dosificacionQuimica',
@@ -57,7 +57,7 @@ function parseLayout(raw) {
   try {
     const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
     if (!parsed) return { cards: {}, connections: [] };
-    // Novo formato (CanvasEditor)
+    // Nuevo formato (CanvasEditor)
     if (parsed.componentes !== undefined || parsed.tuberias !== undefined) {
       return {
         componentes: parsed.componentes ?? [],
@@ -67,7 +67,7 @@ function parseLayout(raw) {
         panY: parsed.panY ?? 0,
       };
     }
-    // Formato antigo
+    // Formato antiguo
     return {
       cards: parsed.cards ?? {},
       connections: parsed.connections ?? [],
@@ -77,8 +77,8 @@ function parseLayout(raw) {
   }
 }
 
-// ── Sinóptico estático (fallback quando não há layout guardado) ────────────────
-// Posições calculadas para acomodar as bounding boxes ISA reais de cada shape.
+// ── Sinóptico estático (fallback cuando no hay layout guardado) ──────────────
+// Posiciones calculadas para acomodar los bounding boxes ISA reales de cada shape.
 const STATIC_LAYOUT = [
   { id: 'bomba_captacao',    label: 'B. Captação',     x: 20,  y: 86 },
   { id: 'reja_tamiz',        label: 'Reja/Tamiz',      x: 140, y: 78 },
@@ -90,7 +90,7 @@ const STATIC_LAYOUT = [
   { id: 'bomba_distribucion',label: 'B. Distribuição', x: 968, y: 86 },
 ];
 
-// Fluxo principal — portos anatómicos conforme conexiones-equipos.md
+// Flujo principal — puertos anatómicos según conexiones-equipos.md
 const STATIC_CONEXOES = [
   { from: 'bomba_captacao',    fp: 'descarga',   to: 'reja_tamiz',        tp: 'alimentacao', tipo: 'aguaCruda'   },
   { from: 'reja_tamiz',        fp: 'salida',     to: 'coagulacion',       tp: 'entrada',     tipo: 'aguaCruda'   },
@@ -132,7 +132,7 @@ const StaticSinoptico = memo(function StaticSinoptico({ estado, alertas, modosLo
         ))}
       </defs>
 
-      {/* Tubagens com curvas bézier entre portos anatómicos */}
+      {/* Tuberías con curvas bézier entre puertos anatómicos */}
       {STATIC_CONEXOES.map((cx, i) => {
         const p1 = getAbsPort(cx.from, cx.fp);
         const p2 = getAbsPort(cx.to, cx.tp);
@@ -149,7 +149,7 @@ const StaticSinoptico = memo(function StaticSinoptico({ estado, alertas, modosLo
         );
       })}
 
-      {/* Equipamentos — ISA shapes, sem rect de fundo */}
+      {/* Equipos — ISA shapes, sin rect de fondo */}
       {STATIC_LAYOUT.map(({ id, label, x, y }) => {
         const alertState = getAlertState(id, alertas);
         const isManual = modosLocais[id] === 'MANUAL';
@@ -212,7 +212,7 @@ function viewPortCenter(inst, port) {
 const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, estado, alertas, modosLocais = {}, onComponenteClick }) {
   if (!instances.length) return null;
 
-  // Bounding box para viewBox automático — respeita dimensões variáveis por shape
+  // Bounding box para viewBox automático — respeta dimensiones variables por shape
   const pad = 30;
   let bMinX = Infinity, bMinY = Infinity, bMaxX = -Infinity, bMaxY = -Infinity;
   instances.forEach(inst => {
@@ -236,7 +236,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
       className={s.svg}
     >
       <defs>
-        {/* Setas por tipo de tubagem */}
+        {/* Flechas por tipo de tubería */}
         {PIPE_TYPE_KEYS.map(pt => (
           <marker key={pt} id={`viewArr_${pt}`} markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
             <path d="M0,0 L6,3 L0,6 Z" fill={PIPE_TYPES[pt].color} opacity="0.8" />
@@ -244,7 +244,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
         ))}
       </defs>
 
-      {/* Conexões */}
+      {/* Conexiones */}
       {connections.map((conn, i) => {
         const fromInst = instances.find(inst => inst.id === (conn.fromInstanceId ?? conn.from?.cardId));
         const toInst   = instances.find(inst => inst.id === (conn.toInstanceId   ?? conn.to?.cardId));
@@ -266,7 +266,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
               opacity="0.10"
               pointerEvents="none"
             />
-            {/* Tubagem principal */}
+            {/* Tubería principal */}
             <path d={d} fill="none"
               stroke={cfg.color}
               strokeWidth={cfg.width}
@@ -278,12 +278,12 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
         );
       })}
 
-      {/* Instâncias */}
+      {/* Instancias */}
       {instances.map(inst => {
         const alertState = getAlertState(inst.componenteId, alertas);
         const isManual = modosLocais[inst.componenteId] === 'MANUAL';
         const baseStroke = STATE_STROKE[alertState] ?? '#00c8e8';
-        // Em modo MANUAL, o contorno fica laranja para indicar controlo manual
+        // En modo MANUAL, el contorno queda naranja para indicar control manual
         const stroke = isManual ? '#f5a623' : baseStroke;
         const fill = alertState === 'err'
           ? 'rgba(255,61,90,0.08)'
@@ -309,7 +309,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
             onClick={() => onComponenteClick?.(inst.componenteId)}
             style={{ cursor: 'pointer' }}>
             {shapeDef ? (
-              /* Forma canónica: SVG nativo, sem rect de fundo */
+              /* Forma canónica: SVG nativo, sin rect de fondo */
               <>
                 {renderShape(inst.componenteId, stroke, 1.8)}
                 <text
@@ -338,7 +338,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
                 )}
               </>
             ) : (
-              /* Fallback não-canónico: ícone inline escalonado, sem rect de fundo */
+              /* Fallback no canónico: icono inline escalado, sin rect de fondo */
               <>
                 {(() => {
                   const sx = shW / 48;
@@ -390,15 +390,15 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
   const [layout, setLayout] = useState(null);
   const [layoutLoaded, setLayoutLoaded] = useState(false);
 
-  // Estado do painel de modo manual
+  // Estado del panel de modo manual
   const [modoPanelComp, setModoPanelComp] = useState(null); // componenteId seleccionado
 
-  // Cache local de modos (sobreposto pelo polling do /estado)
+  // Caché local de modos (sobrescrito por el polling de /estado)
   const [modosLocais, setModosLocais] = useState({});
 
   const { t } = useLanguage();
 
-  // Carregar layout guardado
+  // Cargar layout guardado
   useEffect(() => {
     if (!projectId) return;
     api.get(`/api/proyectos/${projectId}/layout`)
@@ -410,19 +410,19 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
       .finally(() => setLayoutLoaded(true));
   }, [projectId]);
 
-  // Sincroniza modos locais com o estado vindo do polling
+  // Sincroniza modos locales con el estado proveniente del polling
   useEffect(() => {
     if (estado?.modoComponentes) {
       setModosLocais(prev => ({ ...prev, ...estado.modoComponentes }));
     }
   }, [estado?.modoComponentes]);
 
-  // Callback chamado pelo ModoPanel ao mudar modo — actualiza estado local imediatamente
+  // Callback llamado por ModoPanel al cambiar modo — actualiza estado local inmediatamente
   const handleModoChanged = useCallback((componenteId, novoModo) => {
     setModosLocais(prev => ({ ...prev, [componenteId]: novoModo }));
   }, []);
 
-  // ── Callbacks do CanvasEditor ─────────────────────────────────────────────
+  // ── Callbacks del CanvasEditor ────────────────────────────────────────────
   function handleEditorSave(newLayout) {
     setLayout(newLayout);
     setEditMode(false);
@@ -432,7 +432,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
     setEditMode(false);
   }
 
-  // ── VIEW MODE — sem layout ─────────────────────────────────────────────────
+  // ── VIEW MODE — sin layout ─────────────────────────────────────────────────
   if (!layoutLoaded) {
     return <div className={s.wrap}><p className={s.hint}>{t('loading_synoptic')}</p></div>;
   }
@@ -451,14 +451,14 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
     );
   }
 
-  // ── VIEW MODE — sinóptico de leitura ──────────────────────────────────────
-  // Determina se existe layout no novo formato ou no antigo
+  // ── VIEW MODE — sinóptico de lectura ──────────────────────────────────────
+  // Determina si existe layout en el nuevo formato o en el antiguo
   const hasLayout = (
     (layout?.componentes?.length > 0) ||
     (layout?.cards && Object.keys(layout.cards).length > 0)
   );
 
-  // Converte instâncias para renderizar em view mode
+  // Convierte instancias para renderizar en view mode
   const viewInstances = layout?.componentes ?? (
     layout?.cards
       ? Object.entries(layout.cards).map(([id, c]) => ({
@@ -469,7 +469,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
 
   const viewConnections = layout?.tuberias ?? layout?.connections ?? [];
 
-  // Componente aberto no painel de modo
+  // Componente abierto en el panel de modo
   const panelComp = modoPanelComp;
   const panelModo = panelComp ? (modosLocais[panelComp] ?? 'AUTO') : 'AUTO';
   const panelValores = panelComp ? (estado?.componentes?.[panelComp]?.valores ?? {}) : {};
@@ -492,7 +492,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
 
       <div className={s.editorBody}>
         <div className={s.canvas}>
-          {/* Fallback VIEW: sinóptico estático se não há layout */}
+          {/* Fallback VIEW: sinóptico estático si no hay layout */}
           {!hasLayout && (
             <div className={s.staticWrap}>
               <StaticSinoptico
@@ -504,7 +504,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
             </div>
           )}
 
-          {/* VIEW: sinóptico com instâncias do novo editor */}
+          {/* VIEW: sinóptico con instancias del nuevo editor */}
           {hasLayout && (
             <ViewSinoptico
               instances={viewInstances}
@@ -516,7 +516,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
             />
           )}
 
-          {/* Inactive overlay — shown when simulation is not running */}
+          {/* Inactive overlay — mostrado cuando la simulación no está en ejecución */}
           {!simulacaoAtiva && (
             <div className={s.inactiveOverlay}>
               <span className={s.inactiveIcon}>◉</span>
@@ -527,7 +527,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
         </div>
       </div>
 
-      {/* Painel de modo manual — abre sobre o sinóptico */}
+      {/* Panel de modo manual — se abre sobre el sinóptico */}
       {panelComp && (
         <ModoPanel
           projectId={projectId}
