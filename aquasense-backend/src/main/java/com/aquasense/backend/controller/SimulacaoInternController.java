@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Internal endpoint — called exclusively by the Python simulation engine.
- * No JWT required (route is permitted in SecurityConfig under /interno/**).
+ * Endpoint interno — llamado exclusivamente por el motor de simulación Python.
+ * No se requiere JWT (la ruta está permitida en SecurityConfig bajo /interno/**).
  */
 @RestController
 @RequestMapping("/interno/simulacao")
@@ -23,15 +23,15 @@ public class SimulacaoInternController {
     private final ProjetoService projetoService;
 
     // GET /interno/simulacao/projetos-ativos
-    // Returns the list of project IDs that have simulacaoAtiva = true
+    // Devuelve la lista de IDs de proyectos con simulacaoAtiva = true
     @GetMapping("/projetos-ativos")
     public ResponseEntity<List<Long>> getProjetosAtivos() {
         return ResponseEntity.ok(projetoService.getProjetosAtivos());
     }
 
     // GET /interno/simulacao/projetos/:id/modos
-    // Devolve o modo (AUTO|MANUAL) de cada componente do projeto — usado pelo simulador Python
-    // para saber quais componentes deve saltar neste ciclo.
+    // Devuelve el modo (AUTO|MANUAL) de cada componente del proyecto — usado por el simulador Python
+    // para saber qué componentes debe saltarse en este ciclo.
     @GetMapping("/projetos/{id}/modos")
     public ResponseEntity<Map<String, String>> getModosPorProjeto(@PathVariable Long id) {
         return ResponseEntity.ok(projetoService.getModoComponentes(id));
