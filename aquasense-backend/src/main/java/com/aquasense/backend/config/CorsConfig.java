@@ -14,7 +14,7 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        // Permite localhost (dev), Vercel e URL de frontend configurável via variável de ambiente
+        // Permite localhost (dev), Vercel y URL de frontend configurable vía variable de entorno
         String frontendUrl = System.getenv().getOrDefault("FRONTEND_URL", "");
         List<String> origins = new java.util.ArrayList<>(List.of(
                 "http://localhost:5173",
