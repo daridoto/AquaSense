@@ -135,7 +135,7 @@ export default function ModoPanel({
       <div className={s.panel}>
         {/* Cabecera */}
         <div className={s.header}>
-          <span className={s.title}>{componenteId.replace(/_/g, ' ').toUpperCase()}</span>
+          <span className={s.title}>{(() => { const k = 'synoptic_label_' + componenteId; const v = t(k); return v !== k ? v : componenteId.replace(/_/g, ' ').toUpperCase(); })()}</span>
           <button className={s.closeBtn} onClick={onClose}>✕</button>
         </div>
 
@@ -176,7 +176,7 @@ export default function ModoPanel({
               {params.map(p => (
                 <div key={p} className={s.field}>
                   <label className={s.fieldLabel}>
-                    {p}
+                    {t('param_' + p)}
                     {UNITS[p] ? <span className={s.unit}> ({UNITS[p]})</span> : null}
                   </label>
                   <input
@@ -206,7 +206,7 @@ export default function ModoPanel({
                 return (
                   <div key={p} className={s.field}>
                     <span className={s.fieldLabel}>
-                      {p}
+                      {t('param_' + p)}
                       {UNITS[p] ? <span className={s.unit}> ({UNITS[p]})</span> : null}
                     </span>
                     <span className={s.fieldValue}>

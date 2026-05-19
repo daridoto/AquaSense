@@ -5,8 +5,9 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import api from '../../services/api';
-import { PALETA_GRUPOS, PALETA_MAP } from './paletaItems.jsx';
+import { PALETA_MAP, getPaletaGrupos } from './paletaItems.jsx';
 import { getShapeDef, getShapeSize, renderShape } from './equipShapes.jsx';
+import { useLanguage } from '../../context/LanguageContext.jsx';
 import s from './CanvasEditor.module.css';
 
 // ── Constantes ────────────────────────────────────────────────────────────────
@@ -106,6 +107,7 @@ function PaletteIcon({ componenteId, color }) {
 }
 
 function PropsPanel({ inst, onLabelChange, onDelete, onClose }) {
+  const { t } = useLanguage();
   const [label, setLabel] = useState(inst.label);
 
   useEffect(() => {
@@ -119,7 +121,7 @@ function PropsPanel({ inst, onLabelChange, onDelete, onClose }) {
   return (
     <div className={s.propsPanel}>
       <div className={s.propsPanelHeader}>
-        <span className={s.propsPanelTitle}>PROPIEDADES</span>
+        <span className={s.propsPanelTitle}>{t('props_title')}</span>
         <button className={s.propsPanelClose} onClick={onClose}>×</button>
       </div>
       <div className={s.propsRow}>
@@ -141,7 +143,7 @@ function PropsPanel({ inst, onLabelChange, onDelete, onClose }) {
         />
       </div>
       <button className={s.propsDelete} onClick={() => onDelete(inst.id)}>
-        Eliminar componente
+        {t('props_delete')}
       </button>
     </div>
   );
@@ -156,6 +158,9 @@ export default function CanvasEditor({
   onSave,
   onCancel,
 }) {
+  const { t } = useLanguage();
+  const paletaGrupos = getPaletaGrupos(t);
+
   // ── Estado del canvas ────────────────────────────────────────────────────────
   const [instances, setInstances] = useState(() => {
     if (initialLayout?.componentes) return initialLayout.componentes;
@@ -201,7 +206,7 @@ export default function CanvasEditor({
   const [pipeType, setPipeType] = useState('aguaCruda');
   const [openGroups, setOpenGroups] = useState(() => {
     const init = {};
-    PALETA_GRUPOS.forEach(g => { init[g.id] = true; });
+    getPaletaGrupos(k => k).forEach(g => { init[g.id] = true; });
     return init;
   });
   const [saving, setSaving] = useState(false);
@@ -455,7 +460,7 @@ export default function CanvasEditor({
       componenteId,
       x,
       y,
-      label: item?.label ?? componenteId,
+      label: item?.labelKey ? t(item.labelKey) : (item?.label ?? componenteId),
     };
     setInstances(prev => [...prev, newInst]);
     setSelectedId(newInst.id);
@@ -755,17 +760,17 @@ export default function CanvasEditor({
     <div className={s.root}>
       {/* ── Toolbar ── */}
       <div className={s.toolbar}>
-        <span className={s.toolbarTitle}>EDITOR DE LAYOUT</span>
+        <span className={s.toolbarTitle}>{t('editor_title')}</span>
 
         <div className={s.pipeControls}>
-          <span className={s.toolbarLabel}>TUBERÍA:</span>
+          <span className={s.toolbarLabel}>{t('editor_tube_label')}</span>
           <select
             className={s.pipeTypeSelect}
             value={pipeType}
             onChange={e => setPipeType(e.target.value)}
           >
             {PIPE_TYPE_KEYS.map(pt => (
-              <option key={pt} value={pt}>{PIPE_TYPES[pt].label}</option>
+              <option key={pt} value={pt}>{t('pipe_' + pt)}</option>
             ))}
           </select>
           <svg width="48" height="12" style={{ flexShrink: 0 }}>
@@ -799,11 +804,11 @@ export default function CanvasEditor({
               if (!next) { setPrintRectDraw(null); printRectRef.current = null; }
             }}
           >
-            {printMode ? 'CANCELAR' : 'IMPRIMIR'}
+            {printMode ? t('editor_cancel_print') : t('editor_print')}
           </button>
-          <button className={s.btnCancel} onClick={onCancel}>CANCELAR</button>
+          <button className={s.btnCancel} onClick={onCancel}>{t('cancel')}</button>
           <button className={s.btnSave} onClick={handleSave} disabled={saving}>
-            {saving ? 'GUARDANDO...' : 'GUARDAR LAYOUT'}
+            {saving ? t('editor_saving') : t('editor_save')}
           </button>
         </div>
       </div>
@@ -814,14 +819,14 @@ export default function CanvasEditor({
           className={s.palette}
           style={{ width: sidebarCollapsed ? 48 : sidebarWidth }}
         >
-          <button className={s.collapseBtn} onClick={toggleSidebar} title={sidebarCollapsed ? 'Expandir' : 'Colapsar'}>
+          <button className={s.collapseBtn} onClick={toggleSidebar} title={sidebarCollapsed ? t('editor_expand') : t('editor_collapse')}>
             {sidebarCollapsed ? '›' : '‹'}
           </button>
 
           {!sidebarCollapsed && (
             <>
-              <div className={s.paletteTitle}>COMPONENTES</div>
-              {PALETA_GRUPOS.map(grupo => (
+              <div className={s.paletteTitle}>{t('editor_components_title')}</div>
+              {paletaGrupos.map(grupo => (
                 <div key={grupo.id} className={s.paletteGroup}>
                   <button
                     className={s.paletteGroupHeader}
@@ -904,7 +909,7 @@ export default function CanvasEditor({
 
           {instances.length === 0 && (
             <div className={s.emptyHint}>
-              Arrastra componentes de la paleta al canvas
+              {t('canvas_drop_hint')}
             </div>
           )}
 
@@ -920,12 +925,12 @@ export default function CanvasEditor({
           {/* Hints — conexión y print */}
           {pendingFrom && (
             <div className={s.connectHint}>
-              Haz clic en un puerto de destino para conectar · ESC para cancelar
+              {t('connect_hint')}
             </div>
           )}
           {printMode && !printRectDraw && (
             <div className={s.connectHint}>
-              Haz clic y arrastra para seleccionar el área de impresión · ESC para cancelar
+              {t('print_hint')}
             </div>
           )}
         </div>

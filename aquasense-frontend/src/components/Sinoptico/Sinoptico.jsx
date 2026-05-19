@@ -80,14 +80,14 @@ function parseLayout(raw) {
 // ── Sinóptico estático (fallback cuando no hay layout guardado) ──────────────
 // Posiciones calculadas para acomodar los bounding boxes ISA reales de cada shape.
 const STATIC_LAYOUT = [
-  { id: 'bomba_captacao',    label: 'B. Captação',     x: 20,  y: 86 },
-  { id: 'reja_tamiz',        label: 'Reja/Tamiz',      x: 140, y: 78 },
-  { id: 'coagulacion',       label: 'Coagulação',      x: 258, y: 80 },
-  { id: 'decantador',        label: 'Decantador',      x: 400, y: 80 },
-  { id: 'filtracion',        label: 'Filtração',       x: 560, y: 62 },
-  { id: 'desinfeccion',      label: 'Desinfeção',      x: 668, y: 94 },
-  { id: 'reservorio',        label: 'Reservório',      x: 818, y: 50 },
-  { id: 'bomba_distribucion',label: 'B. Distribuição', x: 968, y: 86 },
+  { id: 'bomba_captacao',    labelKey: 'synoptic_label_bomba_captacao',    x: 20,  y: 86 },
+  { id: 'reja_tamiz',        labelKey: 'synoptic_label_reja_tamiz',        x: 140, y: 78 },
+  { id: 'coagulacion',       labelKey: 'synoptic_label_coagulacion',       x: 258, y: 80 },
+  { id: 'decantador',        labelKey: 'synoptic_label_decantador',        x: 400, y: 80 },
+  { id: 'filtracion',        labelKey: 'synoptic_label_filtracion',        x: 560, y: 62 },
+  { id: 'desinfeccion',      labelKey: 'synoptic_label_desinfeccion',      x: 668, y: 94 },
+  { id: 'reservorio',        labelKey: 'synoptic_label_reservorio',        x: 818, y: 50 },
+  { id: 'bomba_distribucion',labelKey: 'synoptic_label_bomba_distribucion',x: 968, y: 86 },
 ];
 
 // Flujo principal — puertos anatómicos según conexiones-equipos.md
@@ -101,7 +101,7 @@ const STATIC_CONEXOES = [
   { from: 'reservorio',        fp: 'salida',     to: 'bomba_distribucion', tp: 'succion',    tipo: 'aguaTratada' },
 ];
 
-const StaticSinoptico = memo(function StaticSinoptico({ estado, alertas, modosLocais = {}, onComponenteClick }) {
+const StaticSinoptico = memo(function StaticSinoptico({ estado, alertas, modosLocais = {}, onComponenteClick, t }) {
   const posMap = Object.fromEntries(STATIC_LAYOUT.map(c => [c.id, c]));
 
   function getAbsPort(id, portId) {
@@ -150,7 +150,7 @@ const StaticSinoptico = memo(function StaticSinoptico({ estado, alertas, modosLo
       })}
 
       {/* Equipos — ISA shapes, sin rect de fondo */}
-      {STATIC_LAYOUT.map(({ id, label, x, y }) => {
+      {STATIC_LAYOUT.map(({ id, labelKey, x, y }) => {
         const alertState = getAlertState(id, alertas);
         const isManual = modosLocais[id] === 'MANUAL';
         const stroke = isManual ? '#f5a623' : (STATE_STROKE[alertState] ?? '#00e87a');
@@ -162,7 +162,7 @@ const StaticSinoptico = memo(function StaticSinoptico({ estado, alertas, modosLo
             style={{ cursor: 'pointer' }}>
             {renderShape(id, stroke, 1.8)}
             <text x={shW / 2} y={shH + 14} textAnchor="middle" className={s.compLabel} fill={stroke}>
-              {label}
+              {t(labelKey)}
             </text>
             {primary && (
               <text x={shW / 2} y={shH + 26} textAnchor="middle" className={s.compValue} fill={stroke}>
@@ -172,7 +172,7 @@ const StaticSinoptico = memo(function StaticSinoptico({ estado, alertas, modosLo
             {isManual && (
               <text x={shW / 2} y={shH + 38} textAnchor="middle"
                 style={{ fontSize: '11px', fontFamily: 'monospace', fill: '#f5a623', fontWeight: 700, letterSpacing: '1px' }}>
-                MANUAL
+                {t('manual_badge')}
               </text>
             )}
           </g>
@@ -209,7 +209,7 @@ function viewPortCenter(inst, port) {
   }
 }
 
-const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, estado, alertas, modosLocais = {}, onComponenteClick }) {
+const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, estado, alertas, modosLocais = {}, onComponenteClick, t }) {
   if (!instances.length) return null;
 
   // Bounding box para viewBox automático — respeta dimensiones variables por shape
@@ -304,6 +304,16 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
         const shapeDef = getShapeDef(inst.componenteId);
         const { width: shW, height: shH } = getShapeSize(inst.componenteId);
 
+        const synKey = 'synoptic_label_' + inst.componenteId;
+        const synTranslated = t(synKey);
+        const paletKey = 'palette_' + inst.componenteId;
+        const paletTranslated = t(paletKey);
+        const displayLabel = synTranslated !== synKey
+          ? synTranslated
+          : paletTranslated !== paletKey
+          ? paletTranslated
+          : (inst.label ?? inst.componenteId);
+
         return (
           <g key={inst.id} transform={`translate(${inst.x},${inst.y})`}
             onClick={() => onComponenteClick?.(inst.componenteId)}
@@ -318,7 +328,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
                   className={s.compLabel}
                   fill={stroke}
                 >
-                  {inst.label ?? inst.componenteId}
+                  {displayLabel}
                 </text>
                 {primary && (
                   <text
@@ -333,7 +343,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
                 {isManual && (
                   <text x={shW / 2} y={shH + 38} textAnchor="middle"
                     style={{ fontSize: '11px', fontFamily: 'monospace', fill: '#f5a623', fontWeight: 700, letterSpacing: '1px' }}>
-                    MANUAL
+                    {t('manual_badge')}
                   </text>
                 )}
               </>
@@ -361,7 +371,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
                 })()}
                 <text x={shW / 2} y={shH + 14} textAnchor="middle"
                   className={s.compLabel} fill={stroke}>
-                  {inst.label ?? inst.componenteId}
+                  {displayLabel}
                 </text>
                 {primary && (
                   <text x={shW / 2} y={shH + 26} textAnchor="middle"
@@ -372,7 +382,7 @@ const ViewSinoptico = memo(function ViewSinoptico({ instances, connections, esta
                 {isManual && (
                   <text x={shW / 2} y={shH + 38} textAnchor="middle"
                     style={{ fontSize: '11px', fontFamily: 'monospace', fill: '#f5a623', fontWeight: 700, letterSpacing: '1px' }}>
-                    MANUAL
+                    {t('manual_badge')}
                   </text>
                 )}
               </>
@@ -483,8 +493,8 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
         {Object.entries(modosLocais)
           .filter(([, modo]) => modo === 'MANUAL')
           .map(([comp]) => (
-            <span key={comp} className={s.badgeManual} title={`${comp} en modo MANUAL`}>
-              {comp.replace(/_/g, ' ').toUpperCase()} — MANUAL
+            <span key={comp} className={s.badgeManual} title={`${t('synoptic_label_' + comp)} — ${t('manual_badge')}`}>
+              {t('synoptic_label_' + comp)} — {t('manual_badge')}
             </span>
           ))}
         <button className={s.btnEdit} onClick={() => setEditMode(true)}>{t('edit_layout')}</button>
@@ -500,6 +510,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
                 alertas={alertas}
                 modosLocais={modosLocais}
                 onComponenteClick={setModoPanelComp}
+                t={t}
               />
             </div>
           )}
@@ -513,6 +524,7 @@ export default function Sinoptico({ projectId, estado, alertas = [], simulacaoAt
               alertas={alertas}
               modosLocais={modosLocais}
               onComponenteClick={setModoPanelComp}
+              t={t}
             />
           )}
 

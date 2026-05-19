@@ -94,7 +94,7 @@ export default function Equipa() {
                 <td>
                   <select className={s.rolSelect} value={m.rol}
                     onChange={e => handleChangeRol(m, e.target.value)}>
-                    {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+                    {ROLES.map(r => <option key={r} value={r}>{t('role_' + r)}</option>)}
                   </select>
                 </td>
                 <td>

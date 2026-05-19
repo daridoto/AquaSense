@@ -43,16 +43,16 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // Solo se ejecuta si el usuario de demostración aún no existe
-        if (usuarioRepository.existsByEmail("Operador@aquasense.com")) {
+        if (usuarioRepository.existsByEmail("admin@aquasense.com")) {
             log.info("=== Seed ya aplicado — nada que hacer ===");
             return;
         }
 
         // 1. Crear usuario de demostración
         Usuario operador = usuarioRepository.save(Usuario.builder()
-                .email("Operador@aquasense.com")
-                .password(passwordEncoder.encode("Operador123"))
-                .nombre("Operador Demo")
+                .email("admin@aquasense.com")
+                .password(passwordEncoder.encode("password"))
+                .nombre("Administrador Demo")
                 .language("es")
                 .build());
 
@@ -75,7 +75,7 @@ public class DataInitializer implements CommandLineRunner {
                     .build());
         }
 
-        log.info("=== Seed aplicado: Operador@aquasense.com | proyectoId={} ===", demo.getId());
+        log.info("=== Seed aplicado: admin@aquasense.com | proyectoId={} ===", demo.getId());
     }
 
     /**

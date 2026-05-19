@@ -1,3 +1,4 @@
+import { useLanguage } from '../../context/LanguageContext.jsx';
 import s from './ReadingsBar.module.css';
 
 const COMP_LABELS = {
@@ -85,10 +86,12 @@ function fmt(val) {
 }
 
 export default function ReadingsBar({ estado, alertas = [] }) {
+  const { t } = useLanguage();
+
   return (
     <div className={s.bar}>
       {COMP_ORDER.map(id => {
-        // CORREGIDO: datos están en estado.componentes[id].valores
+        // datos están en estado.componentes[id].valores
         const comp = estado?.componentes?.[id];
         const state = getState(id, alertas);
         const valores = comp?.valores ?? {};
@@ -101,7 +104,7 @@ export default function ReadingsBar({ estado, alertas = [] }) {
         return (
           <div key={id} className={`${s.cell} ${s[state]}`}>
             <div className={s.cellHeader}>
-              <span className={s.name}>{COMP_LABELS[id]}</span>
+              <span className={s.name}>{t('synoptic_label_' + id)}</span>
               <span className={s.dot} style={{ background: DOT_COLOR[state] }} />
             </div>
             <div className={s.rows}>
@@ -111,7 +114,7 @@ export default function ReadingsBar({ estado, alertas = [] }) {
                 const display = v != null ? `${fmt(v)} ${unit}`.trim() : '—';
                 return (
                   <div key={k} className={`${s.row} ${k === mainKey && state !== 'ok' ? s.alert : ''}`}>
-                    <span className={s.key}>{k}</span>
+                    <span className={s.key}>{t('param_' + k)}</span>
                     <span className={s.val}>{display}</span>
                   </div>
                 );
